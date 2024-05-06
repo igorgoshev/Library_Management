@@ -1,4 +1,6 @@
 package com.sorsix.intern.backend.domain.dto
 
-class LoginResponse {
+data class LoginResponse(
+    private val accessToken: String? = null) {
+
 }

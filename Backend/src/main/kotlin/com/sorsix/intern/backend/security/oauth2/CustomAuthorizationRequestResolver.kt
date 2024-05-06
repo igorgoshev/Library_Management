@@ -1,4 +1,4 @@
-package com.anita.multipleauthapi.security.oauth2
+package com.sorsix.intern.backend.security.oauth2
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.crypto.keygen.Base64StringKeyGenerator
@@ -20,9 +20,9 @@ class CustomAuthorizationRequestResolver(repo: ClientRegistrationRepository?, au
     private val secureKeyGenerator: StringKeyGenerator =
         Base64StringKeyGenerator(Base64.getUrlEncoder().withoutPadding(), 96)
 
-    override fun resolve(request: HttpServletRequest): OAuth2AuthorizationRequest {
+    override fun resolve(request: HttpServletRequest): OAuth2AuthorizationRequest? {
         val req = defaultResolver.resolve(request)
-        return customizeAuthorizationRequest(req)!!
+        return customizeAuthorizationRequest(req)
     }
 
     override fun resolve(request: HttpServletRequest, clientRegistrationId: String): OAuth2AuthorizationRequest? {

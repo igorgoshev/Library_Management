@@ -9,25 +9,25 @@
     @PrimaryKeyJoinColumn
     data class Customer(
         @OneToOne(mappedBy = "customer")
-        val wishList: WishList,
+        var wishList: WishList,
 
-        @OneToMany(mappedBy = "customer")
-        val trades: List<Trade>,
+        @OneToMany(mappedBy = "customer", targetEntity = Trade::class)
+        var trades: List<Trade>,
 
-        @OneToMany(mappedBy = "customer")
-        val customerBooks: List<CustomerBook>,
+        @OneToMany(mappedBy = "customer", targetEntity = CustomerBook::class)
+        var customerBooks: List<CustomerBook>,
 
-        @OneToMany(mappedBy = "customer")
-        val reviews: List<Review>,
+        @OneToMany(mappedBy = "customer", targetEntity = Review::class)
+        var reviews: List<Review>,
 
-        @OneToMany(mappedBy = "customer")
-        val subscriptions: List<Subscription>,
+        @OneToMany(mappedBy = "customer", targetEntity = Subscription::class)
+        var subscriptions: List<Subscription>,
 
-        @OneToMany(mappedBy = "customer")
-        val reserveBooks: List<ReserveBook>,
+        @OneToMany(mappedBy = "customer", targetEntity = ReserveBook::class)
+        var reserveBooks: List<ReserveBook>,
 
-        @OneToMany(mappedBy = "customer")
-        val borrowedBooks: List<BorrowBook>
+        @OneToMany(mappedBy = "customer", targetEntity = BorrowBook::class)
+        var borrowedBooks: List<BorrowBook>
 
     ): User() {
     }

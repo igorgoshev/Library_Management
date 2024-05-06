@@ -1,4 +1,7 @@
 package com.sorsix.intern.backend.domain.dto
 
-class LoginRequest {
+data class LoginRequest(
+    val email: String? = null,
+    val password: String? = null
+    ) {
 }
