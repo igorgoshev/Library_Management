@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LayoutService } from '../layout.service';
+import { LayoutService } from '../../admin-layout/layout.service';
 import { NgFor, NgIf } from '@angular/common';
 import { UserMenuItemComponent } from "../user-menu-item/user-menu-item.component";
 

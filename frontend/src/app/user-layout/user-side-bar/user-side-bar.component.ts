@@ -2,7 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { UserMenuItemComponent } from '../user-menu-item/user-menu-item.component';
 import { NgFor, NgIf } from '@angular/common';
 import { UserMenuComponent } from '../user-menu/user-menu.component';
-import { LayoutService } from '../layout.service';
+import { LayoutService } from '../../admin-layout/layout.service';
 
 @Component({
   selector: 'user-side-bar',

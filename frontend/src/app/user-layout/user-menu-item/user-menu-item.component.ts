@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { MenuService } from '../menu.service';
-import { LayoutService } from '../layout.service';
+import { MenuService } from '../../admin-layout/menu.service';
+import { LayoutService } from '../../admin-layout/layout.service';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
