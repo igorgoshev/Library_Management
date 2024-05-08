@@ -1,4 +1,8 @@
 package com.sorsix.intern.backend.api.dtos
 
-class BookCard {
-}
+data class BookCard(
+    var id: Long,
+    var name: String,
+    var authors: List<String>,
+    var imgUrl: String
+) {}

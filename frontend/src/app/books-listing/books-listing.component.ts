@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
@@ -20,6 +21,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
+import { Category } from '../Category';
 
 @Component({
   selector: 'app-books-listing',
@@ -40,7 +42,8 @@ import { MessageService } from 'primeng/api';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
-    TagModule
+    TagModule,
+    MultiSelectModule
   ],
   providers: [MessageService],
   templateUrl: './books-listing.component.html',
@@ -55,6 +58,9 @@ export class BooksListingComponent implements OnInit {
 
   books$: Observable<Book[]> = this.bookService.getBooks();
   books: Book[] | undefined;
+
+  categories$: Observable<Category[]> = this.bookService.getAvailableCategories();
+  categories: Category[] | undefined;
 
   book: Book = {
     isbn: '',

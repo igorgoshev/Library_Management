@@ -7,5 +7,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class CategoryServiceImpl(val repository: CategoryRepository) : CategoriesService {
+    override fun findAll(): List<Category> = repository.findAll()
     override fun findAllByIdContaining(categoriesId: List<Long>): MutableList<Category> = repository.findAllByIdIn(categoriesId);
 }

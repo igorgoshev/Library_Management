@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.service.impl
 
+import com.sorsix.intern.backend.api.dtos.BookCard
 import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.domain.*
 import com.sorsix.intern.backend.repository.BookRepository
@@ -19,7 +20,7 @@ class BookServiceImpl(
     val customerBookService: CustomerBookService,
 
 
-) : BookService {
+    ) : BookService {
 
     override fun findAll(): List<Book> = repository.findAll()
 
@@ -39,7 +40,7 @@ class BookServiceImpl(
         customerBooksId: List<Long>,
         description: String
     ): Book? {
-        return if (id != null){
+        return if (id != null) {
             val book: Book? = findById(id);
             book?.name = name
             book?.description = description
@@ -53,10 +54,10 @@ class BookServiceImpl(
             book?.reviews = reviewService.findAllByIdContaining(reviewsId)
             book?.customerBooks = customerBookService.findAllByIdContaining(customerBooksId)
             book?.let { repository.save(it) }
-        }
-        else {
+        } else {
             repository.save(
-                Book(null, name = name, publishedYear = publishedYear, imgUrl = imgUrl,
+                Book(
+                    null, name = name, publishedYear = publishedYear, imgUrl = imgUrl,
                     authors = authorService.findAllByIdContaining(authorsId),
                     bookInLibrary = bookInLibraryService.findAllByIdContaining(bookInLibraryId),
                     categories = categoriesService.findAllByIdContaining(categoriesId),
@@ -64,7 +65,8 @@ class BookServiceImpl(
                     reviews = reviewService.findAllByIdContaining(reviewsId),
                     customerBooks = customerBookService.findAllByIdContaining(customerBooksId),
                     publishingHouse = publishingHouseService.findById(publishingHouseId),
-                    description = description)
+                    description = description
+                )
             )
         }
     }
@@ -79,7 +81,7 @@ class BookServiceImpl(
     override fun findAllByIdContaining(booksId: List<Long>): MutableList<Book> = repository.findAllByIdIn(booksId)
     override fun findAllBooksForTable(): List<BookInTable> {
         val books = repository.findAll();
-        return books.map{ it ->
+        return books.map { it ->
             BookInTable(
                 id = it.id,
                 name = it.name,
@@ -95,5 +97,19 @@ class BookServiceImpl(
                 averageRating = it.reviews.takeIf { it.isNotEmpty() }?.map { it.rate }?.average() ?: 0.0
             )
         }.toList();
+    }
+
+    override fun findBookCardsByLetters(): Map<Char, List<BookCard>> {
+        val books = repository.findAll();
+        return books.groupBy { it.name.first() }.mapValues { (k, v) ->
+            v.shuffled().take(12).map {
+                BookCard(
+                    id = it.id ?: 0,
+                    name = it.name,
+                    authors = it.authors.map { it.name + " " + it.lastName}.toList(),
+                    imgUrl = it.imgUrl,
+                )
+            };
+        }
     }
 }

@@ -114,7 +114,14 @@
                         cols="20"></textarea>
                 </div>
                 <div class="field">
-                    <label for="status">Inventory Status</label>
+                    <label for="status">Category</label>
+                    <p-multiSelect 
+                        [options]="categories" 
+                        [(ngModel)]="book.categories" 
+                        placeholder="Select Cities"
+                        optionLabel="name" 
+                        display="chip" 
+                        [showClear]="true" />
                     <!-- <p-dropdown [(ngModel)]="b.inventoryStatus" inputId="inventoryStatus" optionValue="label" [options]="statuses" placeholder="Select">
                         <ng-template pTemplate="selectedItem">
                             <span *ngIf="product && product.inventoryStatus" [class]="'product-badge status-' + product.inventoryStatus.toString().toLowerCase()">{{product.inventoryStatus}}</span>

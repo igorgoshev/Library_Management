@@ -9,4 +9,7 @@ import org.springframework.web.bind.annotation.*
 class BooksController(val bookService: BookService) {
     @GetMapping("")
     fun getBooks() = bookService.findAllBooksForTable();
+
+    @GetMapping("getTopByLetters")
+    fun getTopByLetters() = bookService.findBookCardsByLetters();
 }
