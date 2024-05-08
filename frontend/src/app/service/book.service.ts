@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Book } from '../Book';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../Category';
+import { BookCard } from '../Book-Card';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class BookService {
 
   getAvailableCategories() {
     return this.http.get<Category[]>('http://localhost:8080/api/categories');
+  }
+  
+  getTopBooksByLetter() {
+    return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getTopByLetters')
   }
 
 }

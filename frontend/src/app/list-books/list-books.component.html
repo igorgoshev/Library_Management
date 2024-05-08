@@ -1,30 +1,18 @@
-<p style="font-size: xx-large;" class="p-0 m-0">H</p>
-<hr class="p-0 m-0"/>
-<div class="container">
-    <div class="grid">
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
+@if (loading) {
+    <h1>loading...</h1>
+}
+@else {
+    @for (letter of topBookByLetters?.keys(); track $index) {
+        <p style="font-size: xx-large;" class="p-0 m-0">{{letter}}</p>
+        <hr class="p-0 m-0"/>
+        <div class="container">
+            @for (book of topBookByLetters?.get(letter); track $index) {
+                <div class="grid">
+                    <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
+                        <book-card [book]="book"></book-card>
+                    </div>
+                </div>
+            }
         </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-        <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
-            <book-card></book-card>
-        </div>
-    </div>
-</div>
+    }
+}

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BookService } from '../service/book.service';
+import { BookCard } from '../Book-Card';
 
 @Component({
   selector: 'list-books',
@@ -11,18 +13,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ListBooksComponent implements OnInit {
 
+  loading = true;
+  topBookByLetters: Map<String, BookCard[]> | undefined
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private service: BookService
+    ) {}
   
   
   ngOnInit(): void {
-    console.log(this.route.snapshot.paramMap.get("letter"));
-    // console.log(this.route.paramMap.pipe(
-    //   switchMap(x=> )
-    // ))
-    
+    this.service.getTopBooksByLetter()
+    .subscribe(
+      res => {
+        this.topBookByLetters = res
+        this.loading = false 
+      }
+    )
   }
 
 }

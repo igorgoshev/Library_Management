@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { BookCard } from '../Book-Card';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './book-card.component.css'
 })
 export class BookCardComponent {
-text: any;
+
+@Input() book: BookCard | undefined
 
 }
