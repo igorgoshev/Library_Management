@@ -3,14 +3,15 @@ import { BookCardComponent } from '../book-card/book-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../service/book.service';
 import { BookCard } from '../Book-Card';
+import { CarouselBookCardComponent } from '../carousel-book-card/carousel-book-card.component';
 import { KeyValuePipe } from '@angular/common';
-
 @Component({
   selector: 'list-books',
   standalone: true,
-  imports: [BookCardComponent, KeyValuePipe],
+  imports: [CarouselBookCardComponent, KeyValuePipe],
   templateUrl: './list-books.component.html',
   styleUrl: './list-books.component.css'
+  
 })
 export class ListBooksComponent implements OnInit {
 
