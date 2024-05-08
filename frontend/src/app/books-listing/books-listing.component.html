@@ -73,17 +73,17 @@
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Category</span>
                             <div class="flex flex-column">
-                            @for (category of book.categories; track $index) {
+                                @for (category of book.categories; track $index) {
                                 <p-tag class="my-1" value="{{category}}"></p-tag>
-                            }
-                        </div>
+                                }
+                            </div>
                         </td>
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Reviews</span>
                             <p-rating [ngModel]="book.averageRating" [readonly]="true" [cancel]="false"></p-rating>
                         </td>
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Status</span>
                             @for (category of book.categories; track $index) {
-                                <p-tag value="category"></p-tag>
+                            <p-tag value="category"></p-tag>
                             }
                         </td>
                         <td>
@@ -99,7 +99,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true"
+        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Book Details" [modal]="true"
             class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
@@ -109,27 +109,19 @@
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.name">Name is required.</small>
                 </div>
                 <div class="field">
+                    <label for="status">Category</label>
+                    <p-multiSelect [options]="categories" [(ngModel)]="book.categories" placeholder="Select Categories"
+                        optionLabel="name" display="chip" />
+                </div>
+                <div class="field">
+                    <label for="status">Author</label>
+                    <p-multiSelect [options]="authors" [(ngModel)]="book.authors" placeholder="Select Authors"
+                        optionLabel="name" display="chip" />
+                </div>
+                <div class="field">
                     <label for="description">Description</label>
                     <textarea id="description" pInputTextarea [(ngModel)]="book.description" required rows="3"
                         cols="20"></textarea>
-                </div>
-                <div class="field">
-                    <label for="status">Category</label>
-                    <p-multiSelect 
-                        [options]="categories" 
-                        [(ngModel)]="book.categories" 
-                        placeholder="Select Cities"
-                        optionLabel="name" 
-                        display="chip" 
-                        [showClear]="true" />
-                    <!-- <p-dropdown [(ngModel)]="b.inventoryStatus" inputId="inventoryStatus" optionValue="label" [options]="statuses" placeholder="Select">
-                        <ng-template pTemplate="selectedItem">
-                            <span *ngIf="product && product.inventoryStatus" [class]="'product-badge status-' + product.inventoryStatus.toString().toLowerCase()">{{product.inventoryStatus}}</span>
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                        </ng-template>
-                    </p-dropdown> -->
                 </div>
                 <!-- 
                 <div class="field">
@@ -153,17 +145,18 @@
                         </div>
                     </div>
                 </div> -->
-                <!-- 
+
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="price">Price</label>
-                        <p-inputNumber id="price" [(ngModel)]="book.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                        <p-inputNumber id="price" [(ngModel)]="book.name" mode="currency" currency="USD"
+                            locale="en-US"></p-inputNumber>
                     </div>
                     <div class="field col">
                         <label for="quantity">Quantity</label>
-                        <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
+                        <p-inputNumber id="quantity" [(ngModel)]="book.name"></p-inputNumber>
                     </div>
-                </div> -->
+                </div>
             </ng-template>
 
             <ng-template pTemplate="footer">

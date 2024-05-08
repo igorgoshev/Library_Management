@@ -4,6 +4,7 @@ import { Book } from '../Book';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../Category';
 import { BookCard } from '../Book-Card';
+import { Author } from '../Author';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class BookService {
 
   getAvailableCategories() {
     return this.http.get<Category[]>('http://localhost:8080/api/categories');
+  }
+
+  getAvailableAuthors() {
+    return this.http.get<Author[]>('http://localhost:8080/api/authors');
   }
   
   getTopBooksByLetter() {

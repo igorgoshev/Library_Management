@@ -22,6 +22,7 @@ import { TagModule } from 'primeng/tag';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Category } from '../Category';
+import { Author } from '../Author';
 
 @Component({
   selector: 'app-books-listing',
@@ -62,6 +63,9 @@ export class BooksListingComponent implements OnInit {
   categories$: Observable<Category[]> = this.bookService.getAvailableCategories();
   categories: Category[] | undefined;
 
+  authors$: Observable<Author[]> = this.bookService.getAvailableAuthors();
+  authors: Category[] | undefined;
+
   book: Book = {
     isbn: '',
     name: '',
@@ -94,10 +98,18 @@ export class BooksListingComponent implements OnInit {
       this.books = x;
     });
 
+    this.categories$.subscribe(x => {
+      this.categories = x;
+    })
+
+    this.authors$.subscribe(x => {
+      console.log(x)
+      this.authors   = x;
+    })
+
     this.cols = [
       { field: 'name', header: 'Book' },
       { field: 'isbn', header: 'ISBN' },
-      // { field: 'category', header: 'Category' },
       { field: 'author', header: 'Authors' },
       { field: 'averageRating', header: 'Rating' },
       { field: 'inventoryStatus', header: 'Status' },

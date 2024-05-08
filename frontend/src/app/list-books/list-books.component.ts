@@ -3,11 +3,12 @@ import { BookCardComponent } from '../book-card/book-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../service/book.service';
 import { BookCard } from '../Book-Card';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'list-books',
   standalone: true,
-  imports: [BookCardComponent],
+  imports: [BookCardComponent, KeyValuePipe],
   templateUrl: './list-books.component.html',
   styleUrl: './list-books.component.css'
 })

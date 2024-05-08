@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -15,7 +16,7 @@ data class Author(
     var name: String,
     var lastName: String,
     @ManyToMany(mappedBy = "authors")
-    @JsonIgnoreProperties("authors")
+    @JsonIgnore
     var books: MutableList<Book>
 ) {
 }

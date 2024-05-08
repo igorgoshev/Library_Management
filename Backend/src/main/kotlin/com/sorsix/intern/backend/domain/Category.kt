@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -13,6 +14,7 @@ class Category(
     val id: Long,
     val name: String,
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     val books: List<Book>
 ) {
 }

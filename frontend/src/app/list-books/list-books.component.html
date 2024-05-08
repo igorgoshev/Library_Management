@@ -2,17 +2,18 @@
     <h1>loading...</h1>
 }
 @else {
-    @for (letter of topBookByLetters?.keys(); track $index) {
-        <p style="font-size: xx-large;" class="p-0 m-0">{{letter}}</p>
+    @for (letter of topBookByLetters| keyvalue; track $index) {
+        <p style="font-size: xx-large;" class="p-0 m-0">{{letter.key}}</p>
         <hr class="p-0 m-0"/>
         <div class="container">
-            @for (book of topBookByLetters?.get(letter); track $index) {
-                <div class="grid">
-                    <div class="xl:col-3 lg:col-4 md:col-6 sm:col-12">
+            <div class="grid">
+            @for (book of letter.value; track $index) {
+                
+                    <div class="lg:col-3">
                         <book-card [book]="book"></book-card>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     }
 }
