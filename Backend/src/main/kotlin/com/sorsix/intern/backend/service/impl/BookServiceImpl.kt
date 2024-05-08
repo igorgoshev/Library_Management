@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.service.impl
 
+import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.domain.*
 import com.sorsix.intern.backend.repository.BookRepository
 import com.sorsix.intern.backend.service.*
@@ -76,5 +77,23 @@ class BookServiceImpl(
     }
 
     override fun findAllByIdContaining(booksId: List<Long>): MutableList<Book> = repository.findAllByIdIn(booksId)
-
+    override fun findAllBooksForTable(): List<BookInTable> {
+        val books = repository.findAll();
+        return books.map{ it ->
+            BookInTable(
+                id = it.id,
+                name = it.name,
+                publisher = it.publishingHouse.name,
+                authors = it.authors.map { author: Author ->
+                    "${author.name} ${author.lastName}"
+                }.toList(),
+                categories = it.categories.map { category: Category ->
+                    category.name
+                }.toList(),
+                isbn = "",
+                imgUrl = it.imgUrl,
+                averageRating = it.reviews.takeIf { it.isNotEmpty() }?.map { it.rate }?.average() ?: 0.0
+            )
+        }.toList();
+    }
 }

@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -13,6 +14,7 @@ class PublishingHouse(
     val id: Long,
     val name: String,
     val address: String,
+    @JsonIgnore
     @OneToMany(mappedBy = "publishingHouse")
     val books: List<Book>
 ) {

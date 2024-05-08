@@ -56,7 +56,7 @@ class SecurityConfig(
                 .requestMatchers("/", "/error").permitAll()
                 .requestMatchers("/auth/register").permitAll()
                 .requestMatchers("/auth/**", "/oauth2/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
         }
 
         http.oauth2Login { oauth2 ->

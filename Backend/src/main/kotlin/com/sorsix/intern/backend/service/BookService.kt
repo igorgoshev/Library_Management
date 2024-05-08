@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.service
 
+import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.domain.*
 import java.time.LocalDate
 
@@ -11,4 +12,5 @@ interface BookService {
              customerBooksId: List<Long>, description: String) : Book?
     fun delete(id: Long) : Book?
     fun findAllByIdContaining(booksId: List<Long>): MutableList<Book>
+    fun findAllBooksForTable(): List<BookInTable>
 }
