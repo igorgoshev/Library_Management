@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 
 
 @Component({
-  selector: 'app-book-card',
+  selector: 'book-card',
   standalone: true,
   imports: [CardModule, ButtonModule],
   templateUrl: './book-card.component.html',

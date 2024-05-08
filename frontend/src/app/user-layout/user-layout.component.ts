@@ -6,11 +6,14 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 import { LayoutService } from '../admin-layout/layout.service';
+import { BookCardComponent } from '../book-card/book-card.component';
+import { SearchComponent } from '../search/search.component';
+import { ListBooksComponent } from '../list-books/list-books.component';
 
 @Component({
-  selector: 'app-admin-layout',
+  selector: 'user-layout',
   standalone: true,
-  imports: [UserTopBarComponent, UserSideBarComponent, UserFooterComponent, RouterOutlet, NgClass],
+  imports: [UserTopBarComponent, UserSideBarComponent, UserFooterComponent, RouterOutlet, NgClass, ListBooksComponent, SearchComponent],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.css'
 })

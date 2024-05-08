@@ -1,6 +1,7 @@
-.card-wrapper{
-    width: 15%;
-    text-align: center;
-    text-wrap: wrap;
-    border: none !important;
+img {
+    transition: transform 0.3s ease-in-out;
+}
+
+img:hover {
+    transform: scale(1.05);
 }
