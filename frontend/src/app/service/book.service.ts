@@ -1,16 +1,35 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Book } from '../Book';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../Category';
 import { BookCard } from '../Book-Card';
 import { Author } from '../Author';
+import { Publisher } from '../Publisher';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
   constructor(private http: HttpClient) { }
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      Authorization: 'my-auth-token'
+    })
+  };
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      console.error('An error occurred:', error.error);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    return throwError(() => new Error('Something bad happened; please try again later.'));
+  }
   
   getBooks() {
     return this.http.get<Book[]>('http://localhost:8080/api/books');
@@ -23,9 +42,20 @@ export class BookService {
   getAvailableAuthors() {
     return this.http.get<Author[]>('http://localhost:8080/api/authors');
   }
+
+  getAvailablePublishers() {
+    return this.http.get<Publisher[]>('http://localhost:8080/api/publishers');
+  }
   
   getTopBooksByLetter() {
     return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getTopByLetters')
+  }
+
+  addBook(book: Book): Observable<Book> {
+    return this.http.post<Book>('http://localhost:8080/api/books/add', book)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
 }

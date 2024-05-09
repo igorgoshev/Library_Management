@@ -13,6 +13,9 @@ class Book (
     var publishedYear: LocalDate,
     var imgUrl: String,
     var description: String,
+    var isbn: String,
+    @Column(name = "numpages")
+    var numPages: Int,
 
     @ManyToOne
     var publishingHouse: PublishingHouse,

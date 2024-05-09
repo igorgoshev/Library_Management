@@ -23,6 +23,8 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Category } from '../Category';
 import { Author } from '../Author';
+import { Publisher } from '../Publisher';
+import { TableLoaderComponent } from '../loaders/table-loader/table-loader.component';
 
 @Component({
   selector: 'app-books-listing',
@@ -44,7 +46,8 @@ import { Author } from '../Author';
     InputNumberModule,
     DialogModule,
     TagModule,
-    MultiSelectModule
+    MultiSelectModule,
+    TableLoaderComponent
   ],
   providers: [MessageService],
   templateUrl: './books-listing.component.html',
@@ -65,6 +68,9 @@ export class BooksListingComponent implements OnInit {
 
   authors$: Observable<Author[]> = this.bookService.getAvailableAuthors();
   authors: Category[] | undefined;
+  
+  publishers$: Observable<Publisher[]> = this.bookService.getAvailablePublishers();
+  publishers: Publisher[] | undefined;
 
   book: Book = {
     isbn: '',
@@ -102,25 +108,35 @@ export class BooksListingComponent implements OnInit {
       this.categories = x;
     })
 
+    this.publishers$.subscribe(x => {
+      this.publishers = x;
+    })
+
     this.authors$.subscribe(x => {
-      console.log(x)
       this.authors   = x;
     })
 
     this.cols = [
-      { field: 'name', header: 'Book' },
+      { field: 'id', header: 'ID' },
+      { field: 'name', header: 'Name' },
+      { field: 'imgUrl', header: 'Image' },
       { field: 'isbn', header: 'ISBN' },
-      { field: 'author', header: 'Authors' },
-      { field: 'averageRating', header: 'Rating' },
-      { field: 'inventoryStatus', header: 'Status' },
+      { field: 'categories', header: 'Categories' },
+      { field: 'rating', header: 'Rating' },
+      { field: 'authors', header: 'Authors' },
     ];
+
 
     this.statuses = [
       { label: 'INSTOCK', value: 'instock' },
       { label: 'LOWSTOCK', value: 'lowstock' },
       { label: 'OUTOFSTOCK', value: 'outofstock' },
     ];
+
+    this.fields = this.cols.map(x => x.header)
   }
+
+  fields: string[] = []
 
   openNew() {
     this.book = {

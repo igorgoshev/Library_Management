@@ -65,7 +65,9 @@ class BookServiceImpl(
                     reviews = reviewService.findAllByIdContaining(reviewsId),
                     customerBooks = customerBookService.findAllByIdContaining(customerBooksId),
                     publishingHouse = publishingHouseService.findById(publishingHouseId),
-                    description = description
+                    description = description,
+                    isbn = "",
+                    numPages = 0
                 )
             )
         }

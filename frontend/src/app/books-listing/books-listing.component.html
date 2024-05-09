@@ -20,7 +20,7 @@
                         (click)="dt.exportCSV()"></button>
                 </ng-template>
             </p-toolbar>
-
+            <app-table-loader [fields]="fields" [numberOfRows]="10"></app-table-loader>
             <p-table #dt [value]="books != undefined ? books : []" [columns]="cols" responsiveLayout="scroll"
                 [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']"
                 [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
@@ -40,14 +40,17 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
+                        @for (item of cols; track $index) {
+                            <th pSortableColumn="{{ item.field }}">{{ item.header }} <p-sortIcon field="{{ item.field }}"></p-sortIcon></th>
+                        }
+                        <!-- <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
                         <th>Image</th>
                         <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="categories">Category <p-sortIcon field="categories"></p-sortIcon></th>
                         <th pSortableColumn="averageRating">Reviews <p-sortIcon field="averageRating"></p-sortIcon></th>
-                        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
-                        </th>
+                        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon> -->
+                        <!-- </th> -->
                         <th></th>
                     </tr>
                 </ng-template>
@@ -109,6 +112,23 @@
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.name">Name is required.</small>
                 </div>
                 <div class="field">
+                    <label for="name">ISBN</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="book.name" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.name}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.name">ISBN is required.</small>
+                </div>
+                <div class="field">
+                    <label for="name">Number of pages</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="book.name" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.name}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.name">Number of pages is required.</small>
+                </div>
+                <div class="field">
+                    <label for="status">Publisher</label>
+                    <p-multiSelect [options]="publishers" [(ngModel)]="book.publisher" placeholder="Select Publishing House"
+                        optionLabel="name" display="chip" />
+                </div>
+                <div class="field">
                     <label for="status">Category</label>
                     <p-multiSelect [options]="categories" [(ngModel)]="book.categories" placeholder="Select Categories"
                         optionLabel="name" display="chip" />
@@ -146,17 +166,6 @@
                     </div>
                 </div> -->
 
-                <div class="formgrid grid">
-                    <div class="field col">
-                        <label for="price">Price</label>
-                        <p-inputNumber id="price" [(ngModel)]="book.name" mode="currency" currency="USD"
-                            locale="en-US"></p-inputNumber>
-                    </div>
-                    <div class="field col">
-                        <label for="quantity">Quantity</label>
-                        <p-inputNumber id="quantity" [(ngModel)]="book.name"></p-inputNumber>
-                    </div>
-                </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
