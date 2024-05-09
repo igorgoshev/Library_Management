@@ -3,11 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { BookService } from '../service/book.service';
 import { Book } from '../Book';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'book-details',
   standalone: true,
-  imports: [AccordionModule,],
+  imports: [AccordionModule, RatingModule, FormsModule],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css'
 })

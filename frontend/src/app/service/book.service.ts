@@ -59,7 +59,7 @@ export class BookService {
   }
   
   getBookDetails(id: number){
-    return this.http.get<Book>(`http://localhost:8080/api/book/details/${id}`)
+    return this.http.get<Book>(`http://localhost:8080/api/books/${id}`)
   }
 
 }

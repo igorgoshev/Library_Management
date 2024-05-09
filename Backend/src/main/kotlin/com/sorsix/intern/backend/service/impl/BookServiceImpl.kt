@@ -5,6 +5,7 @@ import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.domain.*
 import com.sorsix.intern.backend.repository.BookRepository
 import com.sorsix.intern.backend.service.*
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -113,5 +114,18 @@ class BookServiceImpl(
                 )
             };
         }
+    }
+
+    override fun getBookDetailsById(id: Long): BookInTable? {
+        return repository.findByIdOrNull(id)?.let { BookInTable(
+            id = it.id,
+            name = it.name,
+            isbn = it.isbn,
+            authors = it.authors.map { author -> author.name + " " + author.lastName }.toList(),
+            imgUrl = it.imgUrl,
+            categories = it.categories.map { category -> category.name }.toList(),
+            averageRating = it.reviews.takeIf { review -> review.isNotEmpty() }?.map { review -> review.rate }?.average() ?: 0.0,
+            publisher = it.publishingHouse.name
+        ) }
     }
 }

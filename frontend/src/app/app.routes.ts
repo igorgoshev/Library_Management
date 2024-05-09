@@ -41,7 +41,7 @@ export const routes: Routes = [
                 component: ListBooksComponent,
             },
             {
-                path: 'book/details/:id',
+                path: 'books/details/:id',
                 component: BookDetailsComponent
             }
         ]

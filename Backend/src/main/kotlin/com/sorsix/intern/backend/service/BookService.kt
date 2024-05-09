@@ -15,4 +15,5 @@ interface BookService {
     fun findAllByIdContaining(booksId: List<Long>): MutableList<Book>
     fun findAllBooksForTable(): List<BookInTable>
     fun findBookCardsByLetters(): Map<Char, List<BookCard>>
+    fun getBookDetailsById(id: Long): BookInTable?
 }

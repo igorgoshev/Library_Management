@@ -12,4 +12,6 @@ class BooksController(val bookService: BookService) {
 
     @GetMapping("getTopByLetters")
     fun getTopByLetters() = bookService.findBookCardsByLetters();
+    @GetMapping("/{id}")
+    fun getBookById(@PathVariable id: Long) = bookService.getBookDetailsById(id)
 }

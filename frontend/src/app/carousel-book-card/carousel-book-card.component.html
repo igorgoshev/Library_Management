@@ -6,8 +6,9 @@
     [responsiveOptions]="responsiveOptions"
     autoplayInterval="3000">
     <ng-template let-book pTemplate="item">
-    
-        <book-card [routerLink]="['details', book.id]" [book]="book">
+        <a [routerLink]="['/user/books/details', book.id]" >
+        <book-card [book]="book">
         </book-card>
+    </a>
     </ng-template>
     </p-carousel>
