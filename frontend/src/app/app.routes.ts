@@ -7,6 +7,7 @@ import { BookCardComponent } from './book-card/book-card.component';
 import { UserLayoutComponent } from './user-layout/user-layout.component';
 import { SearchComponent } from './search/search.component';
 import { ListBooksComponent } from './list-books/list-books.component';
+import { BookDetailsComponent } from './book-details/book-details.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,10 @@ export const routes: Routes = [
             {
                 path: 'books/:letter',
                 component: ListBooksComponent,
+            },
+            {
+                path: 'book/details/:id',
+                component: BookDetailsComponent
             }
         ]
     },
@@ -45,5 +50,9 @@ export const routes: Routes = [
         path: 'search',
         component: SearchComponent
     },
+    {
+        path: 'book/details',
+        component: BookDetailsComponent
+    }
     
 ];

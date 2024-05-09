@@ -7,5 +7,6 @@ export interface Book {
     id: number,
     categories: string[],
     authors: string[],
-    averageRating: number
+    averageRating: number,
+    numPages: number
 }

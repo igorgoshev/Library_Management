@@ -81,7 +81,8 @@ export class BooksListingComponent implements OnInit {
     id: -1,
     categories: [],
     authors: [],
-    averageRating: 0
+    averageRating: 0,
+    numPages: 0
   };
 
   selectedBooks: Book[] = [];
@@ -148,7 +149,8 @@ export class BooksListingComponent implements OnInit {
       id: -1,
       categories: [],
       authors: [],
-      averageRating: 0
+      averageRating: 0,
+      numPages: 0
     };
     this.submitted = false;
     this.productDialog = true;
@@ -198,7 +200,8 @@ export class BooksListingComponent implements OnInit {
       id: -1,
       categories: [],
       authors: [],
-      averageRating: 0
+      averageRating: 0,
+      numPages: 0
     };
   }
 

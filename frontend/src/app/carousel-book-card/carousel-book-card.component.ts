@@ -2,10 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { BookCard } from '../Book-Card';
 import { CarouselModule } from 'primeng/carousel';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'carousel-book-card',
   standalone: true,
-  imports: [BookCardComponent, CarouselModule],
+  imports: [BookCardComponent, CarouselModule, RouterLink],
   templateUrl: './carousel-book-card.component.html',
   styleUrl: './carousel-book-card.component.css'
 })

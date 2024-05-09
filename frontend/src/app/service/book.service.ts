@@ -57,5 +57,9 @@ export class BookService {
         catchError(this.handleError)
       );
   }
+  
+  getBookDetails(id: number){
+    return this.http.get<Book>(`http://localhost:8080/api/book/details/${id}`)
+  }
 
 }

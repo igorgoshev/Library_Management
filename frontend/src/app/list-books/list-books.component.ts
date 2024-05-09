@@ -5,10 +5,11 @@ import { BookService } from '../service/book.service';
 import { BookCard } from '../Book-Card';
 import { CarouselBookCardComponent } from '../carousel-book-card/carousel-book-card.component';
 import { KeyValuePipe } from '@angular/common';
+import { SearchComponent } from '../search/search.component';
 @Component({
   selector: 'list-books',
   standalone: true,
-  imports: [CarouselBookCardComponent, KeyValuePipe],
+  imports: [CarouselBookCardComponent, KeyValuePipe, SearchComponent],
   templateUrl: './list-books.component.html',
   styleUrl: './list-books.component.css'
   
