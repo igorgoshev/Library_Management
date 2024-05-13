@@ -16,14 +16,17 @@ export class TabMenuComponent implements OnInit{
   items: MenuItem[] | undefined
   activeItem: MenuItem | undefined
 
-  @Input() book: Book | undefined
+  @Input() book?: Book;
 
   ngOnInit(): void {
     this.items = this.getItems();
     this.activeItem = this.items[0]
+    console.log("OREEEL")
+    console.log(this.book)
   }
 
   getItems(): MenuItem[]{
+    console.log(this.book)
     return [
       { label: 'Description', icon: 'pi pi-book', command: (event) => {
         this.activeItem = event.item

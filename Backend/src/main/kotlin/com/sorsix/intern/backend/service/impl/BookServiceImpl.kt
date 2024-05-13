@@ -97,7 +97,8 @@ class BookServiceImpl(
                 }?.toList(),
                 isbn = it.isbn,
                 imgUrl = it.imgUrl,
-                averageRating = it.reviews.takeIf { !it.isNullOrEmpty() }?.map { it.rate }?.average() ?: 0.0
+                averageRating = it.reviews.takeIf { !it.isNullOrEmpty() }?.map { it.rate }?.average() ?: 0.0,
+                description = it.description
             )
         }.toList();
     }
@@ -121,11 +122,12 @@ class BookServiceImpl(
             id = it.id,
             name = it.name,
             isbn = it.isbn,
+            publisher = it.publishingHouse.name,
             authors = it.authors?.map { author -> author.name + " " + author.lastName }?.toList(),
-            imgUrl = it.imgUrl,
             categories = it.categories?.map { category -> category.name }?.toList(),
+            imgUrl = it.imgUrl,
             averageRating = it.reviews.takeIf { review -> !review.isNullOrEmpty() }?.map { review -> review.rate }?.average() ?: 0.0,
-            publisher = it.publishingHouse.name
+            description = it.description
         ) }
     }
 

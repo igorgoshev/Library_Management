@@ -9,5 +9,6 @@ data class BookInTable(
     var categories: List<String>?,
     var imgUrl: String?,
     var averageRating: Double?,
+    var description: String,
 ) {
 }

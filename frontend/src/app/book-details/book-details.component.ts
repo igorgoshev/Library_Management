@@ -8,11 +8,12 @@ import { MenuItem } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabMenuComponent } from '../tab-menu/tab-menu.component';
+import {NgIf, NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'book-details',
   standalone: true,
-  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent],
+  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent, NgOptimizedImage, NgIf],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css',
   encapsulation: ViewEncapsulation.None,
@@ -75,6 +76,6 @@ export class BookDetailsComponent implements OnInit{
     })
   }
 
-  
-  
+
+
 }

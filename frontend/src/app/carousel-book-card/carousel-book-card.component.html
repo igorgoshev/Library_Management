@@ -1,12 +1,12 @@
-<p-carousel 
-    [value]="books" 
-    [numVisible]="4" 
-    [numScroll]="3" 
-    [circular]="false" 
+<p-carousel
+    [value]="books"
+    [numVisible]="4"
+    [numScroll]="3"
+    [circular]="false"
     [responsiveOptions]="responsiveOptions"
     autoplayInterval="3000">
     <ng-template let-book pTemplate="item">
-        <a [routerLink]="['/user/books/details', book.id]" >
+        <a [routerLink]="['/books/details', book.id]" >
         <book-card [book]="book">
         </book-card>
     </a>

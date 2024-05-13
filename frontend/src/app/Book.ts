@@ -1,7 +1,7 @@
 export interface Book {
     isbn: string,
     name: string,
-    description: string, 
+    description: string,
     imgUrl: string,
     publisher: string,
     id: number,
@@ -9,5 +9,5 @@ export interface Book {
     authors: string[] | number[],
     averageRating: number,
     numPages: number,
-    year: number
+    year: number,
 }

@@ -38,11 +38,11 @@ export const routes: Routes = [
     component: BookCardComponent
   },
   {
-    path: 'user',
+    path: '',
     component: UserLayoutComponent,
     children: [
       {
-        path: 'books/:letter',
+        path: 'books',
         component: ListBooksComponent,
       },
       {
