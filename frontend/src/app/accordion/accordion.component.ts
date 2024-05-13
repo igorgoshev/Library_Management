@@ -14,7 +14,7 @@ import { BookService } from '../service/book.service';
 })
 
 export class AccordionComponent implements OnInit {
-  
+
   constructor(private service: BookService){
 
   }
@@ -22,10 +22,23 @@ export class AccordionComponent implements OnInit {
   @Input() book: Book | undefined
   bookAvailability: BookAvailability[] | undefined
 
+  getStatusColor(statusCode: number): string {
+    console.log(statusCode)
+    if (statusCode === 0) {
+      return 'red';
+    } else if (statusCode === 1) {
+      console.log('red')
+      return '#FFBF00';
+    } else {
+      return 'green';
+    }
+  }
+
+
   ngOnInit(): void {
     this.service.getBookAvailability(this.book?.id!!)
-      .subscribe( 
-        res => this.bookAvailability = res 
+      .subscribe(
+        res => this.bookAvailability = res
       )
   }
 

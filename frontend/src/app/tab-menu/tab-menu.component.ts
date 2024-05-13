@@ -4,11 +4,12 @@ import { AccordionComponent } from '../accordion/accordion.component';
 import { ReviewComponent } from '../review/review.component';
 import { MenuItem } from 'primeng/api';
 import { Book } from '../Book';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'tab-menu',
   standalone: true,
-  imports: [TabMenuModule, AccordionComponent, ReviewComponent],
+  imports: [TabMenuModule, AccordionComponent, ReviewComponent, NgIf],
   templateUrl: './tab-menu.component.html',
   styleUrl: './tab-menu.component.css'
 })
@@ -21,8 +22,6 @@ export class TabMenuComponent implements OnInit{
   ngOnInit(): void {
     this.items = this.getItems();
     this.activeItem = this.items[0]
-    console.log("OREEEL")
-    console.log(this.book)
   }
 
   getItems(): MenuItem[]{

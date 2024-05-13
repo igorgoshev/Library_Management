@@ -6,29 +6,32 @@
                     {{book.libraryName}}
                 </span>
                 <span>
-                    <p-button icon="pi pi-check" />
+<!--                  <i class="pi pi-chevron-circle-down" style="font-size: 1.5em"></i>-->
                 </span>
             </ng-template>
             @for (store of book.storesAvailability; track $index) {
-                <span class="flex align-items-center gap-2 w-full">
-                    <p class="text-xl">
-                        {{store.storeName}}, {{store.storeAddress}}
-                    </p>
-                    <p>
-                        In Stock: {{store.quantity}}
-                    </p>
-                </span>
-                <span>
+                <div class="flex justify-content-between border-2 m-2 border-round border-gray-100 p-2">
+                    <div class="flex align-items-center">
+                      <i [style]="{color: getStatusColor(store.statusCode)}" class="pi pi-circle-on pl-1 pr-4"></i>
+                      <p class="vertical-align-middle m-0">
+                        {{store.storeName}}<br> {{store.storeAddress}}
+                      </p>
+                    </div>
+                  <div class="flex align-items-center">
+                    <span class="px-2">
+                      In Stock: {{store.quantity}}
+                    </span>
                     @if (store.statusCode == -1) {
-                        <i class="pi pi-times-circle"></i>
+                      <i class="pi pi-times-circle"></i>
                     }
                     @else if (store.statusCode == 0) {
-                        <i class="pi pi-info-circle"></i>
+                      <i class="pi pi-info-circle"></i>
                     }
                     @else {
-                        <i class="pi pi-check-circle"></i>
+                      <i class="pi pi-check-circle"></i>
                     }
-                </span>
+                  </div>
+                </div>
             }
         </p-accordionTab>
     }
