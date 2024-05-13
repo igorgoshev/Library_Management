@@ -5,8 +5,8 @@ export interface Book {
     imgUrl: string,
     publisher: string,
     id: number,
-    categories: string[],
-    authors: string[],
+    categories: string[] | number[],
+    authors: string[] | number[],
     averageRating: number,
     numPages: number
 }

@@ -1,7 +1,6 @@
 package com.sorsix.intern.backend.service.impl
 
-import com.sorsix.intern.backend.api.dtos.BookCard
-import com.sorsix.intern.backend.api.dtos.BookInTable
+import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.domain.*
 import com.sorsix.intern.backend.repository.BookRepository
 import com.sorsix.intern.backend.service.*
@@ -19,6 +18,7 @@ class BookServiceImpl(
     val wishListService: WishListService,
     val reviewService: ReviewService,
     val customerBookService: CustomerBookService,
+    private val bookRepository: BookRepository,
 
 
     ) : BookService {
@@ -89,15 +89,15 @@ class BookServiceImpl(
                 id = it.id,
                 name = it.name,
                 publisher = it.publishingHouse.name,
-                authors = it.authors.map { author: Author ->
+                authors = it.authors?.map { author: Author ->
                     "${author.name} ${author.lastName}"
-                }.toList(),
-                categories = it.categories.map { category: Category ->
+                }?.toList(),
+                categories = it.categories?.map { category: Category ->
                     category.name
-                }.toList(),
-                isbn = "",
+                }?.toList(),
+                isbn = it.isbn,
                 imgUrl = it.imgUrl,
-                averageRating = it.reviews.takeIf { it.isNotEmpty() }?.map { it.rate }?.average() ?: 0.0
+                averageRating = it.reviews.takeIf { !it.isNullOrEmpty() }?.map { it.rate }?.average() ?: 0.0
             )
         }.toList();
     }
@@ -109,7 +109,7 @@ class BookServiceImpl(
                 BookCard(
                     id = it.id ?: 0,
                     name = it.name,
-                    authors = it.authors.map { it.name + " " + it.lastName}.toList(),
+                    authors = it.authors?.map { it.name + " " + it.lastName}?.toList(),
                     imgUrl = it.imgUrl,
                 )
             };
@@ -121,11 +121,53 @@ class BookServiceImpl(
             id = it.id,
             name = it.name,
             isbn = it.isbn,
-            authors = it.authors.map { author -> author.name + " " + author.lastName }.toList(),
+            authors = it.authors?.map { author -> author.name + " " + author.lastName }?.toList(),
             imgUrl = it.imgUrl,
-            categories = it.categories.map { category -> category.name }.toList(),
-            averageRating = it.reviews.takeIf { review -> review.isNotEmpty() }?.map { review -> review.rate }?.average() ?: 0.0,
+            categories = it.categories?.map { category -> category.name }?.toList(),
+            averageRating = it.reviews.takeIf { review -> !review.isNullOrEmpty() }?.map { review -> review.rate }?.average() ?: 0.0,
             publisher = it.publishingHouse.name
         ) }
+    }
+
+    override fun addBook(book: AddBook): Book {
+        val categories = categoriesService.findAllByIdContaining(book.categories)
+        val authors = authorService.findAllByIdContaining(book.authors)
+        val publishingHouse = publishingHouseService.findById(book.publisher)
+        val bookToAdd = Book(
+            name = book.name,
+            isbn = book.isbn,
+            description = book.description,
+            imgUrl = book.imgUrl,
+            numPages = book.numberOfPages,
+            authors = authors,
+            categories = categories,
+            publishingHouse = publishingHouse,
+            publishedYear = LocalDate.now()
+        )
+        return bookRepository.save(bookToAdd);
+    }
+
+    private fun getStatusCodeForQuantity(quantity: Int): Int {
+        return when {
+            quantity > 5 -> 2
+            quantity > 0 -> 1
+            else -> 0
+        }
+    }
+
+    override fun getBookAvailability(id: Long): List<BookAvailability>? {
+        val availableBooks = bookInLibraryService.findAllByBookId(id);
+        return availableBooks.groupBy { it.libraryStore?.library }.map { BookAvailability(
+            libraryId = it.key?.id,
+            libraryName = it.key?.name,
+            storesAvailability = it.value.groupBy { store -> store.libraryStore }.map { storeAvailability ->
+                BookAvailableInStore(
+                storeId = storeAvailability.key?.id,
+                storeName = storeAvailability.key?.name,
+                storeAddress = storeAvailability.key?.address,
+                quantity = storeAvailability.value.size,
+                statusCode = getStatusCodeForQuantity(storeAvailability.value.size),
+            ) }.toList()
+        ) }.toList()
     }
 }

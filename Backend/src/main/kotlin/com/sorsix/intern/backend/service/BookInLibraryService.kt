@@ -7,6 +7,7 @@ interface BookInLibraryService {
     fun findAllByIdContaining(bookInLibrariesId: List<Long>): MutableList<BookInLibrary>
     fun findById(id: Long): BookInLibrary?
     fun findAll(): List<BookInLibrary>
+    fun findAllByBookId(id: Long): List<BookInLibrary>
     fun delete(id: Long): BookInLibrary?
     fun save(id: Long?, bookInLibraryDto: BookInLibraryDto): BookInLibrary?
 }

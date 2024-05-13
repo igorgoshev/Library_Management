@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BookInLibraryRepository : JpaRepository<BookInLibrary, Long> {
     fun findAllByIdIn(bookInLibrary: List<Long>) : MutableList<BookInLibrary>
+    fun findAllByBookId(bookId: Long) : MutableList<BookInLibrary>
 }

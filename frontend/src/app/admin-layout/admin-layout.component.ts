@@ -6,13 +6,15 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 import { LayoutService } from './layout.service';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
   imports: [AdminTopBarComponent, AdminSideBarComponent, AdminFooterComponent, RouterOutlet, NgClass],
   templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.css'
+  styleUrl: './admin-layout.component.css',
+  providers: [MessageService],
 })
 export class AdminLayoutComponent {
 
@@ -30,9 +32,9 @@ export class AdminLayoutComponent {
       this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
           if (!this.menuOutsideClickListener) {
               this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                  const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target) 
+                  const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target)
                       || this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || this.appTopbar.menuButton.nativeElement.contains(event.target));
-                  
+
                   if (isOutsideClicked) {
                       this.hideMenu();
                   }

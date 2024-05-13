@@ -14,15 +14,19 @@ class BookInLibraryServiceImpl(
     val bookRepository: BookRepository,
     val borrowedBookService: BorrowedBookService,
     val reservedBookService: ReservedBookService,
-    val libraryStoreRepository: LibraryStoreRepository
+    val libraryStoreRepository: LibraryStoreRepository,
+    private val bookInLibraryRepository: BookInLibraryRepository
 
-    ) : BookInLibraryService {
+) : BookInLibraryService {
     override fun findAllByIdContaining(bookInLibrariesId: List<Long>): MutableList<BookInLibrary> =
         repository.findAllByIdIn(bookInLibrariesId)
 
     override fun findById(id: Long): BookInLibrary? = repository.findById(id).get()
 
     override fun findAll(): List<BookInLibrary> = repository.findAll();
+    override fun findAllByBookId(id: Long): List<BookInLibrary> {
+        return bookInLibraryRepository.findAllByBookId(id)
+    }
 
     override fun delete(id: Long): BookInLibrary? {
         return findById(id)?.let {

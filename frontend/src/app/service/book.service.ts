@@ -1,18 +1,21 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Book } from '../Book';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../Category';
 import { BookCard } from '../Book-Card';
 import { Author } from '../Author';
 import { Publisher } from '../Publisher';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, Subject, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.refreshEvent.subscribe(() => this.getBooks())
+  }
+  public refreshEvent = new Subject<void>();
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -62,4 +65,10 @@ export class BookService {
     return this.http.get<Book>(`http://localhost:8080/api/books/${id}`)
   }
 
+  deleteBook(id: number): Observable<Book> {
+    return this.http.delete<Book>(`http://localhost:8080/api/books/delete/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }

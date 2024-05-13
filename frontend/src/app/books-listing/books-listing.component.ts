@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Book } from '../Book';
 import { BookService } from '../service/book.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -19,7 +19,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
-import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Category } from '../Category';
 import { Author } from '../Author';
@@ -49,12 +48,12 @@ import { TableLoaderComponent } from '../loaders/table-loader/table-loader.compo
     MultiSelectModule,
     TableLoaderComponent
   ],
-  providers: [MessageService],
   templateUrl: './books-listing.component.html',
   styleUrl: './books-listing.component.css',
 })
 export class BooksListingComponent implements OnInit {
   productDialog: boolean = false;
+  isLoading: Boolean = true;
 
   deleteProductDialog: boolean = false;
 
@@ -68,11 +67,26 @@ export class BooksListingComponent implements OnInit {
 
   authors$: Observable<Author[]> = this.bookService.getAvailableAuthors();
   authors: Category[] | undefined;
-  
+
   publishers$: Observable<Publisher[]> = this.bookService.getAvailablePublishers();
   publishers: Publisher[] | undefined;
 
+  refreshEvent = this.bookService.refreshEvent;
+
   book: Book = {
+    isbn: '',
+    name: '',
+    description: '',
+    imgUrl: '',
+    publisher: '',
+    id: -1,
+    categories: [],
+    authors: [],
+    averageRating: 0,
+    numPages: 0
+  };
+
+  emptyBook: Book = {
     isbn: '',
     name: '',
     description: '',
@@ -101,21 +115,8 @@ export class BooksListingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.books$.subscribe((x) => {
-      this.books = x;
-    });
-
-    this.categories$.subscribe(x => {
-      this.categories = x;
-    })
-
-    this.publishers$.subscribe(x => {
-      this.publishers = x;
-    })
-
-    this.authors$.subscribe(x => {
-      this.authors   = x;
-    })
+    this.isLoading = true;
+    this.fetchData();
 
     this.cols = [
       { field: 'id', header: 'ID' },
@@ -134,10 +135,48 @@ export class BooksListingComponent implements OnInit {
       { label: 'OUTOFSTOCK', value: 'outofstock' },
     ];
 
+    this.books$.subscribe((x) => {
+      this.books = x;
+      this.isLoading = false;
+    });
+
+    this.categories$.subscribe(x => {
+      this.categories = x;
+    })
+
+    this.publishers$.subscribe(x => {
+      this.publishers = x;
+    })
+
+    this.authors$.subscribe(x => {
+      this.authors   = x;
+    })
+
+    this.refreshEvent.subscribe(() => this.fetchData())
+
     this.fields = this.cols.map(x => x.header)
   }
 
   fields: string[] = []
+
+  fetchData() {
+    this.books$.subscribe((x) => {
+      this.books = x;
+    });
+
+    this.categories$.subscribe(x => {
+      this.categories = x;
+    })
+
+    this.publishers$.subscribe(x => {
+      this.publishers = x;
+    })
+
+    this.authors$.subscribe(x => {
+      this.authors   = x;
+    })
+
+  }
 
   openNew() {
     this.book = {
@@ -161,13 +200,17 @@ export class BooksListingComponent implements OnInit {
   }
 
   editProduct(book: Book) {
-    this.book = { ...book };
+    this.book = {
+      ...book,
+      categories: book.categories.map(x => this.categories?.find(cat => cat.name === x)?.id ?? 0),
+      authors: book.authors.map(x => this.authors?.find(cat => cat.name.includes(x.toString()))?.id ?? 0)}
+    console.log(this.book)
     this.productDialog = true;
   }
 
   deleteProduct(book: Book) {
     this.deleteProductDialog = true;
-    this.book = { ...book };
+    this.book = { ...book, categories: book.categories.map(x => this.categories?.find(cat => cat.name === x)?.id.toString() ?? "")};
   }
 
   confirmDeleteSelected() {
@@ -176,7 +219,7 @@ export class BooksListingComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Products Deleted',
+      detail: 'Books Successfully Deleted',
       life: 3000,
     });
     this.selectedBooks = [];
@@ -184,25 +227,14 @@ export class BooksListingComponent implements OnInit {
 
   confirmDelete() {
     this.deleteProductDialog = false;
-    this.books = this.books?.filter((val) => val.id !== this.book?.id);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Product Deleted',
-      life: 3000,
-    });
-    this.book = {
-      isbn: '',
-      name: '',
-      description: '',
-      imgUrl: '',
-      publisher: '',
-      id: -1,
-      categories: [],
-      authors: [],
-      averageRating: 0,
-      numPages: 0
-    };
+    this.bookService.deleteBook(this.book.id).subscribe(
+      res => {
+        this.refreshEvent.next();
+        this.messageService.add({ severity: 'success', detail: `${this.book.name} is successfully deleted!` })
+      },
+      err => {this.messageService.add({ severity: 'error', detail: 'An error occured while commiting the action!' })}
+    )
+    this.book = { ...this.emptyBook }
   }
 
   hideDialog() {
@@ -211,6 +243,20 @@ export class BooksListingComponent implements OnInit {
   }
 
   saveProduct() {
+    console.log(this.book);
+    this.submitted = true;
+    this.bookService.addBook(this.book).subscribe(
+      res => {
+        this.refreshEvent.next();
+        this.messageService.add({ severity: 'success', detail: 'The book is successfully saved!' })
+      },
+      err => {this.messageService.add({ severity: 'error', detail: JSON.stringify(err) })}
+    )
+
+
+    this.productDialog = false;
+
+    this.book = {...this.emptyBook};
     // this.submitted = true;
     // if (this.book?.name?.trim()) {
     //     if (this.product.id) {

@@ -8,7 +8,7 @@ import java.time.LocalDate
 class Book (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long?,
+    val id: Long? = null,
     var name: String,
     var publishedYear: LocalDate,
     var imgUrl: String,
@@ -27,10 +27,10 @@ class Book (
         inverseJoinColumns = [JoinColumn(name = "author_id")]
     )
     @JsonIgnoreProperties("books")
-    var authors: MutableList<Author>,
+    var authors: MutableList<Author>? = null,
 
     @OneToMany(mappedBy = "book")
-    var bookInLibrary: MutableList<BookInLibrary>,
+    var bookInLibrary: MutableList<BookInLibrary>? = null,
 
     @ManyToMany
     @JoinTable(
@@ -38,15 +38,15 @@ class Book (
         joinColumns = [JoinColumn(name = "book_id")],
         inverseJoinColumns = [JoinColumn(name = "category_id")]
     )
-    var categories: MutableList<Category>,
+    var categories: MutableList<Category>? = null,
 
     @ManyToMany(mappedBy = "books")
-    var wishLists: MutableList<WishList>,
+    var wishLists: MutableList<WishList>? = null,
 
     @OneToMany(mappedBy = "book")
-    var reviews: MutableList<Review>,
+    var reviews: MutableList<Review>? = null,
 
     @OneToMany(mappedBy = "book")
-    var customerBooks: MutableList<CustomerBook>
+    var customerBooks: MutableList<CustomerBook>? = null
 ){
 }

@@ -24,31 +24,23 @@ export class AdminMenuComponent {
                 ]
             },
             {
-                label: 'UI Components',
+                label: 'Global Settings',
                 items: [
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
-                    { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
-                    { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
-                    { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
-                    { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
-                    { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
-                    { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },
-                    { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], routerLinkActiveOptions: { paths: 'subset', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' } },
-                    { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
+                    { label: 'Books', icon: 'pi pi-fw pi-book', routerLink: ['/admin/books'] },
+                    { label: 'Authors', icon: 'pi pi-fw pi-user', routerLink: ['/admin/authors']},
+                    { label: 'Publishing Houses', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
                     { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
                     { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
                     { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
                 ]
             },
             {
-                label: 'Prime Blocks',
+                label: 'Library Management',
                 items: [
-                    { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
-                    { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
+                    { label: 'Locations', icon: 'pi pi-fw pi-map-marker', routerLink: ['/blocks'], badge: 'NEW' },
+                    { label: 'Available Books', icon: 'pi pi-fw pi-warehouse', routerLink: ['/blocks'], badge: 'NEW' },
+                    { label: 'Lending', icon: 'pi pi-fw pi-folder-plus', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
+                    { label: 'Customers', icon: 'pi pi-fw pi-id-card', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
                 ]
             },
             {
