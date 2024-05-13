@@ -2,29 +2,47 @@
     <h1>Loading...</h1>
 }
 @else {
-    <div class="grid">
-        <div class="col-fixed m-3" style="width: 18%;">
-            <img class="border-round" style="width: 100%;" src="{{book?.imgUrl}}" alt="book_cover"/>
+    <div style="padding-right: 2em">
+        <div class="grid">
+            <div class="sm:col-12 md:col-3">
+                <div class="flex justify-content-center flex-wrap">
+                    <img class="border-round" style="width: 90%;" src="https://ew.com/thmb/MaxHBP4uhvg9_3eNeWgx_SOSku0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/9781408855669-6cfb2099b6e84a4899ce368d6facc242.jpg" alt="book_cover"/>
+                </div>
+                <div class="flex justify-content-center pt-3">
+                    <!-- <p-rating stars="5" [ngModel]="book?.averageRating" [readonly]="true" [cancel]="false"> -->
+                    <p-rating stars="5" 
+                    [ngModel]="3" 
+                    [readonly]="true" 
+                    [cancel]="false" 
+                    [iconOnStyle]="{'transform': 'scale(2)', 'padding': '0.7em'}" 
+                    [iconOffStyle]="{'transform': 'scale(2)', 'padding': '0.7em'}">
+                    </p-rating>
+                </div>
+            </div>
+            <div class="col-12 md:col-9" style="padding-bottom: 3em;">
+                <p class="font-bold" style="font-size: 2.5em;">{{book?.name}}</p>
+                @for (author of book?.authors; track $index) {
+                    <p class="text-3xl font-semibold">{{author}}</p>
+                }
+                <p>Publisher: {{book?.publisher}}</p>
+                <p>Published: {{book?.year}}</p>
+                <p>{{book?.numPages}} pages</p>
+                @for (category of book?.categories; track $index) {
+                    @if (book?.categories?.length == $index) {
+                        <p>{{category}}</p>
+                    }
+                    @else {
+                        <p>{{category}}</p>
+                    }
+                }
+                <p>ISBN13: {{book?.isbn}}</p>
+            </div>
         </div>
-        <div class="col">
-            <p class="font-bold" style="font-size: 2.5em;">{{book?.name}}</p>
-            @for (author of book?.authors; track $index) {
-                <p class="text-3xl font-semibold">{{author}}</p>
-            }
-        </div>
-    </div>
-    <div class="grid">
-        <div class="col-fixed mx-3" style="width: 18%;">
-            <p-rating stars="5" [ngModel]="book?.averageRating" [readonly]="true" [cancel]="false"></p-rating>
-        </div>
-        <div class="col">
-            <p class="font-bold" style="font-size: 2.5em;">Description</p>
-            <hr>
-            <p class="text-2xl font-normal">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
-                passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
+        <div class="grid">
+            
+            <div class="col-12 md:col-offset-3 md:col-9" style="margin-top: -2.5em;">
+                <tab-menu [book]="book"/>
+            </div>
         </div>
     </div>
 }

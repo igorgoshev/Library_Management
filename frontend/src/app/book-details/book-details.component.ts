@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccordionModule } from 'primeng/accordion';
 import { BookService } from '../service/book.service';
 import { Book } from '../Book';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { MenuItem } from 'primeng/api';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TabMenuComponent } from '../tab-menu/tab-menu.component';
 
 @Component({
   selector: 'book-details',
   standalone: true,
-  imports: [AccordionModule, RatingModule, FormsModule],
+  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent],
   templateUrl: './book-details.component.html',
-  styleUrl: './book-details.component.css'
+  styleUrl: './book-details.component.css',
+  encapsulation: ViewEncapsulation.None,
 })
 export class BookDetailsComponent implements OnInit{
   constructor(
@@ -21,11 +25,49 @@ export class BookDetailsComponent implements OnInit{
 
   }
 
+  label: string = "Description"
+  selectedLibraryStore: any;
+
+  libraries: any[] = [
+    {
+      id: 1,
+      name: "Kiril i Metodij",
+      libraryStores: [
+        {
+          id: 1,
+          name: "Gradezhen"
+        },
+        {
+          id: 2,
+          name: "Gjorche"
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: "Kocho Racin",
+      libraryStores: [
+        {
+          id: 3,
+          name: "Aerodrom"
+        },
+        {
+          id: 4,
+          name: "Drachevo"
+        }
+      ]
+    }
+  ]
+
   bookId: number | undefined
-  loading = true
+  loading = false
   book: Book | undefined
 
+  items: MenuItem[]|  undefined
+  activeItem: MenuItem | undefined;
+
   ngOnInit(): void {
+
     this.bookId = Number.parseInt(this.route.snapshot.paramMap.get('id')!)
     this.service.getBookDetails(this.bookId).subscribe(res=> {
       this.book = res
@@ -34,11 +76,5 @@ export class BookDetailsComponent implements OnInit{
   }
 
   
-
-
   
-
-  
-  
-
 }

@@ -9,11 +9,12 @@ import { LayoutService } from '../admin-layout/layout.service';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { SearchComponent } from '../search/search.component';
 import { ListBooksComponent } from '../list-books/list-books.component';
+import { BookDetailsComponent } from '../book-details/book-details.component';
 
 @Component({
   selector: 'user-layout',
   standalone: true,
-  imports: [UserTopBarComponent, UserSideBarComponent, UserFooterComponent, RouterOutlet, NgClass, ListBooksComponent, SearchComponent],
+  imports: [UserTopBarComponent, UserSideBarComponent, UserFooterComponent, RouterOutlet, NgClass, ListBooksComponent, SearchComponent, BookDetailsComponent],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.css'
 })

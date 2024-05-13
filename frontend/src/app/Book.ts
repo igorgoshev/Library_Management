@@ -8,5 +8,6 @@ export interface Book {
     categories: string[] | number[],
     authors: string[] | number[],
     averageRating: number,
-    numPages: number
+    numPages: number,
+    year: number
 }

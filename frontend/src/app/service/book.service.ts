@@ -7,6 +7,7 @@ import { BookCard } from '../Book-Card';
 import { Author } from '../Author';
 import { Publisher } from '../Publisher';
 import { catchError, Observable, Subject, throwError } from 'rxjs';
+import { Review } from '../Review';
 
 @Injectable({
   providedIn: 'root'
@@ -71,4 +72,12 @@ export class BookService {
         catchError(this.handleError)
       );
   }
+  
+  addReview(id: number, review: Review){
+    return this.http.post<Review>(`http://localhost:8080/api/books/add/review/${id}`, review)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
 }
