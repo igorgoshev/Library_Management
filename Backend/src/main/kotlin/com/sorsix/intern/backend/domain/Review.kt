@@ -11,13 +11,13 @@ import java.time.LocalDate
 class Review(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long?,
     val dateReviewed: LocalDate,
     val description: String,
     val rate: Float,
     @ManyToOne
-    val customer: Customer,
+    val customer: Customer?,
     @ManyToOne
-    val book: Book
+    val book: Book?
 ) {
 }

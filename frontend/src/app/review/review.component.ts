@@ -1,10 +1,10 @@
+import { Review } from './../Review';
 import { MessageService } from 'primeng/api';
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule, RatingRateEvent } from 'primeng/rating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Review } from '../Review';
 import { BookService } from '../service/book.service';
 
 @Component({
@@ -24,9 +24,10 @@ export class ReviewComponent {
   loading = false;
 
   review: Review = {
-    id: -1,
+    userId: 0,
     value: 0,
-    description: ""
+    description: "",
+    dateReviewed: new Date()
   };
 
   isDisabled = true
@@ -45,7 +46,8 @@ export class ReviewComponent {
     this.loading = true
     this.review = {
       ...this.review,
-      description: input
+      description: input,
+      dateReviewed: new Date()
     }
     console.log("AAAAAAAAAAAAA")
     this.messageService.add({
@@ -55,7 +57,6 @@ export class ReviewComponent {
       life: 3000,
     })
 
-    // thiss jo.addReview(0, this.review);
   }
 
   addReview(id: number, review: Review){
