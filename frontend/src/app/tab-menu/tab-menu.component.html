@@ -6,7 +6,7 @@
         </p>
     }
     @else if (activeItem?.label === "Availability") {
-        <accordion></accordion>
+        <accordion [book]="book" *ngif="book"></accordion>
     }
     @else if (activeItem?.label === "Leave Review") {
         <review/>

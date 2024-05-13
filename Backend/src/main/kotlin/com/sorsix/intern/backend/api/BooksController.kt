@@ -22,6 +22,11 @@ class BooksController(val bookService: BookService) {
         bookService.addBook(book);
     }
 
+    @GetMapping("/availability/{id}")
+    fun getBookAvailability(@PathVariable id: Long){
+        bookService.getBookAvailability(id);
+    }
+
     @DeleteMapping("/delete/{id}")
     fun deleteBook(@PathVariable id: Long) = bookService.delete(id)
 }
