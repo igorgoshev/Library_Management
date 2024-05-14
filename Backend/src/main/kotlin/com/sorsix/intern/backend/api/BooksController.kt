@@ -1,13 +1,17 @@
 package com.sorsix.intern.backend.api
 
 import com.sorsix.intern.backend.api.dtos.AddBook
+import com.sorsix.intern.backend.api.dtos.AddReview
 import com.sorsix.intern.backend.service.BookService
+import com.sorsix.intern.backend.service.ReviewService
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/books")
-class BooksController(val bookService: BookService) {
+class BooksController(
+    val bookService: BookService,
+    val reviewService: ReviewService) {
     @GetMapping("")
     fun getBooks() = bookService.findAllBooksForTable();
 
@@ -27,4 +31,7 @@ class BooksController(val bookService: BookService) {
 
     @DeleteMapping("/delete/{id}")
     fun deleteBook(@PathVariable id: Long) = bookService.delete(id)
+
+    @PostMapping("/review/{id}")
+    fun leaveReview(@PathVariable id: Long, @RequestBody review: AddReview) = reviewService.createReview(id, review)
 }

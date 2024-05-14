@@ -9,11 +9,12 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabMenuComponent } from '../tab-menu/tab-menu.component';
 import {NgIf, NgOptimizedImage} from "@angular/common";
+import { ReviewCarouselComponent } from '../review-carousel/review-carousel.component';
 
 @Component({
   selector: 'book-details',
   standalone: true,
-  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent, NgOptimizedImage, NgIf],
+  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent, NgOptimizedImage, NgIf, ReviewCarouselComponent],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css',
   encapsulation: ViewEncapsulation.None,

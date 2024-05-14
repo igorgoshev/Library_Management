@@ -3,6 +3,7 @@
 }
 @else {
     <div style="padding-right: 2em">
+
         <div class="grid">
             <div class="sm:col-12 md:col-3">
                 <div class="flex justify-content-center flex-wrap">
@@ -38,11 +39,12 @@
                 <p>ISBN13: {{book?.isbn}}</p>
             </div>
         </div>
-        <div class="grid">
 
+        <div class="grid">
             <div class="col-12 md:col-offset-3 md:col-9" style="margin-top: -2.5em;">
               <tab-menu [book]="book" *ngIf="book"></tab-menu>
             </div>
         </div>
+        <review-carousel></review-carousel>
     </div>
 }

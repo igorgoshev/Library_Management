@@ -1,5 +1,6 @@
 export interface Review{
-    id: number,
+    userId: number,
     value: number,
-    description: string
+    description: string,
+    dateReviewed: Date
 }
