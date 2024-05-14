@@ -11,7 +11,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { SidebarModule } from 'primeng/sidebar';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextModule } from 'primeng/inputtext';
-import { MenuItem } from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
 
 
 
@@ -21,7 +21,8 @@ import { MenuItem } from 'primeng/api';
   standalone: true,
   imports: [RouterOutlet, ToolbarModule, SplitButtonModule, AvatarModule, InputTextModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  providers: [MessageService]
 })
 export class AppComponent {
   title = 'library-management';

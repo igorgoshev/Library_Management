@@ -10,13 +10,14 @@ import { BookCardComponent } from '../book-card/book-card.component';
 import { SearchComponent } from '../search/search.component';
 import { ListBooksComponent } from '../list-books/list-books.component';
 import { BookDetailsComponent } from '../book-details/book-details.component';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'user-layout',
   standalone: true,
   imports: [UserTopBarComponent, UserSideBarComponent, UserFooterComponent, RouterOutlet, NgClass, ListBooksComponent, SearchComponent, BookDetailsComponent],
   templateUrl: './user-layout.component.html',
-  styleUrl: './user-layout.component.css'
+  styleUrl: './user-layout.component.css',
 })
 export class UserLayoutComponent {
 
@@ -34,9 +35,9 @@ export class UserLayoutComponent {
       this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
           if (!this.menuOutsideClickListener) {
               this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                  const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target) 
+                  const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target)
                       || this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || this.appTopbar.menuButton.nativeElement.contains(event.target));
-                  
+
                   if (isOutsideClicked) {
                       this.hideMenu();
                   }

@@ -126,7 +126,9 @@ class BookServiceImpl(
             authors = it.authors?.map { author -> author.name + " " + author.lastName }?.toList(),
             categories = it.categories?.map { category -> category.name }?.toList(),
             imgUrl = it.imgUrl,
-            averageRating = it.reviews.takeIf { review -> !review.isNullOrEmpty() }?.map { review -> review.rate }?.average() ?: 0.0,
+            averageRating = it.reviews.takeIf { review ->
+                println(review)
+                !review.isNullOrEmpty() }?.map { review -> review.rate }?.average() ?: 0.0,
             description = it.description
         ) }
     }

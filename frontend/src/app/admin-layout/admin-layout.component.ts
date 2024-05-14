@@ -7,14 +7,15 @@ import { NgClass } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 import { LayoutService } from './layout.service';
 import {MessageService} from "primeng/api";
+import {MessagesModule} from "primeng/messages";
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [AdminTopBarComponent, AdminSideBarComponent, AdminFooterComponent, RouterOutlet, NgClass],
+  imports: [AdminTopBarComponent, AdminSideBarComponent, AdminFooterComponent, RouterOutlet, NgClass, MessagesModule],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css',
-  providers: [MessageService],
+  // providers: [MessageService],
 })
 export class AdminLayoutComponent {
 

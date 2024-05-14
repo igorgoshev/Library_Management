@@ -4,7 +4,7 @@ import { BookService } from '../service/book.service';
 import { Book } from '../Book';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
-import { MenuItem } from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabMenuComponent } from '../tab-menu/tab-menu.component';
@@ -18,6 +18,7 @@ import { ReviewCarouselComponent } from '../review-carousel/review-carousel.comp
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css',
   encapsulation: ViewEncapsulation.None,
+  // providers: [MessageService]
 })
 export class BookDetailsComponent implements OnInit{
   constructor(
@@ -73,6 +74,7 @@ export class BookDetailsComponent implements OnInit{
     this.bookId = Number.parseInt(this.route.snapshot.paramMap.get('id')!)
     this.service.getBookDetails(this.bookId).subscribe(res=> {
       this.book = res
+      console.log(res)
       this.loading = false
     })
   }

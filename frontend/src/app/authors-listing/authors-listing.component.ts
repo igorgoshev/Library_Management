@@ -45,7 +45,7 @@ import {AuthorService} from "../service/author.service";
     MultiSelectModule,
     TableLoaderComponent
   ],
-  providers: [MessageService],
+  // providers: [MessageService],
   templateUrl: './authors-listing.component.html',
   styleUrl: './authors-listing.component.css',
 })

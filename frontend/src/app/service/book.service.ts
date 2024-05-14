@@ -14,7 +14,7 @@ import { BookAvailability } from '../BookAvailability';
   providedIn: 'root'
 })
 export class BookService {
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.refreshEvent.subscribe(() => this.getBooks())
   }
   public refreshEvent = new Subject<void>();
@@ -35,7 +35,7 @@ export class BookService {
     }
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
-  
+
   getBooks() {
     return this.http.get<Book[]>('http://localhost:8080/api/books');
   }
@@ -51,7 +51,7 @@ export class BookService {
   getAvailablePublishers() {
     return this.http.get<Publisher[]>('http://localhost:8080/api/publishers');
   }
-  
+
   getTopBooksByLetter() {
     return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getTopByLetters')
   }
@@ -62,7 +62,7 @@ export class BookService {
         catchError(this.handleError)
       );
   }
-  
+
   getBookDetails(id: number){
     return this.http.get<Book>(`http://localhost:8080/api/books/${id}`)
   }
@@ -75,7 +75,7 @@ export class BookService {
   }
 
   addReview(id: number, review: Review){
-    return this.http.post<Review>(`http://localhost:8080/api/books/add/review/${id}`, review)
+    return this.http.post<Review>(`http://localhost:8080/api/books/review/${id}`, review)
       .pipe(
         catchError(this.handleError)
       )
