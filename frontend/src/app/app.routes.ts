@@ -9,6 +9,7 @@ import {SearchComponent} from './search/search.component';
 import {ListBooksComponent} from './list-books/list-books.component';
 import {BookDetailsComponent} from './book-details/book-details.component';
 import {AuthorsListingComponent} from "./authors-listing/authors-listing.component";
+import {LendingComponent} from "./lending/lending.component";
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
       {
         path: 'authors',
         component: AuthorsListingComponent
+      },
+      {
+        path: 'lending',
+        component: LendingComponent
       }
     ]
   },
@@ -44,6 +49,10 @@ export const routes: Routes = [
       {
         path: 'books',
         component: ListBooksComponent,
+        data: { listType: 'user'},
+        resolve: {
+          listType: () => 'user'
+        }
       },
       {
         path: 'books/details/:id',
