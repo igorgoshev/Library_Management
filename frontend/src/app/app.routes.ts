@@ -31,14 +31,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: AdminLayoutComponent
-  },
-  {
-    path: 'book',
-    component: BookCardComponent
-  },
-  {
-    path: '',
     component: UserLayoutComponent,
     children: [
       {
@@ -59,5 +51,4 @@ export const routes: Routes = [
     path: 'book/details',
     component: BookDetailsComponent
   }
-
 ];
