@@ -84,6 +84,10 @@ class BookServiceImpl(
     override fun findAllByIdContaining(booksId: List<Long>): MutableList<Book> = repository.findAllByIdIn(booksId)
     override fun findAllBooksForTable(): List<BookInTable> {
         val books = repository.findAll();
+        return mapBookToBookTable(books);
+    }
+
+    private fun mapBookToBookTable(books: List<Book>): List<BookInTable> {
         return books.map { it ->
             BookInTable(
                 id = it.id,
@@ -103,8 +107,27 @@ class BookServiceImpl(
         }.toList();
     }
 
+    override fun findAllByLetter(letter: String): List<BookInTable> {
+        val books = repository.findAllByNameStartsWith(letter)
+        return mapBookToBookTable(books);
+    }
+
     override fun findBookCardsByLetters(): Map<Char, List<BookCard>> {
         val books = repository.findAll();
+        return books.groupBy { it.name.first() }.mapValues { (k, v) ->
+            v.shuffled().take(12).map {
+                BookCard(
+                    id = it.id ?: 0,
+                    name = it.name,
+                    authors = it.authors?.map { it.name + " " + it.lastName}?.toList(),
+                    imgUrl = it.imgUrl,
+                )
+            };
+        }
+    }
+
+    override fun findBookCardsByLetter(letter: Char): Map<Char, List<BookCard>> {
+        val books = repository.findAllByNameStartsWith(letter.toString())
         return books.groupBy { it.name.first() }.mapValues { (k, v) ->
             v.shuffled().take(12).map {
                 BookCard(

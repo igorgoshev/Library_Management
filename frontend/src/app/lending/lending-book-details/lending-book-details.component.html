@@ -1,0 +1,14 @@
+<p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+  <p-accordionTab>
+    <ng-template pTemplate="header">
+      <div>
+        <h2>{{ book?.name }}</h2>
+        <p>{{ book?.authors }}</p>
+        <p>ISBN: {{ book?.isbn }} </p>
+      </div>
+    </ng-template>
+    <p class="m-0">
+      At vero eos et accusamus et iusto odio dignissimos...
+    </p>
+  </p-accordionTab>
+</p-accordion>

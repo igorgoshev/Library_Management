@@ -16,7 +16,9 @@ interface BookService {
     fun delete(id: Long) : Book?
     fun findAllByIdContaining(booksId: List<Long>): MutableList<Book>
     fun findAllBooksForTable(): List<BookInTable>
+    fun findAllByLetter(letter: String): List<BookInTable>
     fun findBookCardsByLetters(): Map<Char, List<BookCard>>
+    fun findBookCardsByLetter(letter: Char): Map<Char, List<BookCard>>
     fun getBookDetailsById(id: Long): BookInTable?
     fun addBook(book: AddBook): Book
     fun getBookAvailability(id: Long): List<BookAvailability>?

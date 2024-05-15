@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BookRepository : JpaRepository<Book, Long> {
     fun findAllByIdIn(booksId: List<Long>): MutableList<Book>
+    fun findAllByNameStartsWith(nameStartsWith: String): List<Book>
 }

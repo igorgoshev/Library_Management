@@ -2,6 +2,8 @@ package com.sorsix.intern.backend.api
 
 import com.sorsix.intern.backend.api.dtos.AddBook
 import com.sorsix.intern.backend.api.dtos.AddReview
+import com.sorsix.intern.backend.api.dtos.BookCard
+import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.service.BookService
 import com.sorsix.intern.backend.service.ReviewService
 import org.springframework.web.bind.annotation.*
@@ -13,10 +15,19 @@ class BooksController(
     val bookService: BookService,
     val reviewService: ReviewService) {
     @GetMapping("")
-    fun getBooks() = bookService.findAllBooksForTable();
+    fun getBooks(@RequestParam(required = false) letter: String) {
+        if (letter == null) bookService.findAllBooksForTable()
+        else bookService.findAllByLetter(letter)
+    }
 
     @GetMapping("getTopByLetters")
     fun getTopByLetters() = bookService.findBookCardsByLetters();
+
+    @GetMapping("getAllByLetters")
+    fun getAllByLetters(@RequestParam(required = false) letter: Char?): Map<Char, List<BookCard>> {
+        return if(letter == null) bookService.findBookCardsByLetters()
+        else bookService.findBookCardsByLetter(letter);
+    }
 
     @GetMapping("/{id}")
     fun getBookById(@PathVariable id: Long) = bookService.getBookDetailsById(id)
@@ -34,4 +45,5 @@ class BooksController(
 
     @PostMapping("/review/{id}")
     fun leaveReview(@PathVariable id: Long, @RequestBody review: AddReview) = reviewService.createReview(id, review)
+
 }
