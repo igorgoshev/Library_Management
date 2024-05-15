@@ -6,7 +6,12 @@
         [circular]="true"
         >
         <ng-template let-review pTemplate="item">
-            <review-listing [review]="review"></review-listing>
+            @if (loading){
+                <review-loader></review-loader>
+            }
+            @else {
+                <review-listing [review]="review"></review-listing>
+            }
         </ng-template>
     </p-carousel>
 </div>

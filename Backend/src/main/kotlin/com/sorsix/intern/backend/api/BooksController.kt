@@ -45,5 +45,8 @@ class BooksController(
 
     @PostMapping("/review/{id}")
     fun leaveReview(@PathVariable id: Long, @RequestBody review: AddReview) = reviewService.createReview(id, review)
+    
+    @GetMapping("/reviews/{id}")
+    fun getReviewsByBook(@PathVariable id: Long) = reviewService.getReviewsByBook(id);
 
 }

@@ -88,5 +88,9 @@ export class BookService {
   getBooksByLetter(letter: string | undefined) {
     return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getAllByLetters' + (letter ? `?letter=${letter}` : ""))
   }
+  
+  getReviewsByBook(id: number){
+    return this.http.get<Review[]>(`http://localhost:8080/api/books/reviews/${id}`)
+  }
 
 }
