@@ -9,7 +9,7 @@
     @PrimaryKeyJoinColumn
     data class Customer(
         @OneToOne(mappedBy = "customer")
-        var wishList: WishList,
+        var wishList: WishList?,
 
         @OneToMany(mappedBy = "customer", targetEntity = Trade::class)
         var trades: List<Trade>,

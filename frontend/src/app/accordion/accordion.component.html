@@ -22,13 +22,13 @@
                       In Stock: {{store.quantity}}
                     </span>
                     @if (store.statusCode == -1) {
-                      <i class="pi pi-times-circle"></i>
+                      <p-button icon="pi pi-times-circle">ASDAS</p-button>
                     }
                     @else if (store.statusCode == 0) {
-                      <i class="pi pi-info-circle"></i>
+                      <p-button icon="pi pi-info-circle">ASDAS</p-button>
                     }
                     @else {
-                      <i class="pi pi-check-circle"></i>
+                      <p-button icon="pi pi-check-circle">Reserve</p-button>
                     }
                   </div>
                 </div>
@@ -38,14 +38,15 @@
     @if(bookAvailability?.length == 0)
     {
       <p class="text-xl font-normal text-center">
-        This book is currently unavailable! Please come back later or Add to wishlist!
+        {{description}}
       </p>
       <div class="flex justify-content-center">
         <p-button 
-        label="Add to Wish list" 
-        icon="pi pi-heart" 
-        [loading]="loading"
-        (click)="onSubmit($event)"
+        [label]="label" 
+        [icon]="icon" 
+        [loading]="loadingButton"
+        [disabled]="isDisabled"
+        (click)="onSubmit()"
         />
       </div> 
     }

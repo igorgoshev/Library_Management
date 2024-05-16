@@ -93,4 +93,12 @@ export class BookService {
     return this.http.get<Review[]>(`http://localhost:8080/api/books/reviews/${id}`)
   }
 
+  addBookToWishlist(id: number){
+    return this.http.get(`http://localhost:8080/api/books/wishlist/add/${id}`)
+  }
+
+  bookExistsInWishlist(id: number){
+    return this.http.get<boolean>(`http://localhost:8080/api/books/wishlist/exist/${id}`)
+  }
+
 }
