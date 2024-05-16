@@ -22,8 +22,10 @@ export class AccordionComponent implements OnInit {
   @Input() book: Book | undefined
   bookAvailability: BookAvailability[] | undefined
 
+  loading = false;
+
+
   getStatusColor(statusCode: number): string {
-    console.log(statusCode)
     if (statusCode === 0) {
       return 'red';
     } else if (statusCode === 1) {
@@ -34,12 +36,17 @@ export class AccordionComponent implements OnInit {
     }
   }
 
+  
 
   ngOnInit(): void {
     this.service.getBookAvailability(this.book?.id!!)
       .subscribe(
         res => this.bookAvailability = res
       )
+  }
+
+  onSubmit(event: Event){
+    console.log(event.target)
   }
 
 }

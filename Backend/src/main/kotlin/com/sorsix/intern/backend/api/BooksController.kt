@@ -15,9 +15,8 @@ class BooksController(
     val bookService: BookService,
     val reviewService: ReviewService) {
     @GetMapping("")
-    fun getBooks(@RequestParam(required = false) letter: String) {
-        if (letter == null) bookService.findAllBooksForTable()
-        else bookService.findAllByLetter(letter)
+    fun getBooks(): List<BookInTable> {
+        return bookService.findAllBooksForTable()
     }
 
     @GetMapping("getTopByLetters")
@@ -45,7 +44,7 @@ class BooksController(
 
     @PostMapping("/review/{id}")
     fun leaveReview(@PathVariable id: Long, @RequestBody review: AddReview) = reviewService.createReview(id, review)
-    
+
     @GetMapping("/reviews/{id}")
     fun getReviewsByBook(@PathVariable id: Long) = reviewService.getReviewsByBook(id);
 
