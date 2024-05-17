@@ -12,12 +12,12 @@ import java.time.LocalDate
 class ReserveBook(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
-    val dateFrom: LocalDate,
-    val dateTo: LocalDate,
+    var id: Long,
+    var dateFrom: LocalDate,
+    var dateTo: LocalDate,
     @ManyToOne
-    val customer: Customer,
+    var customer: Customer,
     @ManyToOne
-    val bookInLibrary: BookInLibrary,
+    var bookInLibrary: BookInLibrary,
 ) {
 }

@@ -7,24 +7,28 @@ import com.sorsix.intern.backend.service.*
 import jakarta.transaction.Transactional
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Service
 class BookServiceImpl(
-    val repository: BookRepository,
-    val publishingHouseService: PublishingHouseService,
-    val authorService: AuthorService,
-    val bookInLibraryService: BookInLibraryService,
-    val categoriesService: CategoriesService,
-    val wishListService: WishListService,
-    val reviewService: ReviewService,
-    val customerBookService: CustomerBookService,
-    val bookInLibraryRepository: BookInLibraryRepository,
-    val userRepository: CustomerRepository,
-    val librarianRepository: LibrarianRepository,
+    private val repository: BookRepository,
+    private val publishingHouseService: PublishingHouseService,
+    private val authorService: AuthorService,
+    private val bookInLibraryService: BookInLibraryService,
+    private val categoriesService: CategoriesService,
+    private val wishListService: WishListService,
+    private val reviewService: ReviewService,
+    private val customerBookService: CustomerBookService,
+    private val bookInLibraryRepository: BookInLibraryRepository,
+    private val userRepository: CustomerRepository,
+    private val librarianRepository: LibrarianRepository,
     private val bookRepository: BookRepository,
     private val borrowBookRepository: BorrowBookRepository,
+    private val reserveBookRepository: ReserveBookRepository,
+    private val mailingService: MailingService
 
 
     ) : BookService {
@@ -239,5 +243,14 @@ class BookServiceImpl(
 
         bookInLibraryRepository.save(book);
         borrowBookRepository.save(newBorrowing);
+    }
+
+    @Scheduled(cron = "*/30 * * * * *")
+    @Transactional
+    fun deleteExpiredReservations() {
+        val expiredReservations = reserveBookRepository.findAllExpired()
+        expiredReservations.forEach { it.dateTo = LocalDate.now() }
+        println("KUku")
+        reserveBookRepository.saveAll(expiredReservations);
     }
 }
