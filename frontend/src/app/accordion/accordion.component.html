@@ -18,18 +18,16 @@
                       </p>
                     </div>
                   <div class="flex align-items-center">
-                    <span class="px-2">
+                    <span class="px-5">
                       In Stock: {{store.quantity}}
                     </span>
-                    @if (store.statusCode == -1) {
-                      <p-button icon="pi pi-times-circle">ASDAS</p-button>
-                    }
-                    @else if (store.statusCode == 0) {
-                      <p-button icon="pi pi-info-circle">ASDAS</p-button>
-                    }
-                    @else {
-                      <p-button icon="pi pi-check-circle">Reserve</p-button>
-                    }
+                      <p-button 
+                      (click)="onReserve(store.storeId)" 
+                      [icon]="btn_icon" 
+                      [severity]="btn_sev" 
+                      [label]="reservationLabel" 
+                      [loading]="loading_btn"
+                      [disabled]="btn_disabled"></p-button>
                   </div>
                 </div>
             }

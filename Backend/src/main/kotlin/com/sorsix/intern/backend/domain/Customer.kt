@@ -24,7 +24,7 @@
         var subscriptions: List<Subscription>,
 
         @OneToMany(mappedBy = "customer", targetEntity = ReserveBook::class)
-        var reserveBooks: List<ReserveBook>,
+        var reserveBooks: MutableList<ReserveBook>?,
 
         @OneToMany(mappedBy = "customer", targetEntity = BorrowBook::class)
         var borrowedBooks: List<BorrowBook>

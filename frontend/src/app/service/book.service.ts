@@ -111,4 +111,13 @@ export class BookService {
     return this.http.get<boolean>(`http://localhost:8080/api/books/wishlist/exist/${id}`)
   }
 
+  reserveBook(bookId: number, storeId: number){
+    return this.http.get<boolean>(`http://localhost:8080/api/books/reserve/${bookId}/${storeId}`)
+  }
+
+
+  reservationExist(bookId: number){
+    return this.http.get<boolean>(`http://localhost:8080/api/books/reserve/exist/${bookId}`)
+  }
+
 }

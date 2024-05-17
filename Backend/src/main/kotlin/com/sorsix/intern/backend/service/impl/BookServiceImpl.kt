@@ -204,9 +204,9 @@ class BookServiceImpl(
 
     private fun getStatusCodeForQuantity(quantity: Int): Int {
         return when {
-            quantity > 5 -> 2
-            quantity > 0 -> 1
-            else -> 0
+            quantity > 5 -> 1
+            quantity > 0 -> 0
+            else -> -1
         }
     }
 
