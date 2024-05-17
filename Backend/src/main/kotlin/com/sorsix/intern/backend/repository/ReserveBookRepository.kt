@@ -9,11 +9,10 @@ import org.springframework.stereotype.Repository
 interface ReserveBookRepository : JpaRepository<ReserveBook, Long> {
     fun findAllByIdIn(reservedBooks: List<Long>) : MutableList<ReserveBook>
 
-
     @Query("select * from reserve_book r where age(now(), r.date_from) >= '2 days' and r.date_to is not null", nativeQuery = true)
     fun findAllExpired() : MutableList<ReserveBook>
 
     fun countByCustomer_IdAndBookInLibrary_Book_IdAndDateToNull(customerId: Long, bookId: Long): Int
-    
+
 
 }

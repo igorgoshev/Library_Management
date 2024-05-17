@@ -12,10 +12,10 @@ import java.time.LocalDate
 class ReserveBook(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     var id: Long,
     var dateFrom: LocalDate,
     var dateTo: LocalDate,
-
     @ManyToOne
     var customer: Customer,
     @ManyToOne
