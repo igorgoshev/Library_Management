@@ -14,7 +14,7 @@ import java.time.LocalDate
 class WishList(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long?,
     val dateAdded: LocalDate,
     @ManyToMany
     @JoinTable(
@@ -22,7 +22,7 @@ class WishList(
         joinColumns = [JoinColumn(name = "wish_list_id")],
         inverseJoinColumns = [JoinColumn(name = "book_id")]
     )
-    val books: List<Book>,
+    val books: MutableList<Book>,
     @OneToOne
     val customer: Customer
 

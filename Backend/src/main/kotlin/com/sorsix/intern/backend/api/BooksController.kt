@@ -5,6 +5,7 @@ import com.sorsix.intern.backend.domain.Book
 import com.sorsix.intern.backend.domain.BookInLibrary
 import com.sorsix.intern.backend.service.BookService
 import com.sorsix.intern.backend.service.ReviewService
+import com.sorsix.intern.backend.service.WishListService
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/books")
 class BooksController(
     val bookService: BookService,
-    val reviewService: ReviewService) {
+    val reviewService: ReviewService,
+    val wishListService: WishListService) {
     @GetMapping("")
     fun getBooks(): List<BookInTable> {
         return bookService.findAllBooksForTable()
@@ -51,5 +53,14 @@ class BooksController(
     fun lendBook(@RequestBody lendBook: LendBook) {
         bookService.lendBook(lendBook.userId, lendBook.copyId)
     }
+
+    @GetMapping("/wishlist/add/{id}")
+    fun addBookToWishList(@PathVariable id: Long) {
+        wishListService.addBookToWishList(id, 1)
+    }
+
+    @GetMapping("/wishlist/exist/{id}")
+    fun bookExistInWishList(@PathVariable id: Long) : Boolean =
+        wishListService.bookExistInWishList(id, 1)
 
 }

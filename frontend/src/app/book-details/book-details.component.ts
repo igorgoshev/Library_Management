@@ -11,23 +11,24 @@ import { TabMenuComponent } from '../tab-menu/tab-menu.component';
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import { ReviewCarouselComponent } from '../review-carousel/review-carousel.component';
 import { BookLoaderComponent } from '../loaders/book-loader/book-loader.component';
-import { ReviewLoaderComponent } from '../loaders/review-loader/review-loader.component';
 
 @Component({
   selector: 'book-details',
   standalone: true,
-  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent, NgOptimizedImage, NgIf, ReviewCarouselComponent, BookLoaderComponent, ReviewLoaderComponent],
+  imports: [RatingModule, FormsModule, InputTextareaModule, ReactiveFormsModule, TabMenuComponent, NgOptimizedImage, NgIf, ReviewCarouselComponent, BookLoaderComponent],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css',
   encapsulation: ViewEncapsulation.None,
+  // providers: [MessageService]
 })
 export class BookDetailsComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private service: BookService
-    ){}
+    ){
 
-  selectedLibraryStore: any;
+  }
+
 
   bookId: number | undefined
   loading = true
@@ -39,16 +40,11 @@ export class BookDetailsComponent implements OnInit{
   ngOnInit(): void {
 
     this.bookId = Number.parseInt(this.route.snapshot.paramMap.get('id')!)
-    this.service.getBookDetails(this.bookId).subscribe({
-      next: res => {
-        this.book = res
-      },
-      error: err => {
-        console.log(err)
-      },
-      complete: () => this.loading = false
-  })
-  
+    this.service.getBookDetails(this.bookId).subscribe(res=> {
+      this.book = res
+      console.log(res)
+      this.loading = false
+    })
   }
 
 
