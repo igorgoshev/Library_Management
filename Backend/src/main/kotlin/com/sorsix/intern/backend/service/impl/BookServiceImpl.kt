@@ -2,8 +2,10 @@ package com.sorsix.intern.backend.service.impl
 
 import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.domain.*
-import com.sorsix.intern.backend.repository.BookRepository
+import com.sorsix.intern.backend.repository.*
 import com.sorsix.intern.backend.service.*
+import jakarta.transaction.Transactional
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -18,7 +20,11 @@ class BookServiceImpl(
     val wishListService: WishListService,
     val reviewService: ReviewService,
     val customerBookService: CustomerBookService,
+    val bookInLibraryRepository: BookInLibraryRepository,
+    val userRepository: CustomerRepository,
+    val librarianRepository: LibrarianRepository,
     private val bookRepository: BookRepository,
+    private val borrowBookRepository: BorrowBookRepository,
 
 
     ) : BookService {
@@ -125,7 +131,25 @@ class BookServiceImpl(
             };
         }
     }
-
+    override fun findAvailableBooksByLetter(letter: Char?): Map<Char, List<AvailableBooks>> {
+        val books = bookInLibraryRepository.findAllByBookNameStartsWith(letter?.toString() ?: "");
+        return books.groupBy { it.book?.name?.first() ?: ' ' }.mapValues { (k, v) ->
+            v.groupBy { book -> book.book!! }.map {
+                AvailableBooks(
+                    id = it.key.id!!,
+                    name = it.key.name,
+                    authors = it.key.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
+                    categories = it.key.categories?.map { it.name } ?: emptyList(),
+                    isbn = it.key.isbn,
+                    imgUrl = it.key.imgUrl,
+                    bookCopies = it.value.map { AvailableBook(
+                        id = it.id!!,
+                        status = it.condition.toString()
+                    ) }
+                )
+            }
+        }
+    }
     override fun findBookCardsByLetter(letter: Char): Map<Char, List<BookCard>> {
         val books = repository.findAllByNameStartsWith(letter.toString())
         return books.groupBy { it.name.first() }.mapValues { (k, v) ->
@@ -196,5 +220,24 @@ class BookServiceImpl(
                 statusCode = getStatusCodeForQuantity(storeAvailability.value.size),
             ) }.toList()
         ) }.toList()
+    }
+    @Transactional
+    override fun lendBook(userId: Long, bookId: Long) {
+        val book = bookInLibraryRepository.findByIdOrNull(bookId) ?: throw NotFoundException()
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundException()
+        book.isLent = true;
+//        val librarian = librarianRepository.findByIdOrNull(1) ?: throw NotFoundException()
+
+        val newBorrowing = BorrowBook(
+            id = 0,
+            bookInLibrary = book,
+            customer = user,
+            dateFrom = LocalDate.now(),
+            dateTo = LocalDate.now(),
+            librarian =  null,
+        )
+
+        bookInLibraryRepository.save(book);
+        borrowBookRepository.save(newBorrowing);
     }
 }

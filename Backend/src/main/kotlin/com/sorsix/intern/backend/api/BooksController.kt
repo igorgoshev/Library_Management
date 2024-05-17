@@ -1,9 +1,8 @@
 package com.sorsix.intern.backend.api
 
-import com.sorsix.intern.backend.api.dtos.AddBook
-import com.sorsix.intern.backend.api.dtos.AddReview
-import com.sorsix.intern.backend.api.dtos.BookCard
-import com.sorsix.intern.backend.api.dtos.BookInTable
+import com.sorsix.intern.backend.api.dtos.*
+import com.sorsix.intern.backend.domain.Book
+import com.sorsix.intern.backend.domain.BookInLibrary
 import com.sorsix.intern.backend.service.BookService
 import com.sorsix.intern.backend.service.ReviewService
 import org.springframework.web.bind.annotation.*
@@ -15,18 +14,17 @@ class BooksController(
     val bookService: BookService,
     val reviewService: ReviewService) {
     @GetMapping("")
-    fun getBooks(@RequestParam(required = false) letter: String) {
-        if (letter == null) bookService.findAllBooksForTable()
-        else bookService.findAllByLetter(letter)
+    fun getBooks(): List<BookInTable> {
+        return bookService.findAllBooksForTable()
     }
 
     @GetMapping("getTopByLetters")
     fun getTopByLetters() = bookService.findBookCardsByLetters();
 
     @GetMapping("getAllByLetters")
-    fun getAllByLetters(@RequestParam(required = false) letter: Char?): Map<Char, List<BookCard>> {
-        return if(letter == null) bookService.findBookCardsByLetters()
-        else bookService.findBookCardsByLetter(letter);
+    fun getAllByLetters(@RequestParam(required = false) letter: Char?): Map<Char, List<AvailableBooks>> {
+        return if(letter == null) bookService.findAvailableBooksByLetter(null)
+        else bookService.findAvailableBooksByLetter(letter);
     }
 
     @GetMapping("/{id}")
@@ -48,5 +46,10 @@ class BooksController(
     
     @GetMapping("/reviews/{id}")
     fun getReviewsByBook(@PathVariable id: Long) = reviewService.getReviewsByBook(id);
+
+    @PostMapping("/lend")
+    fun lendBook(@RequestBody lendBook: LendBook) {
+        bookService.lendBook(lendBook.userId, lendBook.copyId)
+    }
 
 }

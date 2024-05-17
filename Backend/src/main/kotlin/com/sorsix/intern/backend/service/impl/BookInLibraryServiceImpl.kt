@@ -25,7 +25,7 @@ class BookInLibraryServiceImpl(
 
     override fun findAll(): List<BookInLibrary> = repository.findAll();
     override fun findAllByBookId(id: Long): List<BookInLibrary> {
-        return bookInLibraryRepository.findAllByBookId(id)
+        return bookInLibraryRepository.findAllByBookIdAndIsReservedFalseAndIsLentFalse(id)
     }
 
     override fun delete(id: Long): BookInLibrary? {
@@ -53,7 +53,7 @@ class BookInLibraryServiceImpl(
                     borrowedBooks = borrowedBookService.findAllByIdContaining(bookInLibraryDto.borrowedBooksId),
                     reservedBooks = reservedBookService.findAllByIdContaining(bookInLibraryDto.borrowedBooksId),
                     condition = bookInLibraryDto.condition,
-                    libraryStore = libraryStoreRepository.findById(bookInLibraryDto.libraryStoreId).get()
+                    libraryStore = libraryStoreRepository.findById(bookInLibraryDto.libraryStoreId).get(),
                 )
             )
         }

@@ -9,6 +9,7 @@ import { Publisher } from '../Publisher';
 import { catchError, Observable, Subject, throwError } from 'rxjs';
 import { Review } from '../Review';
 import { BookAvailability } from '../BookAvailability';
+import {BookLendingDetails} from "../BookLendingDetails";
 
 @Injectable({
   providedIn: 'root'
@@ -86,11 +87,20 @@ export class BookService {
   }
 
   getBooksByLetter(letter: string | undefined) {
-    return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getAllByLetters' + (letter ? `?letter=${letter}` : ""))
+    return this.http.get<Map<String, BookLendingDetails[]>>('http://localhost:8080/api/books/getAllByLetters' + (letter ? `?letter=${letter}` : ""))
   }
-  
+
   getReviewsByBook(id: number){
     return this.http.get<Review[]>(`http://localhost:8080/api/books/reviews/${id}`)
+  }
+
+  lendBook(userId: number, copyId: number) {
+    return this.http.post(`http://localhost:8080/api/books/lend`, {
+      userId: userId,
+      copyId: copyId
+    }).pipe(
+      catchError(this.handleError)
+    )
   }
 
 }

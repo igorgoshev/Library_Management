@@ -19,6 +19,6 @@ class BorrowBook(
     @ManyToOne
     var bookInLibrary: BookInLibrary,
     @ManyToOne
-    var librarian: Librarian
+    var librarian: Librarian?
 ) {
 }

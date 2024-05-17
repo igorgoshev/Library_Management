@@ -1,9 +1,6 @@
 package com.sorsix.intern.backend.service
 
-import com.sorsix.intern.backend.api.dtos.AddBook
-import com.sorsix.intern.backend.api.dtos.BookAvailability
-import com.sorsix.intern.backend.api.dtos.BookCard
-import com.sorsix.intern.backend.api.dtos.BookInTable
+import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.domain.*
 import java.time.LocalDate
 
@@ -22,4 +19,6 @@ interface BookService {
     fun getBookDetailsById(id: Long): BookInTable?
     fun addBook(book: AddBook): Book
     fun getBookAvailability(id: Long): List<BookAvailability>?
+    fun findAvailableBooksByLetter(letter: Char?): Map<Char, List<AvailableBooks>>
+    fun lendBook(userId: Long, bookId: Long)
 }
