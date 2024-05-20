@@ -9,4 +9,5 @@ interface AuthorService {
     fun save(id: Long?, name: String, lastName: String, booksId: List<Long>) : Author?
     fun delete(id: Long) : Author?
     fun findAllByIdContaining(authorsId: List<Long>) : MutableList<Author>
+    fun getPopularAuthors(): List<Author>
 }

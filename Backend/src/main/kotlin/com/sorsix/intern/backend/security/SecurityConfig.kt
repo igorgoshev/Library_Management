@@ -48,7 +48,7 @@ class SecurityConfig(
         http.csrf { it.disable() }
 //            .cors { Customizer.withDefaults() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .formLogin { it.disable() }
+            .formLogin { it.disable() }.logout { }
             .httpBasic { it.disable() }
 
         http.authorizeRequests { auth ->
@@ -82,7 +82,6 @@ class SecurityConfig(
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler)
         }
-
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()

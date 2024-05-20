@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.service
 
+import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.domain.WishList
 
 interface WishListService {
@@ -7,4 +8,5 @@ interface WishListService {
     fun addBookToWishList(bookId: Long, customerId: Long)
 
     fun bookExistInWishList(bookId: Long, customerId: Long): Boolean
+    fun findAllByCustomerId(customerId: Long): List<BookInTable>
 }

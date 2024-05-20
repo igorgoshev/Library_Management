@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.service.impl
 
+import com.sorsix.intern.backend.api.dtos.RegisterRequest
 import com.sorsix.intern.backend.domain.User
 import com.sorsix.intern.backend.domain.dto.LoginRequest
 import com.sorsix.intern.backend.domain.dto.LoginResponse
@@ -19,13 +20,14 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class LoginService {
-    private val authenticationManager: AuthenticationManager? = null
-    private val userRepository: UserRepository? = null
-    private val passwordEncoder: PasswordEncoder? = null
-    private val tokenProvider: TokenProvider? = null
+class LoginService(private val userRepository: UserRepository,
+                   private val passwordEncoder: PasswordEncoder,
+                   private val tokenProvider: TokenProvider? = null,
+                   private val authenticationManager: AuthenticationManager? = null
+) {
 
     fun login(loginRequest: LoginRequest): LoginResponse {
+
         System.out.printf("Login request: %s", loginRequest)
         val authentication: Authentication
 
@@ -55,5 +57,23 @@ class LoginService {
 
         val token: String? = tokenProvider?.createToken(authentication)
         return LoginResponse(token)
+    }
+
+    fun register(registerRequest: RegisterRequest) {
+        System.out.printf("Login request: %s", registerRequest)
+
+
+        val existing = userRepository.findByEmail(registerRequest.email)
+        if (existing != null) {
+            throw RuntimeException("User with email ${registerRequest.email} already exists.")
+        }
+
+        userRepository.save(
+            User(
+                name = registerRequest.firstName + " " + registerRequest.lastName,
+                email = registerRequest.email,
+                password = passwordEncoder.encode(registerRequest.password),
+            )
+        )
     }
 }

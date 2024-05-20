@@ -1,4 +1,4 @@
-package com.sorsix.intern.backend.api.dtos
+package com.sorsix.intern.backend.api
 
 import com.sorsix.intern.backend.service.CategoriesService
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController
 @CrossOrigin
 @RequestMapping("/api/categories")
 class CategoriesController(
-    val categoriesService: CategoriesService
+    val categoriesService: CategoriesService,
 ) {
     @GetMapping("")
     fun getCategories() = categoriesService.findAll();
+
+    @GetMapping("/popular")
+    fun getPopularCategories() = categoriesService.getPopularCategories()
 }

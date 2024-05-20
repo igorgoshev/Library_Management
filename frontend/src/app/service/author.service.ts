@@ -51,4 +51,8 @@ export class AuthorService {
         catchError(this.handleError)
       );
   }
+
+  getPopularAuthors() {
+    return this.http.get<Author[]>('http://localhost:8080/api/authors/popular');
+  }
 }

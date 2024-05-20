@@ -64,7 +64,7 @@ class OAuth2AuthenticationSuccessHandler : SimpleUrlAuthenticationSuccessHandler
 
         val token: String? = tokenProvider?.createToken(authentication)
 
-        return UriComponentsBuilder.fromUriString(targetUrl)
+        return UriComponentsBuilder.fromUriString("http://localhost:4200/login-callback")
             .queryParam("token", token)
             .build().toUriString()
     }

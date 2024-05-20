@@ -124,7 +124,11 @@ export class LendingComponent implements OnInit {
     }
     this.bookService.lendBook(userId, copyId).subscribe({
         next: _ =>
-          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Book successfully lent!'}),
+        {
+          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Book successfully lent!'})
+          this.router.navigate(['/admin', 'lendings']);
+        },
+
         error: _ => this.messageService.add({
           severity: 'error',
           summary: 'Error',

@@ -5,6 +5,7 @@ import com.sorsix.intern.backend.domain.Customer
 import com.sorsix.intern.backend.domain.User
 import com.sorsix.intern.backend.domain.dto.UserResponse
 import com.sorsix.intern.backend.repository.CustomerRepository
+import com.sorsix.intern.backend.repository.LibrarianRepository
 import com.sorsix.intern.backend.repository.UserRepository
 import com.sorsix.intern.backend.service.UserMapper
 import com.sorsix.intern.backend.service.UserService
@@ -17,16 +18,21 @@ import org.springframework.stereotype.Service
 class UserServiceImpl(
     @Autowired
     private val userRepository: UserRepository,
-    private val customerRepository: CustomerRepository
+    private val customerRepository: CustomerRepository,
+    private val librarianRepository: LibrarianRepository
 ) : UserService {
     override fun getUserInfoById(id: Long): UserResponse {
         println("Getting user info by id: $id")
 
         val user: User = userRepository
-            .findById(id)
-            .orElseThrow { RuntimeException("User not found with ID: %s.".formatted(id)) }
-
-        return UserMapper.mapToUserResponse(user)
+            .findByIdOrNull(id) ?: throw RuntimeException("User not found with ID: %s.".formatted(id))
+        val libraryId = librarianRepository.findLibraryIdByUserId(id)
+        val userResponse = UserMapper.mapToUserResponse(user)
+        userResponse.customerId = id
+        if (libraryId != null) {
+            userResponse.libraryId = libraryId
+        }
+        return userResponse
     }
 
     override fun findById(id: Long): Customer? = customerRepository.findByIdOrNull(id)

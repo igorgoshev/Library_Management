@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.service.impl
 
+import com.sorsix.intern.backend.api.dtos.BookCard
 import com.sorsix.intern.backend.domain.Author
 import com.sorsix.intern.backend.repository.AuthorRepository
 import com.sorsix.intern.backend.repository.BookRepository
@@ -35,4 +36,8 @@ class AuthorServiceImpl(
         }
 
     override fun findAllByIdContaining(authorsId: List<Long>): MutableList<Author> = repository.findAllByIdIn(authorsId)
+
+    override fun getPopularAuthors(): List<Author> {
+        return repository.findPopularAuthors().take(5)
+    }
 }

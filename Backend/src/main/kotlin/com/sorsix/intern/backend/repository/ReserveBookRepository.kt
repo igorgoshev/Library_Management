@@ -13,6 +13,8 @@ interface ReserveBookRepository : JpaRepository<ReserveBook, Long> {
     fun findAllExpired() : MutableList<ReserveBook>
 
     fun countByCustomer_IdAndBookInLibrary_Book_IdAndDateToNull(customerId: Long, bookId: Long): Int
+    fun findAllByCustomer_Id(customerId: Long): List<ReserveBook>
+    fun findAllByBookInLibrary_LibraryStore_Id(libraryStoreId: Long): List<ReserveBook>
 
 
 }

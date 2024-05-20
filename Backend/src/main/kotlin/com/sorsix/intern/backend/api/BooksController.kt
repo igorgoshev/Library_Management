@@ -1,23 +1,29 @@
 package com.sorsix.intern.backend.api
 
 import com.sorsix.intern.backend.api.dtos.*
-import com.sorsix.intern.backend.domain.Book
-import com.sorsix.intern.backend.domain.BookInLibrary
+import com.sorsix.intern.backend.config.CurrentUser
+import com.sorsix.intern.backend.security.UserPrincipal
 import com.sorsix.intern.backend.service.BookService
 import com.sorsix.intern.backend.service.ReservedBookService
 import com.sorsix.intern.backend.service.ReviewService
 import com.sorsix.intern.backend.service.WishListService
+import com.sorsix.intern.backend.service.impl.BookInLibraryServiceImpl
+import com.sorsix.intern.backend.service.impl.BorrowedBookServiceImpl
+import com.sorsix.intern.backend.service.impl.CategoryServiceImpl
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/books")
 class BooksController(
-    val bookService: BookService,
-    val reviewService: ReviewService,
-    val wishListService: WishListService,
-    val reservedBookService: ReservedBookService
-    ) {
+    private val bookService: BookService,
+    private val reviewService: ReviewService,
+    private val wishListService: WishListService,
+    private val reservedBookService: ReservedBookService,
+    private val borrowedBookService: BorrowedBookServiceImpl,
+    private val categoryService: CategoryServiceImpl,
+    private val bookInLibraryService: BookInLibraryServiceImpl
+) {
     @GetMapping("")
     fun getBooks(): List<BookInTable> {
         return bookService.findAllBooksForTable()
@@ -74,5 +80,65 @@ class BooksController(
     @GetMapping("/reserve/exist/{bookId}")
     fun reservationExist(@PathVariable bookId: Long) : Boolean{
         return reservedBookService.reservationExist(bookId = bookId, userId = 1)
+    }
+
+    @GetMapping("/lent/active")
+    fun getActiveLendingsByStoreId(@CurrentUser userPrincipal: UserPrincipal): List<LentBookDetails> {
+        return borrowedBookService.findAllActiveByStoreId(userPrincipal.id);
+    }
+
+    @PostMapping("/lent/{lendingId}/finish")
+    fun finishLending(@PathVariable lendingId: Long) {
+        borrowedBookService.finishLending(lendingId)
+    }
+
+    @GetMapping("/reservationsForUser")
+    fun getReservationsForUser(@CurrentUser userPrincipal: UserPrincipal): List<ReservedBookDetails> {
+        return reservedBookService.findAllByCustomerId(userPrincipal.id)
+        }
+
+    @PostMapping("/reservations/{reservationId}/cancel")
+    fun cancelReservation(@PathVariable reservationId: Long) {
+        reservedBookService.cancelReservation(reservationId)
+    }
+
+    @GetMapping("/wishlist")
+    fun getWishListForCustomer(@CurrentUser userPrincipal: UserPrincipal): List<BookInTable> {
+        return wishListService.findAllByCustomerId(userPrincipal.id);
+    }
+
+    @GetMapping("/loans")
+    fun getLoansForUser(@CurrentUser userPrincipal: UserPrincipal): List<BookCard> {
+        return borrowedBookService.findAllActiveByCustomerId(userPrincipal.id);
+    }
+
+    @GetMapping("/popular")
+    fun getPopularBooks(): List<BookCard> {
+        return bookService.getPopularBooks();
+    }
+
+    @GetMapping("/{bookId}/copies")
+    fun getCopies(@PathVariable bookId: Long, @CurrentUser userPrincipal: UserPrincipal): List<AvailableBook> {
+        return bookService.getBookCopies(bookId, userPrincipal.id)
+    }
+
+    @PostMapping("/copies/add")
+    fun addCopies(@RequestBody addCopy: AddCopy, @CurrentUser userPrincipal: UserPrincipal) {
+        return bookInLibraryService.addCopies(addCopy, userPrincipal.id)
+    }
+
+    @GetMapping("/copies/{id}/delete")
+    fun deleteCopy(@PathVariable id: Long) {
+        return bookInLibraryService.deleteCopy(id)
+    }
+
+    @GetMapping("/reservations")
+    fun getReservationsForStore(@CurrentUser userPrincipal: UserPrincipal): List<LentBookDetails> {
+        return reservedBookService.getReservationsForStore(userPrincipal.id)
+    }
+
+    @GetMapping("/reservations/{id}/finish")
+    fun finishReservation(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal) {
+        reservedBookService.finishReservation(id, userPrincipal.id)
     }
 }

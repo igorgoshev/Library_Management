@@ -21,4 +21,6 @@ interface BookService {
     fun getBookAvailability(id: Long): List<BookAvailability>?
     fun findAvailableBooksByLetter(letter: Char?): Map<Char, List<AvailableBooks>>
     fun lendBook(userId: Long, bookId: Long)
+    fun getPopularBooks(): List<BookCard>
+    fun getBookCopies(bookId: Long, userId: Long): List<AvailableBook>
 }

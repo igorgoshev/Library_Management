@@ -15,7 +15,7 @@ class ReserveBook(
 
     var id: Long,
     var dateFrom: LocalDate,
-    var dateTo: LocalDate,
+    var dateTo: LocalDate?,
     @ManyToOne
     var customer: Customer,
     @ManyToOne

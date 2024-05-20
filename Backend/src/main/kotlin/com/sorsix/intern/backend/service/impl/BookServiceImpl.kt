@@ -250,7 +250,28 @@ class BookServiceImpl(
     fun deleteExpiredReservations() {
         val expiredReservations = reserveBookRepository.findAllExpired()
         expiredReservations.forEach { it.dateTo = LocalDate.now() }
-        println("KUku")
         reserveBookRepository.saveAll(expiredReservations);
+    }
+
+    override fun getPopularBooks(): List<BookCard> {
+        return bookRepository.findPopularBookDetails().map {
+            BookCard(
+            id = it.id ?: 0,
+            name = it.name ?: "",
+            authors = it.authors?.map { it.name + " " + it.lastName }?.toList(),
+            imgUrl = it.imgUrl ?: "",
+        ) };
+    }
+
+    override fun getBookCopies(bookId: Long, userId: Long): List<AvailableBook> {
+        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+
+        val bookCopies = bookInLibraryRepository.findAllByLibraryStore_IdAndBook_Id(storeId, bookId)
+        return bookCopies.map {
+            AvailableBook(
+                id = it.id ?: 0,
+                status = it.condition.toString()
+            )
+        }
     }
 }

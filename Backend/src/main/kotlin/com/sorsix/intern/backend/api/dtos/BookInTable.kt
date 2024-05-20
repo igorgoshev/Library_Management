@@ -5,10 +5,10 @@ data class BookInTable(
     var name: String?,
     var isbn: String?,
     var publisher: String?,
-    var authors: List<String>?,
-    var categories: List<String>?,
+    var authors: List<String>? = emptyList(),
+    var categories: List<String>? = emptyList(),
     var imgUrl: String?,
-    var averageRating: Double?,
+    var averageRating: Double? = 0.0,
     var description: String,
 ) {
 }

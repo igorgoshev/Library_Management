@@ -16,9 +16,9 @@ class BookInLibrary(
     @ManyToOne
     var book: Book?,
     @OneToMany(mappedBy = "bookInLibrary")
-    var reservedBooks: MutableList<ReserveBook>,
+    var reservedBooks: MutableList<ReserveBook>? = null,
     @OneToMany(mappedBy = "bookInLibrary")
-    var borrowedBooks: MutableList<BorrowBook>,
+    var borrowedBooks: MutableList<BorrowBook>? = null,
     var isReserved: Boolean = false,
     var isLent: Boolean = false,
 ) {

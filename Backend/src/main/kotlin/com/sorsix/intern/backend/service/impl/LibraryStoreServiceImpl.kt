@@ -1,11 +1,13 @@
 package com.sorsix.intern.backend.service.impl
 
+import com.sorsix.intern.backend.api.dtos.StoreDetails
 import com.sorsix.intern.backend.domain.LibraryStore
 import com.sorsix.intern.backend.domain.dto.LibraryStoreDto
 import com.sorsix.intern.backend.repository.LibraryStoreRepository
 import com.sorsix.intern.backend.service.BookInLibraryService
 import com.sorsix.intern.backend.service.LibraryService
 import com.sorsix.intern.backend.service.LibraryStoreService
+import jakarta.mail.Store
 import org.springframework.stereotype.Service
 
 @Service
@@ -43,5 +45,16 @@ class LibraryStoreServiceImpl(
                 library = libraryService.findById(libraryStoreDto.libraryId),
                 bookInLibrary = bookInLibraryService.findAllByIdContaining(libraryStoreDto.bookInLibrariesId))
         )
+
+    override fun getPopularStores(): List<StoreDetails> {
+        return repository.findPopularStores().map {
+            StoreDetails(
+                name = it.name,
+                id = it.id ?: 0L,
+                address = it.address,
+                libraryName = it.library?.name ?: ""
+            )
+        }
+    }
 }
 

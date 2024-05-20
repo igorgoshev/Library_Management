@@ -1,11 +1,15 @@
 package com.sorsix.intern.backend.service.impl
 
+import com.sorsix.intern.backend.api.dtos.AddCopy
 import com.sorsix.intern.backend.domain.BookInLibrary
 import com.sorsix.intern.backend.domain.dto.BookInLibraryDto
 import com.sorsix.intern.backend.repository.BookInLibraryRepository
 import com.sorsix.intern.backend.repository.BookRepository
+import com.sorsix.intern.backend.repository.LibrarianRepository
 import com.sorsix.intern.backend.repository.LibraryStoreRepository
 import com.sorsix.intern.backend.service.*
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,7 +19,8 @@ class BookInLibraryServiceImpl(
     val borrowedBookService: BorrowedBookService,
     val reservedBookService: ReservedBookService,
     val libraryStoreRepository: LibraryStoreRepository,
-    private val bookInLibraryRepository: BookInLibraryRepository
+    private val bookInLibraryRepository: BookInLibraryRepository,
+    private val librarianRepository: LibrarianRepository
 
 ) : BookInLibraryService {
     override fun findAllByIdContaining(bookInLibrariesId: List<Long>): MutableList<BookInLibrary> =
@@ -58,4 +63,26 @@ class BookInLibraryServiceImpl(
             )
         }
     }
+
+    override fun addCopies(addCopy: AddCopy, userId: Long) {
+        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+        val store = libraryStoreRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
+        val book = bookRepository.findByIdOrNull(addCopy.bookId) ?: throw NotFoundException();
+        (0..addCopy.quantity).forEach {
+            repository.save(BookInLibrary(
+                id = 0,
+                condition = addCopy.status,
+                book = book,
+                libraryStore = store
+            ))
+        }
+    }
+
+    override fun deleteCopy(id: Long) {
+        val copy = bookInLibraryRepository.findByIdOrNull(id) ?: throw NotFoundException()
+        if(copy.isLent || copy.isReserved) {
+            throw RuntimeException("Cannot delete a book which is lent or reserved!")
+        }
+    }
+
 }

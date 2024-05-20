@@ -1,6 +1,7 @@
 package com.sorsix.intern.backend.domain
 
 import jakarta.persistence.Entity
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.PrimaryKeyJoinColumn
 
@@ -8,6 +9,8 @@ import jakarta.persistence.PrimaryKeyJoinColumn
 @PrimaryKeyJoinColumn
 class Librarian(
     @OneToMany(mappedBy = "librarian")
-    val borrowedBooks: List<BorrowBook>
+    var borrowedBooks: MutableList<BorrowBook>,
+    @ManyToOne
+    var libraryStore: LibraryStore
 ) : User() {
 }

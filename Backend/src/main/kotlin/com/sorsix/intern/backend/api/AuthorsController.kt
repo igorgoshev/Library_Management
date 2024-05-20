@@ -14,4 +14,7 @@ class AuthorsController(
 ) {
     @GetMapping("")
     fun getAuthors() = authorService.findAll();
+
+    @GetMapping("/popular")
+    fun getPopularAuthors() = authorService.findAll()
 }
