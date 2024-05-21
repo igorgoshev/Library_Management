@@ -1,7 +1,7 @@
 <div class="grid">
   <div class="col-4">
     <p-card header="Inventory Status">
-      <p class="m-0">
+      <p class="m-0 mb-3">
         Percentage of books that are not lent
       </p>
       <p-progressBar [value]="inventoryPercentage | number: '3.1-1' " />
@@ -9,10 +9,10 @@
   </div>
   <div class="col-4">
     <p-card header="Stock Status">
-      <p class="m-0">
+      <p class="m-0 mb-3">
         Percentage of books that are available in this store
-        <p-progressBar [value]="inventoryPercentage | number: '3.1-1'" />
       </p>
+      <p-progressBar [value]="inventoryPercentage | number: '3.1-1'" />
     </p-card>
   </div>
   <div class="col-4">
@@ -22,4 +22,14 @@
       </p>
     </p-card>
   </div>
+  <div class="col-12">
+    <p-card header="Book trades in last 5 days">
+      <p-chart type="line" [data]="data" [options]="options" />
+    </p-card>
+  </div>
+  <p-card header="Monthly trends of trades" class="col-12">
+    <div class="card">
+      <p-chart type="bar" [data]="barChartData" [options]="barChartOptions" />
+    </div>
+  </p-card>
 </div>

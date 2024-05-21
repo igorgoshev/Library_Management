@@ -25,3 +25,15 @@
       </div>
       @if (user)
       {
+        <button (click)="logout()" class="p-link layout-topbar-button">
+          <i class="pi pi-sign-out"></i>
+          <span>Settings</span>
+        </button>
+      } @else {
+        <button [routerLink]="['/login']" class="p-link layout-topbar-button">
+          <i class="pi pi-sign-in"></i>
+          <span>Settings</span>
+        </button>
+      }
+    </div>
+</div>

@@ -9,11 +9,11 @@ import {RouterLink} from "@angular/router";
 @Component({
   selector: 'user-top-bar',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, NgIf, RouterLink],
   templateUrl: './user-top-bar.component.html',
   styleUrl: './user-top-bar.component.css'
 })
-export class UserTopBarComponent {
+export class UserTopBarComponent implements OnInit {
   items!: MenuItem[];
 
   @ViewChild('menubutton') menuButton!: ElementRef;
@@ -22,5 +22,24 @@ export class UserTopBarComponent {
 
   @ViewChild('topbarmenu') menu!: ElementRef;
 
-  constructor(public layoutService: LayoutService) { }
+  user: UserResponse | undefined;
+
+  constructor(public layoutService: LayoutService,
+              private userService: UserService,) {
+
+  }
+
+  ngOnInit(): void {
+    console.log(this.userService)
+    this.userService.getPrincipal().subscribe(user => {
+      this.user = user;
+      console.log(user);
+    });
+  }
+
+  logout() {
+    console.log("logout")
+    this.userService.logout()
+    window.location.reload()
+  }
 }

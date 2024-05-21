@@ -1,4 +1,4 @@
-export interface LoansPerDays {
+export interface LoansInLastDays {
   id: number,
   name: string,
   day0: number,

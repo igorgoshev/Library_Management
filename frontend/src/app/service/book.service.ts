@@ -12,7 +12,7 @@ import {BookAvailability} from '../BookAvailability';
 import {BookLendingDetails} from "../BookLendingDetails";
 import {LentBookDetails} from "../LentBookDetails";
 import {ReservedBookDetails} from "../ReservedBookDetails";
-import {AvailableBook} from "../../AvailableBook";
+import {AvailableBook} from "../AvailableBook";
 
 @Injectable({
   providedIn: 'root'

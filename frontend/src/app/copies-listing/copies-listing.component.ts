@@ -22,8 +22,8 @@ import {Category} from "../Category";
 import {Author} from "../Author";
 import {Publisher} from "../Publisher";
 import {BookService} from "../service/book.service";
-import {AvailableBook} from "../../AvailableBook";
 import {Quantity} from "../Quantity";
+import {AvailableBook} from "../AvailableBook";
 
 @Component({
   selector: 'app-copies-listing',
