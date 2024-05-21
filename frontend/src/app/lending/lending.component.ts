@@ -3,10 +3,9 @@ import {InputTextModule} from "primeng/inputtext";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {CarouselBookCardComponent} from "../carousel-book-card/carousel-book-card.component";
 import {KeyValuePipe, NgIf} from "@angular/common";
-import {SearchComponent} from "../search/search.component";
 import {BookCard} from "../Book-Card";
 import {BookService} from "../service/book.service";
-import {Observable} from "rxjs";
+import {Observable, Subject, debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 import {Book} from "../Book";
 import {LendingBookDetailsComponent} from "./lending-book-details/lending-book-details.component";
 import {StepperModule} from "primeng/stepper";
@@ -32,7 +31,6 @@ import {ToastModule} from "primeng/toast";
     RouterLink,
     CarouselBookCardComponent,
     KeyValuePipe,
-    SearchComponent,
     LendingBookDetailsComponent,
     StepperModule,
     ButtonModule,
@@ -58,6 +56,7 @@ export class LendingComponent implements OnInit {
   userToDisplay: UserAvatar | undefined;
   userLoading: boolean = true;
   book: BookLendingDetails | undefined;
+  query$: Subject<string> = new Subject();
 
   chosenBook(id: number) {
     this.bookToLend = id
@@ -81,7 +80,7 @@ export class LendingComponent implements OnInit {
   }
 
   fetchData(letter: string | undefined = undefined) {
-    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Book successfully lent!'})
+
     this.bookService.getBooksByLetter(letter)
       .subscribe(
         res => {
@@ -101,9 +100,21 @@ export class LendingComponent implements OnInit {
     })
   }
 
+  search(book: string){
+
+    this.query$.next(book)
+
+  }
+
 
   ngOnInit(): void {
     this.fetchData()
+    
+    this.query$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(query => this.bookService.searchBookByNameAdmin(query))
+    ).subscribe(result => this.topBookByLetters = result);
   }
 
   filterByLetter(letter: string) {

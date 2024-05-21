@@ -5,7 +5,6 @@ import {BookService} from './service/book.service';
 import {BooksListingComponent} from './books-listing/books-listing.component';
 import {BookCardComponent} from './book-card/book-card.component';
 import {UserLayoutComponent} from './user-layout/user-layout.component';
-import {SearchComponent} from './search/search.component';
 import {ListBooksComponent} from './list-books/list-books.component';
 import {BookDetailsComponent} from './book-details/book-details.component';
 import {AuthorsListingComponent} from "./authors-listing/authors-listing.component";
@@ -96,10 +95,6 @@ export const routes: Routes = [
         component: UserDashboardComponent
       }
     ]
-  },
-  {
-    path: 'search',
-    component: SearchComponent
   },
   {
     path: 'book/details',

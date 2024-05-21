@@ -18,6 +18,7 @@ import {AvailableBook} from "../AvailableBook";
   providedIn: 'root'
 })
 export class BookService {
+  
   constructor(private http: HttpClient) {
     this.refreshEvent.subscribe(() => this.getBooks())
   }
@@ -69,30 +70,47 @@ export class BookService {
       );
   }
 
+  
+  
+  
   getBookDetails(id: number) {
     return this.http.get<Book>(`http://localhost:8080/api/books/${id}`);
   }
-
+  
   deleteBook(id: number): Observable<Book> {
     return this.http.delete<Book>(`http://localhost:8080/api/books/delete/${id}`)
-      .pipe(
-        catchError(this.handleError)
-      );
+    .pipe(
+      catchError(this.handleError)
+    );
   }
-
+    
   addReview(id: number, review: Review) {
-    return this.http.post<Review>(`http://localhost:8080/api/books/review/${id}`, review)
-      .pipe(
-        catchError(this.handleError)
-      );
+  return this.http.post<Review>(`http://localhost:8080/api/books/review/${id}`, review)
+    .pipe(
+     catchError(this.handleError)
+    );
   }
-
+  
   getBookAvailability(id: number) {
     return this.http.get<BookAvailability[]>(`http://localhost:8080/api/books/availability/${id}`)
   }
-
+  
   getBooksByLetter(letter: string | undefined) {
     return this.http.get<Map<String, BookLendingDetails[]>>('http://localhost:8080/api/books/getAllByLetters' + (letter ? `?letter=${letter}` : ""));
+  }
+  
+  
+  searchBookByName(query: string) {
+    return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getBooksContaining' + `?query=${query}`)
+  }
+
+
+  searchBookByNameAdmin(query: string) {
+    return this.http.get<Map<String, BookLendingDetails[]>>('http://localhost:8080/api/books/getBooksContainingAdmin' + `?query=${query}`)
+  }
+  
+  getAllBooksByLetter(letter: string | undefined){
+    return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getAllBooksByLetters' + (letter ? `?letter=${letter}` : ""))
   }
 
   getReviewsByBook(id: number) {

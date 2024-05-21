@@ -11,6 +11,10 @@ interface BookService {
              bookInLibraryId: List<Long>, categoriesId: List<Long>, wishListsId: List<Long>, reviewsId: List<Long>,
              customerBooksId: List<Long>, description: String) : Book?
     fun delete(id: Long) : Book?
+
+    fun getBooksContaining(query: String) : Map<Char?, List<BookCard>>
+
+    fun getBooksContainingAdmin(query: String) : Map<Char?, List<AvailableBooks>>
     fun findAllByIdContaining(booksId: List<Long>): MutableList<Book>
     fun findAllBooksForTable(): List<BookInTable>
     fun findAllByLetter(letter: String): List<BookInTable>
@@ -20,6 +24,7 @@ interface BookService {
     fun addBook(book: AddBook): Book
     fun getBookAvailability(id: Long): List<BookAvailability>?
     fun findAvailableBooksByLetter(letter: Char?): Map<Char, List<AvailableBooks>>
+    fun findAllAvailableBooksByLetter(letter: Char?): Map<Char, List<BookCard>>
     fun lendBook(userId: Long, bookId: Long)
     fun getPopularBooks(): List<BookCard>
     fun getBookCopies(bookId: Long, userId: Long): List<AvailableBook>
