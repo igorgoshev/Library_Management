@@ -11,4 +11,6 @@ interface BookRepository : JpaRepository<Book, Long> {
     fun findAllByNameStartsWith(nameStartsWith: String): List<Book>
     @Query("select b from Book b join PopularBook pb ON b.id = pb.id")
     fun findPopularBookDetails(): List<Book>
+
+    fun findAllByNameIgnoreCaseContaining(query: String): List<Book>
 }

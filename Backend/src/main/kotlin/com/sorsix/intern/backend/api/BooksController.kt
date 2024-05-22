@@ -32,6 +32,22 @@ class BooksController(
     @GetMapping("getTopByLetters")
     fun getTopByLetters() = bookService.findBookCardsByLetters();
 
+    @GetMapping("getAllBooksByLetters")
+    fun getAllBooksByLetters(@RequestParam(required = false) letter: Char?): Map<Char, List<BookCard>> {
+        return if(letter == null) bookService.findAllAvailableBooksByLetter(null)
+        else bookService.findAllAvailableBooksByLetter(letter)
+    }
+
+    @GetMapping("getBooksContaining")
+    fun getBooksContaining(@RequestParam query: String): Map<Char?, List<BookCard>> {
+        return bookService.getBooksContaining(query)
+    }
+
+    @GetMapping("getBooksContainingAdmin")
+    fun getBooksContainingAdmin(@RequestParam query: String): Map<Char?, List<AvailableBooks>> {
+        return bookService.getBooksContainingAdmin(query)
+    }
+
     @GetMapping("getAllByLetters")
     fun getAllByLetters(@RequestParam(required = false) letter: Char?): Map<Char, List<AvailableBooks>> {
         return if(letter == null) bookService.findAvailableBooksByLetter(null)

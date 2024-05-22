@@ -91,6 +91,40 @@ class BookServiceImpl(
         }
     }
 
+    override fun getBooksContaining(query: String): Map<Char?, List<BookCard>> {
+        val books = bookInLibraryRepository.findAllByBookNameIgnoreCaseContaining(query)
+        return books.groupBy { it.book?.name?.first() }.mapValues {
+            (k, v) ->  v.groupBy { book -> book.book!! }.map {
+                BookCard(
+                    id = it.key.id!!,
+                    name = it.key.name,
+                    authors = it.key.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
+                    imgUrl = it.key.imgUrl
+                )
+            }
+        }
+    }
+
+    override fun getBooksContainingAdmin(query: String): Map<Char?, List<AvailableBooks>> {
+        val books = bookInLibraryRepository.findAllByBookNameIgnoreCaseContaining(query)
+        return books.groupBy { it.book?.name?.first() }.mapValues { (k, v) ->
+            v.groupBy { book -> book.book!! }.map {
+                AvailableBooks(
+                    id = it.key.id!!,
+                    name = it.key.name,
+                    authors = it.key.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
+                    categories = it.key.categories?.map { it.name } ?: emptyList(),
+                    isbn = it.key.isbn,
+                    imgUrl = it.key.imgUrl,
+                    bookCopies = it.value.map { AvailableBook(
+                        id = it.id!!,
+                        status = it.condition.toString()
+                    ) }
+                )
+            }
+        }
+    }
+
     override fun findAllByIdContaining(booksId: List<Long>): MutableList<Book> = repository.findAllByIdIn(booksId)
     override fun findAllBooksForTable(): List<BookInTable> {
         val books = repository.findAll();
@@ -154,6 +188,21 @@ class BookServiceImpl(
             }
         }
     }
+
+    override fun findAllAvailableBooksByLetter(letter: Char?): Map<Char, List<BookCard>> {
+        val books = bookInLibraryRepository.findAllByBookNameStartsWith(letter?.toString() ?: "")
+        return books.groupBy { it?.book?.name?.first() ?: ' ' }.mapValues { (k, v) ->
+            v.groupBy { book -> book.book!! }.map {
+                BookCard(
+                    id = it.key.id!!,
+                    name = it.key.name,
+                    authors = it.key.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
+                    imgUrl = it.key.imgUrl
+                )
+            }
+        }
+    }
+
     override fun findBookCardsByLetter(letter: Char): Map<Char, List<BookCard>> {
         val books = repository.findAllByNameStartsWith(letter.toString())
         return books.groupBy { it.name.first() }.mapValues { (k, v) ->

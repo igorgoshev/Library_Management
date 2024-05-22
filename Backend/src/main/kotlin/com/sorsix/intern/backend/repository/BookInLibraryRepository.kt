@@ -13,6 +13,7 @@ interface BookInLibraryRepository : JpaRepository<BookInLibrary, Long> {
 
     fun findAllByBookIdAndIsReservedFalseAndIsLentFalse(bookId: Long) : MutableList<BookInLibrary>
     fun findAllByBookNameStartsWith(bookNameStartsWith: String) : List<BookInLibrary>
+    fun findAllByBookNameIgnoreCaseContaining(query: String) : List<BookInLibrary>
 
     fun findFirstByLibraryStore_IdAndBook_Id (libraryStore_id: Long, book_id: Long): BookInLibrary
     fun findAllByLibraryStore_IdAndBook_Id (libraryStore_id: Long, book_id: Long): List<BookInLibrary>

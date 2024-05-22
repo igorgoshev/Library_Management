@@ -5,7 +5,7 @@
         <div class="p-toolbar-group-center" style="flex-grow: 7;">
             <span class="p-input-icon-left" style="width: 90%;">
                 <i class="pi pi-search" style="font-size: 1.3em"></i>
-                <input pInputText placeholder="Search" style="width: 90%; font-size: 1.3em"/>
+                <input pInputText placeholder="Search"  #searchInput (input)="search(searchInput.value)" style="width: 90%; font-size: 1.3em"/>
             </span>
         </div>
       </div>
