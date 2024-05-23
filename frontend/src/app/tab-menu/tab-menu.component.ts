@@ -25,7 +25,6 @@ export class TabMenuComponent implements OnInit{
   }
 
   getItems(): MenuItem[]{
-    console.log(this.book)
     return [
       { label: 'Description', icon: 'pi pi-book', command: (event) => {
         this.activeItem = event.item

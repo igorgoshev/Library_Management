@@ -14,17 +14,16 @@ import { RatingModule } from 'primeng/rating';
   styleUrl: './review-listing.component.css'
 })
 export class ReviewListingComponent implements OnInit {
-  
-  
+
+
   ngOnInit(): void {
-    console.log(this.review);
     this.value = this.review?.value
   }
 
   value: number | undefined;
-  
+
   @Input() review: Review | undefined
 
-  
+
 
 }

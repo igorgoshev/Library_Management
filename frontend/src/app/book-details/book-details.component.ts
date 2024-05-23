@@ -42,7 +42,6 @@ export class BookDetailsComponent implements OnInit{
     this.bookId = Number.parseInt(this.route.snapshot.paramMap.get('id')!)
     this.service.getBookDetails(this.bookId).subscribe(res=> {
       this.book = res
-      console.log(res)
       this.loading = false
     })
   }

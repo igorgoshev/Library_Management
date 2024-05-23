@@ -80,14 +80,14 @@ export class UserWishlistComponent implements OnInit {
   ) {
   }
 
+
   ngOnInit() {
     this.isLoading = true;
-
+    this.bookService.refreshWishlist.subscribe(() => this.bookService.getUsersWishlist())
     this.userService.getPrincipal().pipe(
       tap(res => this.user = res),
       switchMap(() => this.bookService.getUsersWishlist())
     ).subscribe(x => {
-      console.log(x)
       this.books = x
       this.isLoading = false
     });
@@ -119,13 +119,16 @@ export class UserWishlistComponent implements OnInit {
   confirmDelete() {
     this.deleteProductDialog = false;
     if (this.book) {
-      this.bookService.cancelReservation(this.book.id).subscribe(
-        next => this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Books Successfully returned',
-          life: 3000,
-        }),
+      this.bookService.deleteFromWishlist(this.book.id).subscribe(
+      next =>{
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Books Successfully returned',
+            life: 3000,
+          })
+        window.location.reload()
+        },
         error => this.messageService.add({
           severity: 'error',
           summary: 'Erorr',
@@ -142,18 +145,6 @@ export class UserWishlistComponent implements OnInit {
     this.submitted = false;
   }
 
-
-  findIndexById(id: string): number {
-    let index = -1;
-    // for (let i = 0; i < this.products.length; i++) {
-    //     if (this.products[i].id === id) {
-    //         index = i;
-    //         break;
-    //     }
-    // }
-
-    return index;
-  }
 
 
   // onGlobalFilter(table: Table, event: Event) {

@@ -8,6 +8,7 @@ import com.sorsix.intern.backend.repository.*
 import com.sorsix.intern.backend.service.StatsService
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,6 +20,10 @@ class StatsServiceImpl(
     private val reservationsInLastDaysRepository: ReservationsInLastDaysRepository,
     private val yearlyReservationsRepository: YearlyReservationsRepository,
     private val yearlyBorrowsRepository: YearlyBorrowsRepository,
+    private val bookRepository: BookRepository,
+    private val authorRepository: AuthorRepository,
+    private val libraryStoreRepository: LibraryStoreRepository,
+    private val categoryRepository: CategoryRepository,
 ) : StatsService {
     override fun getInventoryForStore(userId: Long): Double {
         val storeId = librarianRepository.findLibraryIdByUserId(userId)
@@ -44,5 +49,18 @@ class StatsServiceImpl(
     override fun getYearlyBorrows(userId: Long): YearlyBorrows {
         val storeId = librarianRepository.findLibraryIdByUserId(userId)
         return yearlyBorrowsRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
+    }
+
+    @Scheduled(cron = "* */10 * * * *")
+    override fun refreshViews() {
+        yearlyBorrowsRepository.refreshView();
+        yearlyReservationsRepository.refreshView();
+        reservationsInLastDaysRepository.refreshView();
+        loansInLastDays.refreshView()
+        bookRepository.refreshView()
+        authorRepository.refreshView()
+        libraryStoreRepository.refreshView()
+        categoryRepository.refreshView()
+        storeInventoryRepository.refreshView()
     }
 }

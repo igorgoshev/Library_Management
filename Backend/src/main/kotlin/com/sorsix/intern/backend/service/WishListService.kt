@@ -9,4 +9,5 @@ interface WishListService {
 
     fun bookExistInWishList(bookId: Long, customerId: Long): Boolean
     fun findAllByCustomerId(customerId: Long): List<BookInTable>
+    fun deleteBook(id: Long, userId: Long): Boolean
 }

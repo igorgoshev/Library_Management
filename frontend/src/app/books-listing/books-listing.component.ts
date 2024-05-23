@@ -207,7 +207,6 @@ export class BooksListingComponent implements OnInit {
       ...book,
       categories: book.categories.map(x => this.categories?.find(cat => cat.name === x)?.id ?? 0),
       authors: book.authors.map(x => this.authors?.find(cat => cat.name.includes(x.toString()))?.id ?? 0)}
-    console.log(this.book)
     this.productDialog = true;
   }
 
@@ -246,7 +245,6 @@ export class BooksListingComponent implements OnInit {
   }
 
   saveProduct() {
-    console.log(this.book);
     this.submitted = true;
     this.bookService.addBook(this.book).subscribe(
       res => {
@@ -260,49 +258,8 @@ export class BooksListingComponent implements OnInit {
     this.productDialog = false;
 
     this.book = {...this.emptyBook};
-    // this.submitted = true;
-    // if (this.book?.name?.trim()) {
-    //     if (this.product.id) {
-    //         // @ts-ignore
-    //         this..inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-    //         this.products[this.findIndexById(this.product.id)] = this.product;
-    //         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-    //     } else {
-    //         this.product.id = this.createId();
-    //         this.product.code = this.createId();
-    //         this.product.image = 'product-placeholder.svg';
-    //         // @ts-ignore
-    //         this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-    //         this.products.push(this.product);
-    //         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-    //     }
-    //     this.products = [...this.products];
-    //     this.productDialog = false;
-    //     this.product = {};
-    // }
   }
 
-  findIndexById(id: string): number {
-    let index = -1;
-    // for (let i = 0; i < this.products.length; i++) {
-    //     if (this.products[i].id === id) {
-    //         index = i;
-    //         break;
-    //     }
-    // }
-
-    return index;
-  }
-
-  createId(): string {
-    let id = '';
-    const chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
 
   // onGlobalFilter(table: Table, event: Event) {
   //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

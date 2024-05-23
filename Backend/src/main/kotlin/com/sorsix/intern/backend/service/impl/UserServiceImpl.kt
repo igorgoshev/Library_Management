@@ -22,8 +22,6 @@ class UserServiceImpl(
     private val librarianRepository: LibrarianRepository
 ) : UserService {
     override fun getUserInfoById(id: Long): UserResponse {
-        println("Getting user info by id: $id")
-
         val user: User = userRepository
             .findByIdOrNull(id) ?: throw RuntimeException("User not found with ID: %s.".formatted(id))
         val libraryId = librarianRepository.findLibraryIdByUserId(id)

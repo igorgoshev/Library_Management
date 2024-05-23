@@ -43,7 +43,6 @@ export class ListBooksComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.listType)
 
     this.query$.pipe(
       debounceTime(400),
@@ -66,7 +65,7 @@ export class ListBooksComponent implements OnInit {
 
   fetchData(letter: string | undefined = undefined) {
 
-    
+
 
 
     this.service.getAllBooksByLetter(letter)
@@ -77,8 +76,8 @@ export class ListBooksComponent implements OnInit {
         }
       )
   }
-  
-  
+
+
   alphabet: String[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
   categories: String[] = ['Horror', 'Drama', 'Action'];
 
@@ -87,7 +86,7 @@ export class ListBooksComponent implements OnInit {
     this.selectedLetter = letter;
     this.fetchData(this.selectedLetter)
   }
-  
+
 
 
 

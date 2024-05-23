@@ -18,6 +18,8 @@ import {LoginCallbackComponent} from "./auth/login-callback/login-callback.compo
 import {CopiesListingComponent} from "./copies-listing/copies-listing.component";
 import {ReservationsListingComponent} from "./reservations-listing/reservations-listing.component";
 import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
+import {librarianAuthGuard} from "./guards/librarian-auth.guard";
+import {authGuardGuard} from "./guards/auth-guard.guard";
 
 export const routes: Routes = [
   {
@@ -35,6 +37,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [librarianAuthGuard],
     children: [
       {
         path: 'books',
@@ -85,10 +88,12 @@ export const routes: Routes = [
       {
         path: 'reservations',
         component: UserReservationsComponent,
+        canActivate: [authGuardGuard]
       },
       {
         path: 'wishlist',
         component: UserWishlistComponent,
+        canActivate: [authGuardGuard]
       },
       {
         path: '',

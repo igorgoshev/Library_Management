@@ -8,4 +8,5 @@ interface StatsService {
     fun getReservationsInLastDays(userId: Long): ReservationsInLastDays
     fun getYearlyBorrows(userId: Long): YearlyBorrows
     fun getYearlyReservations(userId: Long): YearlyReservations
+    fun refreshViews()
 }

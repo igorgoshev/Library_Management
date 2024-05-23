@@ -63,8 +63,6 @@ export class LendingComponent implements OnInit {
     this.book = Object.values(this.topBookByLetters || [])
       .flatMap(x => x as BookLendingDetails[])
       .find(x => (x as BookLendingDetails).bookCopies.some(copy => copy.id == this.bookToLend))
-    console.log(this.book)
-    console.log(this.bookToLend)
     this.userToDisplay = undefined;
     this.userLoading = true;
   }
@@ -91,8 +89,6 @@ export class LendingComponent implements OnInit {
   }
 
   findUser($event: SubmitEvent) {
-    console.log($event)
-    console.log(this.userSearch)
     this.userLoading = true;
     this.userService.getCustomerShortInfoById(+this.userSearch).subscribe(x => {
       this.userToDisplay = x
@@ -109,7 +105,7 @@ export class LendingComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData()
-    
+
     this.query$.pipe(
       debounceTime(400),
       distinctUntilChanged(),

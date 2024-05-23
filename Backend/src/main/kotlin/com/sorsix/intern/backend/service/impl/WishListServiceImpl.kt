@@ -7,6 +7,8 @@ import com.sorsix.intern.backend.repository.WishListRepository
 import com.sorsix.intern.backend.service.BookService
 import com.sorsix.intern.backend.service.UserService
 import com.sorsix.intern.backend.service.WishListService
+import jakarta.persistence.Id
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -64,5 +66,15 @@ class WishListServiceImpl(
                 description = it.description
             )
         }
+    }
+
+    override fun deleteBook(id: Long, userId: Long): Boolean {
+        val customer: Customer = customerService.findById(userId) ?: run {
+            throw Exception()
+        }
+        val wishList = customer.wishList ?: return false
+        wishList.books = wishList.books.filter { it.id != id }.toMutableList();
+        repository.save(wishList)
+        return true;
     }
 }

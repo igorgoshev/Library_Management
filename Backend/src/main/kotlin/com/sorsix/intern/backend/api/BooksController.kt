@@ -79,14 +79,18 @@ class BooksController(
         bookService.lendBook(lendBook.userId, lendBook.copyId)
     }
 
+    @GetMapping("/wishlist/exist/{id}")
+    fun bookExistInWishList(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal) : Boolean =
+        wishListService.bookExistInWishList(id, userPrincipal.id)
+
     @GetMapping("/wishlist/add/{id}")
-    fun addBookToWishList(@PathVariable id: Long) {
-        wishListService.addBookToWishList(id, 1)
+    fun addBookToWishList(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal) {
+        wishListService.addBookToWishList(id, userPrincipal.id)
     }
 
-    @GetMapping("/wishlist/exist/{id}")
-    fun bookExistInWishList(@PathVariable id: Long) : Boolean =
-        wishListService.bookExistInWishList(id, 1)
+    @GetMapping("/wishlist/delete/{id}")
+    fun deleteFromWishlist(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal) : Boolean =
+        wishListService.deleteBook(id, userPrincipal.id)
 
     @GetMapping("/reserve/{bookId}/{storeId}")
     fun reserveBook(@PathVariable bookId: Long, @PathVariable storeId: Long){

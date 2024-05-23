@@ -22,7 +22,7 @@ class WishList(
         joinColumns = [JoinColumn(name = "wish_list_id")],
         inverseJoinColumns = [JoinColumn(name = "book_id")]
     )
-    val books: MutableList<Book>,
+    var books: MutableList<Book>,
     @OneToOne
     val customer: Customer
 

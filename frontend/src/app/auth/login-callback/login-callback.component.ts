@@ -19,7 +19,6 @@ export class LoginCallbackComponent implements OnInit{
   ngOnInit(): void {
         this.route.queryParamMap.subscribe(x => {
           const token = x.get('token')
-          console.log(x)
           if(token != undefined){
             localStorage.setItem('token', token)
             this.router.navigate(['/'])

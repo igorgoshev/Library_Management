@@ -225,7 +225,6 @@ export class CopiesListingComponent implements OnInit{
       ...book,
       categories: book.categories.map(x => this.categories?.find(cat => cat.name === x)?.id ?? 0),
       authors: book.authors.map(x => this.authors?.find(cat => cat.name.includes(x.toString()))?.id ?? 0)}
-    console.log(this.book)
     this.productDialog = true;
   }
 
@@ -264,7 +263,6 @@ export class CopiesListingComponent implements OnInit{
   }
 
   saveProduct() {
-    console.log(this.book);
     this.submitted = true;
     this.bookService.addCopiesForBook(this.copiesToAdd.book.id, this.copiesToAdd.status, this.copiesToAdd.quantity).subscribe(
       res => {
@@ -279,19 +277,6 @@ export class CopiesListingComponent implements OnInit{
 
     this.book = {...this.emptyBook};
   }
-
-  findIndexById(id: string): number {
-    let index = -1;
-    // for (let i = 0; i < this.products.length; i++) {
-    //     if (this.products[i].id === id) {
-    //         index = i;
-    //         break;
-    //     }
-    // }
-
-    return index;
-  }
-
 
   onGlobalFilter(table: Table, event: Event) {
       table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

@@ -22,8 +22,6 @@ import {convertOutputFile} from "@angular-devkit/build-angular/src/tools/esbuild
 })
 export class LendingBookDetailsComponent implements OnInit{
   ngOnInit(): void {
-      console.log(this.book)
-    console.log(this.prevCallback)
   }
   @Input() book: BookLendingDetails | undefined;
   @Input() prevCallback: EventEmitter<any> | undefined;

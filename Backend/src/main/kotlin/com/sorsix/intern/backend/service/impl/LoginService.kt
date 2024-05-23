@@ -28,12 +28,10 @@ class LoginService(private val userRepository: UserRepository,
 
     fun login(loginRequest: LoginRequest): LoginResponse {
 
-        System.out.printf("Login request: %s", loginRequest)
         val authentication: Authentication
 
         val user: User = loginRequest.email?.let {
-            userRepository
-                ?.findByEmail(it)
+            userRepository.findByEmail(it)
         }
             ?: throw UserNotFoundException("Email not registered by administrator yet.")
 
@@ -60,9 +58,6 @@ class LoginService(private val userRepository: UserRepository,
     }
 
     fun register(registerRequest: RegisterRequest) {
-        System.out.printf("Login request: %s", registerRequest)
-
-
         val existing = userRepository.findByEmail(registerRequest.email)
         if (existing != null) {
             throw RuntimeException("User with email ${registerRequest.email} already exists.")

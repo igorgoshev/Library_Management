@@ -45,8 +45,7 @@ export class UserService {
     return this.http.get<UserResponse>('http://localhost:8080/api/users/me', this.getAuthToken()).pipe(
       tap(response => {
         this.loggedInUser.next(response)
-        console.log(this.loggedInUser)
-      })
+        })
     );
   }
 

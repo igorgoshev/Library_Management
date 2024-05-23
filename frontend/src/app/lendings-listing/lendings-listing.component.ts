@@ -139,15 +139,18 @@ export class LendingsListingComponent implements OnInit {
     this.deleteProductDialog = false;
     if (this.book) {
       this.bookService.finishLending(this.book.id).subscribe(
-        next => this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Books Successfully returned',
-          life: 3000,
-        }),
+        next => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Books Successfully returned',
+            life: 3000,
+          })
+          window.location.reload()
+        },
         error => this.messageService.add({
           severity: 'error',
-          summary: 'Erorr',
+          summary: 'Error',
           detail: 'There was a problem while updateing the book state',
           life: 3000,
         })
@@ -161,28 +164,6 @@ export class LendingsListingComponent implements OnInit {
     this.submitted = false;
   }
 
-
-  findIndexById(id: string): number {
-    let index = -1;
-    // for (let i = 0; i < this.products.length; i++) {
-    //     if (this.products[i].id === id) {
-    //         index = i;
-    //         break;
-    //     }
-    // }
-
-    return index;
-  }
-
-  createId(): string {
-    let id = '';
-    const chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
 
   // onGlobalFilter(table: Table, event: Event) {
   //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

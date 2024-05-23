@@ -30,15 +30,12 @@ export class UserTopBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.userService)
     this.userService.getPrincipal().subscribe(user => {
       this.user = user;
-      console.log(user);
     });
   }
 
   logout() {
-    console.log("logout")
     this.userService.logout()
     window.location.reload()
   }

@@ -69,10 +69,9 @@ export class AccordionComponent implements OnInit {
       .subscribe(res => {
         this.loading_btn = false;
         this.btn_disabled = true;
-        console.log(res)
-      }) 
+      })
   }
-  
+
 
   ngOnInit(): void {
     this.service.getBookAvailability(this.book?.id!!)
@@ -83,7 +82,6 @@ export class AccordionComponent implements OnInit {
       this.service.bookExistsInWishlist(this.book?.id!!)
         .subscribe(
           res => {
-            console.log(res)
             this.isInWishList = res
             this.setButtonProperties()
           }
@@ -104,7 +102,6 @@ export class AccordionComponent implements OnInit {
     this.service.addBookToWishlist(this.book?.id!!)
       .subscribe(
         res => {
-          console.log(res)
           this.loadingButton = false
         }
       )

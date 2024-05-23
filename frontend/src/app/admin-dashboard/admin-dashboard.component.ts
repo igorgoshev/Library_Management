@@ -43,7 +43,6 @@ export class AdminDashboardComponent implements OnInit {
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     this.statsService.getInventoryForStore().subscribe(x => {
-      console.log(x);
       this.inventoryPercentage = x
     })
 
@@ -97,7 +96,6 @@ export class AdminDashboardComponent implements OnInit {
       }
     )
     this.statsService.getLoansPerDays().subscribe(x => {
-      console.log(x)
     })
 
     this.barChartOptions  = {
