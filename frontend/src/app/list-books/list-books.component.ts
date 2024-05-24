@@ -6,9 +6,11 @@ import { BookCard } from '../Book-Card';
 import { CarouselBookCardComponent } from '../carousel-book-card/carousel-book-card.component';
 import { KeyValuePipe } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import {routes} from "../app.routes";
-import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs';
+import { Filter } from '../Filter';
+import { Category } from '../Category';
 @Component({
   selector: 'list-books',
   standalone: true,
@@ -23,7 +25,13 @@ export class ListBooksComponent implements OnInit {
   loading = true;
   topBookByLetters: Map<String, BookCard[]> | undefined
   selectedLetter: string = '';
-  query$: Subject<string> = new Subject();
+  query$: Subject<Filter> = new Subject();
+  selectedCategory: string | undefined
+
+  filter: Filter = {
+    book: "",
+    category: ""
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -35,10 +43,23 @@ export class ListBooksComponent implements OnInit {
     })
   }
 
-  search(book: string){
+  search(title: string){
+    this.filter = {
+      ...this.filter,
+      book: title
+    }
 
-    this.query$.next(book)
+    this.query$.next(this.filter)
+  }
 
+  onChange(event: DropdownChangeEvent){
+    
+    this.filter = {
+      ...this.filter,
+      category: event.value 
+    }
+
+    this.query$.next(this.filter)
   }
 
 
@@ -47,10 +68,15 @@ export class ListBooksComponent implements OnInit {
     this.query$.pipe(
       debounceTime(400),
       distinctUntilChanged(),
-      switchMap(query => this.service.searchBookByName(query))
+      switchMap(f => this.service.searchBookByNameAndCategory(f))
     ).subscribe(result => this.topBookByLetters = result);
 
     this.fetchData()
+    
+    this.service.getAvailableCategories()
+      .subscribe(res => {
+        this.categories = res.map(c => c.name)
+      })
 
     this.service.getTopBooksByLetter()
     .subscribe(
@@ -65,9 +91,6 @@ export class ListBooksComponent implements OnInit {
 
   fetchData(letter: string | undefined = undefined) {
 
-
-
-
     this.service.getAllBooksByLetter(letter)
       .subscribe(
         res => {
@@ -79,7 +102,7 @@ export class ListBooksComponent implements OnInit {
 
 
   alphabet: String[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
-  categories: String[] = ['Horror', 'Drama', 'Action'];
+  categories: String[] | undefined
 
 
   filterByLetter(letter: string) {

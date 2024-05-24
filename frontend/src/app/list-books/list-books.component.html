@@ -1,10 +1,17 @@
 <div style="display: block; height: 9em;">
-  <div style="display: flex;">
-      <div class="p-toolbar-group-center" style="flex-grow: 7;">
+  <div class="flex justify-content-around">
+      <div class="p-toolbar-group-center flex-grow-1">
           <span class="p-input-icon-left" style="width: 90%;">
               <i class="pi pi-search" style="font-size: 1.3em"></i>
               <input pInputText placeholder="Search" #searchInput (input)="search(searchInput.value)" style="width: 100%; font-size: 1.3em" />
           </span>
+      </div>
+      <div>
+        <p-dropdown 
+          [style]="{'min-width':'13vw'}"
+          [options]="categories" 
+          (onChange)="onChange($event)"
+          placeholder="Select a category" />
       </div>
   </div>
   <div style="width: 70%;margin: auto">

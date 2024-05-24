@@ -12,7 +12,8 @@ interface BookService {
              customerBooksId: List<Long>, description: String) : Book?
     fun delete(id: Long) : Book?
 
-    fun getBooksContaining(query: String) : Map<Char?, List<BookCard>>
+    fun getBooksContaining(query: String, category: String) : Map<Char?, List<BookCard>>
+    fun getBooksByCategory(category: String) : Map<Char, List<BookCard>>
 
     fun getBooksContainingAdmin(query: String) : Map<Char?, List<AvailableBooks>>
     fun findAllByIdContaining(booksId: List<Long>): MutableList<Book>

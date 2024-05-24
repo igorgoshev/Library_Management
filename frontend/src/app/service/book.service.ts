@@ -13,6 +13,7 @@ import {BookLendingDetails} from "../BookLendingDetails";
 import {LentBookDetails} from "../LentBookDetails";
 import {ReservedBookDetails} from "../ReservedBookDetails";
 import {AvailableBook} from "../AvailableBook";
+import { Filter } from '../Filter';
 
 @Injectable({
   providedIn: 'root'
@@ -102,8 +103,8 @@ export class BookService {
   }
 
 
-  searchBookByName(query: string) {
-    return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getBooksContaining' + `?query=${query}`)
+  searchBookByNameAndCategory(filter: Filter) {
+    return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getBooksContaining' + `?query=${filter.book}&category=${filter.category}`)
   }
 
 
@@ -114,6 +115,7 @@ export class BookService {
   getAllBooksByLetter(letter: string | undefined){
     return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getAllBooksByLetters' + (letter ? `?letter=${letter}` : ""))
   }
+
 
   getReviewsByBook(id: number) {
     return this.http.get<Review[]>(`http://localhost:8080/api/books/reviews/${id}`);

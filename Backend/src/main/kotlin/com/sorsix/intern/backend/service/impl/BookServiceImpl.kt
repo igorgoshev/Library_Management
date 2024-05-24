@@ -91,8 +91,8 @@ class BookServiceImpl(
         }
     }
 
-    override fun getBooksContaining(query: String): Map<Char?, List<BookCard>> {
-        val books = bookRepository.findAllByNameIgnoreCaseContaining(query)
+    override fun getBooksContaining(query: String, category: String): Map<Char?, List<BookCard>> {
+        val books = bookRepository.findAllByNameIgnoreCaseContainingAndCategories_Name(query, category)
         return books.groupBy { it.name?.first() }.mapValues {
             (k, v) ->  v.map {
                 BookCard(
@@ -100,6 +100,22 @@ class BookServiceImpl(
                     name = it.name,
                     authors = it.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
                     imgUrl = it.imgUrl
+                )
+            }
+        }
+    }
+
+    override fun getBooksByCategory(category: String): Map<Char, List<BookCard>> {
+        val books: List<Book> = repository.findAllByCategories_Name(category);
+        return books.groupBy {
+            it.name.first()
+        }.mapValues {
+            b -> b.value.map {
+                BookCard(
+                    it.id!!,
+                    it.name,
+                    it.authors?.map { a -> a.name + " " + a.lastName },
+                    it.imgUrl
                 )
             }
         }

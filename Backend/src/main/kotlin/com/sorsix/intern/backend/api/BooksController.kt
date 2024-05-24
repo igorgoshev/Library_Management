@@ -39,8 +39,11 @@ class BooksController(
     }
 
     @GetMapping("getBooksContaining")
-    fun getBooksContaining(@RequestParam query: String): Map<Char?, List<BookCard>> {
-        return bookService.getBooksContaining(query)
+    fun getBooksContaining(
+        @RequestParam(required = false) query: String,
+        @RequestParam(required = false) category: String
+    ): Map<Char?, List<BookCard>> {
+        return bookService.getBooksContaining(query, category)
     }
 
     @GetMapping("getBooksContainingAdmin")
