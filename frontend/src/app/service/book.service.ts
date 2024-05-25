@@ -15,6 +15,7 @@ import {ReservedBookDetails} from "../ReservedBookDetails";
 import {AvailableBook} from "../AvailableBook";
 import { Filter } from '../Filter';
 import {CustomerBookCard} from "../CustomerBookCard";
+import { CustomerBook } from '../CustomerBook';
 
 @Injectable({
   providedIn: 'root'
@@ -218,4 +219,13 @@ export class BookService {
   addBookToCustomerCollection(id: number) {
     return this.http.get(`http://localhost:8080/api/books/customer/add/${id}`, this.getAuthToken());
   }
+
+  getCustomerBooks(id: number){
+    return this.http.get<CustomerBook[]>(`http://localhost:8080/api/books/customersContaining/${id}`)
+  }
+
+  lendBookToCustomer(id: number){
+    return this.http.get(`http://localhost:8080/api/books/lend/${id}`)
+  }
+
 }
