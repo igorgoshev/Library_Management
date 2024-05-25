@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface TradeRepository : JpaRepository<Trade, Long> {
+    fun findAllByCustomerBook_Id(customerBookId: Long): List<Trade>
 }

@@ -11,12 +11,13 @@ import jakarta.persistence.OneToMany
 class CustomerBook(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    var id: Long,
     @ManyToOne
-    val customer: Customer,
+    var customer: Customer,
     @ManyToOne
-    val book: Book,
+    var book: Book,
     @OneToMany(mappedBy = "customerBook")
-    val trades: List<Trade>
+    var trades: MutableList<Trade> = mutableListOf(),
+    var available: Boolean = true
 ) {
 }

@@ -29,4 +29,6 @@ interface BookService {
     fun lendBook(userId: Long, bookId: Long)
     fun getPopularBooks(): List<BookCard>
     fun getBookCopies(bookId: Long, userId: Long): List<AvailableBook>
+    fun getCustomerBooks(userId: Long): List<CustomerBookCard>
+    fun getAllTradesByCustomerBook(bookId: Long): List<LentBookDetails>
 }

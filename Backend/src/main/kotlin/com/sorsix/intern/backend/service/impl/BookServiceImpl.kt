@@ -10,7 +10,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Service
 class BookServiceImpl(
@@ -28,10 +27,12 @@ class BookServiceImpl(
     private val bookRepository: BookRepository,
     private val borrowBookRepository: BorrowBookRepository,
     private val reserveBookRepository: ReserveBookRepository,
-    private val mailingService: MailingService
+    private val mailingService: MailingService,
+    private val customerBookRepository: CustomerBookRepository,
+    private val tradeRepository: TradeRepository
 
 
-    ) : BookService {
+) : BookService {
 
     override fun findAll(): List<Book> = repository.findAll()
 
@@ -103,6 +104,25 @@ class BookServiceImpl(
                 )
             }
         }
+    }
+
+    private fun mapBookToBookCard(it: Book): BookCard {
+        return BookCard(
+            id = it.id!!,
+            name = it.name,
+            authors = it.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
+            imgUrl = it.imgUrl
+        )
+    }
+
+    private fun mapCustomerBookToCustomerBookCard(it: CustomerBook): CustomerBookCard {
+        return CustomerBookCard(
+            id = it.id!!,
+            name = it.book.name,
+            authors = it.book.authors?.map { it.name + " " + it.lastName } ?: emptyList(),
+            imgUrl = it.book.imgUrl,
+            available = it.available
+        )
     }
 
     override fun getBooksByCategory(category: String): Map<Char, List<BookCard>> {
@@ -336,6 +356,37 @@ class BookServiceImpl(
             AvailableBook(
                 id = it.id ?: 0,
                 status = it.condition.toString()
+            )
+        }
+    }
+
+    override fun getCustomerBooks(userId: Long): List<CustomerBookCard> {
+        val books = customerBookRepository.findAllByCustomerId(userId);
+        return books.map { mapCustomerBookToCustomerBookCard(it) }
+    }
+
+    override fun getAllTradesByCustomerBook(bookId: Long): List<LentBookDetails> {
+        val books = tradeRepository.findAllByCustomerBook_Id(bookId);
+        return books.map {
+            LentBookDetails(
+                dateFrom = it.dateFrom,
+                dateTo = it.dateTo,
+                id = it.id,
+                customer = UserAvatar(
+                    id = it.customer.id,
+                    name = it.customer.name,
+                    email = it.customer.email,
+                    imgUrl = it.customer.imgUser ?: "",
+                    lastName = ""
+                ),
+                book = BookInTable(
+                    id = it.customerBook.book.id,
+                    name = it.customerBook.book.name,
+                    description = it.customerBook.book.description ?: "",
+                    imgUrl = it.customerBook.book.imgUrl,
+                    isbn = it.customerBook.book.isbn ?: "",
+                    publisher = it.customerBook.book.publishingHouse.name ?: ""
+                )
             )
         }
     }

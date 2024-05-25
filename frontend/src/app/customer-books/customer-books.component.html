@@ -1,0 +1,18 @@
+<h3>My Books</h3>
+<p-toolbar styleClass="mb-4">
+  <ng-template pTemplate="left">
+    <div class="my-2">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+              (click)="openNew()"></button>
+    </div>
+  </ng-template>
+</p-toolbar>
+<div class="grid">
+  @for (book of books; track $index){
+    <div class="col-3">
+      <a [routerLink]="['/my', book.id]">
+      <book-card [book]="book"></book-card>
+      </a>
+    </div>
+  }
+</div>

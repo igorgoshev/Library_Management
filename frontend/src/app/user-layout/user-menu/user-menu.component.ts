@@ -29,7 +29,7 @@ export class UserMenuComponent {
               {label: 'Books', icon: 'pi pi-fw pi-book', routerLink: ['/books']},
               {label: 'My Reservations', icon: 'pi pi-fw pi-calendar-clock', routerLink: ['/reservations']},
               {label: 'My Wishlist', icon: 'pi pi-fw pi-list-check', routerLink: ['/wishlist']},
-              {label: 'Book Trade', icon: 'pi pi-fw pi-arrow-right-arrow-left', routerLink: ['/trade']},
+              {label: 'Book Trade', icon: 'pi pi-fw pi-arrow-right-arrow-left', routerLink: ['/my']},
             ]
           },
         ];

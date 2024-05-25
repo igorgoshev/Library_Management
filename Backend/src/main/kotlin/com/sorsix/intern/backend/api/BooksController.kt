@@ -164,4 +164,14 @@ class BooksController(
     fun finishReservation(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal) {
         reservedBookService.finishReservation(id, userPrincipal.id)
     }
+
+    @GetMapping("/customer/all")
+    fun getAllCustomerBooks(@CurrentUser userPrincipal: UserPrincipal): List<CustomerBookCard> {
+        return bookService.getCustomerBooks(userPrincipal.id)
+    }
+
+    @GetMapping("/customer/{id}")
+    fun getAllCustomerBookTrades(@CurrentUser userPrincipal: UserPrincipal, @PathVariable id: Long): List<LentBookDetails> {
+        return bookService.getAllTradesByCustomerBook(id);
+    }
 }

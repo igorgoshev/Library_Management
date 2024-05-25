@@ -5,6 +5,17 @@
       @for (author of book?.authors; track $index) {
         <p class="card-text text-overflow-ellipsis">{{author}}</p>
       }
+      @if(book?.available == true) {
+        <div class="text-center align-items-center justify-content-center flex flex-row gap-2">
+          <p-badge [value]="" severity="success" />
+          <p>Available</p>
+        </div>
+      } @else if (book?.available == false) {
+        <div class="text-center align-items-center justify-content-center flex flex-row gap-2">
+          <p-badge [value]="" severity="danger" />
+          <p>Taken</p>
+        </div>
+      }
     </div>
 </div>
 

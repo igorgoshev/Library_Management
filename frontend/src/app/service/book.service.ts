@@ -14,6 +14,7 @@ import {LentBookDetails} from "../LentBookDetails";
 import {ReservedBookDetails} from "../ReservedBookDetails";
 import {AvailableBook} from "../AvailableBook";
 import { Filter } from '../Filter';
+import {CustomerBookCard} from "../CustomerBookCard";
 
 @Injectable({
   providedIn: 'root'
@@ -204,5 +205,13 @@ export class BookService {
 
   deleteFromWishlist(id: number) {
     return this.http.get(`http://localhost:8080/api/books/wishlist/delete/${id}`, this.getAuthToken());
+  }
+
+  getAllCustomerBooks() {
+    return this.http.get<CustomerBookCard[]>('http://localhost:8080/api/books/customer/all', this.getAuthToken());
+  }
+
+  getAllTradesForCustomerBook(id: number) {
+    return this.http.get<LentBookDetails[]>(`http://localhost:8080/api/books/customer/${id}`, this.getAuthToken());
   }
 }

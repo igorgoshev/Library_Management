@@ -20,6 +20,8 @@ import {ReservationsListingComponent} from "./reservations-listing/reservations-
 import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
 import {librarianAuthGuard} from "./guards/librarian-auth.guard";
 import {authGuardGuard} from "./guards/auth-guard.guard";
+import {CustomerBooksComponent} from "./customer-books/customer-books.component";
+import {TradesListingComponent} from "./trades-listing/trades-listing.component";
 
 export const routes: Routes = [
   {
@@ -98,6 +100,14 @@ export const routes: Routes = [
       {
         path: '',
         component: UserDashboardComponent
+      },
+      {
+        path: 'my',
+        component: CustomerBooksComponent
+      },
+      {
+        path: 'my/:id',
+        component: TradesListingComponent
       }
     ]
   },

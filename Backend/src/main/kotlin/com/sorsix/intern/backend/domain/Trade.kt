@@ -1,19 +1,21 @@
 package com.sorsix.intern.backend.domain
 
 import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
 class Trade(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    var id: Long,
 
     @ManyToOne
-    val customer: Customer,
+    var customer: Customer,
 
     @ManyToOne
-    val customerBook: CustomerBook,
+    var customerBook: CustomerBook,
 
-
+    var dateFrom: LocalDate,
+    var dateTo: LocalDate,
 ) {
 }

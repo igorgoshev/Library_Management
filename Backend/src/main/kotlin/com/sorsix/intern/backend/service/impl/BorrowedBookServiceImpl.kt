@@ -69,7 +69,7 @@ class BorrowedBookServiceImpl(
             }
     }
 
-    @Scheduled(cron = "* * 8 * * *")
+//    @Scheduled(cron = "* * 8 * * *")
     private fun notifyOverdue() {
         val overdues = repository.findAllOverdue();
         overdues.forEach {
