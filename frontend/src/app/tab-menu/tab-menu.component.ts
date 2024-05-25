@@ -5,11 +5,14 @@ import { ReviewComponent } from '../review/review.component';
 import { MenuItem } from 'primeng/api';
 import { Book } from '../Book';
 import {NgIf} from "@angular/common";
+import {AddBookToCollectionComponent} from "../add-book-to-collection/add-book-to-collection.component";
+import {UserService} from "../service/user.service";
+import {UserResponse} from "../UserResponse";
 
 @Component({
   selector: 'tab-menu',
   standalone: true,
-  imports: [TabMenuModule, AccordionComponent, ReviewComponent, NgIf],
+  imports: [TabMenuModule, AccordionComponent, ReviewComponent, NgIf, AddBookToCollectionComponent],
   templateUrl: './tab-menu.component.html',
   styleUrl: './tab-menu.component.css'
 })
@@ -18,10 +21,16 @@ export class TabMenuComponent implements OnInit{
   activeItem: MenuItem | undefined
 
   @Input() book?: Book;
+  user: UserResponse | undefined
+  constructor(private userService: UserService,) {
+  }
 
   ngOnInit(): void {
     this.items = this.getItems();
     this.activeItem = this.items[0]
+    this.userService.getPrincipal().subscribe(x => {
+      this.user = x;
+    })
   }
 
   getItems(): MenuItem[]{
@@ -34,7 +43,10 @@ export class TabMenuComponent implements OnInit{
       },},
       { label: 'Leave Review', icon: 'pi pi-comment', command: (event) => {
         this.activeItem = event.item
-      },}
+      },},
+      { label: 'Add Book to Your Collection', icon: 'pi pi-folder-plus', command: (event) => {
+          this.activeItem = event.item
+        },}
     ]
   }
 

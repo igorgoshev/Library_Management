@@ -11,7 +11,7 @@ import jakarta.persistence.OneToMany
 class CustomerBook(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long = 0,
     @ManyToOne
     var customer: Customer,
     @ManyToOne

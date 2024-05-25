@@ -174,4 +174,9 @@ class BooksController(
     fun getAllCustomerBookTrades(@CurrentUser userPrincipal: UserPrincipal, @PathVariable id: Long): List<LentBookDetails> {
         return bookService.getAllTradesByCustomerBook(id);
     }
+
+    @GetMapping("/customer/add/{id}")
+    fun addBookToCustomerCollection(@CurrentUser userPrincipal: UserPrincipal, @PathVariable id: Long) {
+        bookService.addBookToCustomer(userPrincipal.id, id)
+    }
 }

@@ -29,7 +29,8 @@ class BookServiceImpl(
     private val reserveBookRepository: ReserveBookRepository,
     private val mailingService: MailingService,
     private val customerBookRepository: CustomerBookRepository,
-    private val tradeRepository: TradeRepository
+    private val tradeRepository: TradeRepository,
+    private val customerRepository: CustomerRepository
 
 
 ) : BookService {
@@ -389,5 +390,17 @@ class BookServiceImpl(
                 )
             )
         }
+    }
+
+    override fun addBookToCustomer(userId: Long, bookId: Long) {
+        val book = repository.findByIdOrNull(bookId) ?: throw NotFoundException()
+        val customer = customerRepository.findByIdOrNull(userId) ?: throw NotFoundException()
+
+        customerBookRepository.save(
+            CustomerBook(
+                book = book,
+                customer = customer,
+            )
+        )
     }
 }
