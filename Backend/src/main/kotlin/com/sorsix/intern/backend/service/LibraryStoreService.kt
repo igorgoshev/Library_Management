@@ -10,4 +10,5 @@ interface LibraryStoreService {
     fun delete(id: Long) : LibraryStore?
     fun save(id: Long?, libraryStoreDto: LibraryStoreDto) : LibraryStore?
     fun getPopularStores(): List<StoreDetails>
+    fun findAllDto(): List<com.sorsix.intern.backend.api.dtos.LibraryStore>
 }

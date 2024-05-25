@@ -13,10 +13,10 @@ data class Author(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    var name: String,
-    var lastName: String,
+    var name: String = "",
+    var lastName: String = "",
     @ManyToMany(mappedBy = "authors")
     @JsonIgnore
-    var books: MutableList<Book>
+    var books: MutableList<Book> = mutableListOf()
 ) {
 }

@@ -28,6 +28,17 @@ class LibraryStoreServiceImpl(
         }
     }
 
+    override fun findAllDto(): List<com.sorsix.intern.backend.api.dtos.LibraryStore> {
+        return repository.findAll()
+            .map { com.sorsix.intern.backend.api.dtos.LibraryStore(
+                id = it.id ?: 0,
+                name = it.name,
+                imgUrl = it.imgUrl,
+                libraryName = it.library?.name ?: "",
+                address = it.address
+            ) }
+    }
+
     override fun save(id: Long?, libraryStoreDto: LibraryStoreDto) : LibraryStore? =
         findById(id)?.let {
             it.library = libraryService.findById(libraryStoreDto.libraryId)

@@ -11,11 +11,11 @@ import jakarta.persistence.OneToMany
 class PublishingHouse(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
-    val name: String,
-    val address: String,
+    var id: Long = 0,
+    var name: String = "",
+    var address: String = "",
     @JsonIgnore
     @OneToMany(mappedBy = "publishingHouse")
-    val books: List<Book>
+    var books: MutableList<Book> = mutableListOf<Book>()
 ) {
 }

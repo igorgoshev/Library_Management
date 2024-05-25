@@ -1,5 +1,6 @@
 package com.sorsix.intern.backend.api
 
+import com.sorsix.intern.backend.api.dtos.LibraryStore
 import com.sorsix.intern.backend.api.dtos.StoreDetails
 import com.sorsix.intern.backend.service.impl.LibraryStoreServiceImpl
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -14,5 +15,10 @@ class LibrariesController(private val libraryStoreServiceImpl: LibraryStoreServi
     @GetMapping("/stores/popular")
     fun getPopularStores(): List<StoreDetails> {
         return libraryStoreServiceImpl.getPopularStores()
+    }
+
+    @GetMapping("/stores")
+    fun getStores(): List<LibraryStore> {
+        return libraryStoreServiceImpl.findAllDto()
     }
 }

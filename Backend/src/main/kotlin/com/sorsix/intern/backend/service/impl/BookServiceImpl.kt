@@ -2,6 +2,7 @@ package com.sorsix.intern.backend.service.impl
 
 import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.domain.*
+import com.sorsix.intern.backend.domain.Author
 import com.sorsix.intern.backend.repository.*
 import com.sorsix.intern.backend.service.*
 import jakarta.transaction.Transactional

@@ -23,6 +23,8 @@ import {TableLoaderComponent} from '../loaders/table-loader/table-loader.compone
 import {AuthorService} from "../service/author.service";
 import {PublisherService} from "../service/publisher.service";
 import {Publisher} from "../Publisher";
+import {StoreDetails} from "../StoreDetails";
+import {LibraryService} from "../service/library.service";
 
 @Component({
   selector: 'app-books-listing',
@@ -48,10 +50,10 @@ import {Publisher} from "../Publisher";
     TableLoaderComponent
   ],
   // providers: [MessageService],
-  templateUrl: './publishers-listing.component.html',
-  styleUrl: './publishers-listing.component.css',
+  templateUrl: './stores-listing.component.html',
+  styleUrl: './stores-listing.component.css',
 })
-export class PublishersListingComponent implements OnInit {
+export class StoresListingComponent implements OnInit {
   productDialog: boolean = false;
   isLoading: Boolean = true;
 
@@ -59,20 +61,22 @@ export class PublishersListingComponent implements OnInit {
 
   deleteProductsDialog: boolean = false;
 
-  publishers$: Observable<Publisher[]> = this.publisherService.getPublishers();
-  publishers: Publisher[] | undefined;
+  stores$: Observable<StoreDetails[]> = this.libraryService.getLocationsForLibrary();
+  stores: StoreDetails[] | undefined;
 
-  refreshEvent = this.publisherService.refreshEvent;
+  refreshEvent = this.libraryService.refreshEvent;
 
-  emptyPublisher: Publisher = {
+  emptyStore: StoreDetails = {
     id: 0,
     name: '',
     address: '',
+    libraryName: '',
+    imgUrl: ''
   };
 
-  publisher: Publisher = {...this.emptyPublisher}
+  store: StoreDetails = {...this.emptyStore}
 
-  selectedPublishers: Publisher[] = [];
+  selectedStores: StoreDetails[] = [];
 
   submitted: boolean = false;
 
@@ -83,7 +87,7 @@ export class PublishersListingComponent implements OnInit {
   rowsPerPageOptions = [5, 10, 20];
 
   constructor(
-    private publisherService: PublisherService,
+    private libraryService: LibraryService,
     private messageService: MessageService
   ) {
   }
@@ -95,10 +99,12 @@ export class PublishersListingComponent implements OnInit {
       {field: 'id', header: 'ID'},
       {field: 'name', header: 'Name'},
       {field: 'address', header: 'Address'},
+      {field: 'libraryName', header: 'Library'},
+      {field: 'imgUrl', header: 'Image'},
     ];
 
-    this.publishers$.subscribe(x => {
-      this.publishers = x;
+    this.stores$.subscribe(x => {
+      this.stores = x;
       this.isLoading = false;
     })
 
@@ -111,14 +117,14 @@ export class PublishersListingComponent implements OnInit {
 
   fetchData() {
 
-    this.publishers$.subscribe(x => {
-      this.publishers = x;
+    this.stores$.subscribe(x => {
+      this.stores = x;
     })
 
   }
 
   openNew() {
-    this.publisher = {...this.emptyPublisher}
+    this.store = {...this.emptyStore}
     this.submitted = false;
     this.productDialog = true;
   }
@@ -127,40 +133,40 @@ export class PublishersListingComponent implements OnInit {
     this.deleteProductsDialog = true;
   }
 
-  editProduct(publisher: Publisher) {
-    this.publisher = {...publisher}
+  editProduct(store: StoreDetails) {
+    this.store = {...store}
     this.productDialog = true;
   }
 
-  deleteProduct(publisher: Publisher) {
+  deleteProduct(store: StoreDetails) {
     this.deleteProductDialog = true;
-    this.publisher = {...publisher}
+    this.store = {...store}
   }
 
   confirmDeleteSelected() {
     this.deleteProductsDialog = false;
-    this.publishers = this.publishers?.filter((val) => !this.selectedPublishers.includes(val));
+    this.stores = this.stores?.filter((val) => !this.selectedStores.includes(val));
     this.messageService.add({
       severity: 'success',
       summary: 'Successful',
       detail: 'Products Deleted',
       life: 3000,
     });
-    this.publishers = [];
+    this.stores = [];
   }
 
   confirmDelete() {
     this.deleteProductDialog = false;
-    this.publisherService.deletePublisher(this.publisher.id).subscribe(
+    this.libraryService.deleteLibraryStore(this.store.id).subscribe(
       res => {
         this.refreshEvent.next();
-        this.messageService.add({severity: 'success', detail: `${this.publisher.name} is successfully deleted!`})
+        this.messageService.add({severity: 'success', detail: `${this.store.name} is successfully deleted!`})
       },
       err => {
         this.messageService.add({severity: 'error', detail: 'An error occured while commiting the action!'})
       }
     )
-    this.publisher = {...this.publisher}
+    this.store = {...this.store}
   }
 
   hideDialog() {
@@ -170,7 +176,7 @@ export class PublishersListingComponent implements OnInit {
 
   saveProduct() {
     this.submitted = true;
-    this.publisherService.addPublisher(this.publisher).subscribe(
+    this.libraryService.addStore(this.store).subscribe(
       res => {
         this.refreshEvent.next();
         this.messageService.add({severity: 'success', detail: 'The book is successfully saved!'})
@@ -183,7 +189,7 @@ export class PublishersListingComponent implements OnInit {
 
     this.productDialog = false;
 
-    this.publisher = {...this.emptyPublisher};
+    this.store = {...this.emptyStore};
   }
 
   // onGlobalFilter(table: Table, event: Event) {

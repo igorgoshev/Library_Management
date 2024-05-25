@@ -38,15 +38,16 @@ export class AuthorService {
   }
 
   addAuthor(author: Author): Observable<Author> {
-    return this.http.post<Author>('http://localhost:8080/api/authors/add', author)
+    console.log(author)
+    return this.http.post<Author>('http://localhost:8080/api/authors', author)
       .pipe(
         catchError(this.handleError)
       );
   }
 
 
-  deleteAuthor(id: number): Observable<Book> {
-    return this.http.delete<Book>(`http://localhost:8080/api/authors/delete/${id}`)
+  deleteAuthor(id: number) {
+    return this.http.delete(`http://localhost:8080/api/authors/${id}`)
       .pipe(
         catchError(this.handleError)
       );

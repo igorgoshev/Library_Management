@@ -15,7 +15,7 @@
                       (click)="openNew()"></button>
               <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
                       (click)="deleteSelectedProducts()"
-                      [disabled]="!selectedPublishers || !selectedPublishers.length"></button>
+                      [disabled]="!selectedStores || !selectedStores.length"></button>
             </div>
           </ng-template>
           <ng-template pTemplate="right">
@@ -25,11 +25,11 @@
                     (click)="dt.exportCSV()"></button>
           </ng-template>
         </p-toolbar>
-        <p-table #dt [value]="publishers != undefined ? publishers : []" [columns]="cols" responsiveLayout="scroll"
+        <p-table #dt [value]="stores != undefined ? stores : []" [columns]="cols" responsiveLayout="scroll"
                  [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']"
                  [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                 [(selection)]="selectedPublishers" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                 [(selection)]="selectedStores" selectionMode="multiple" [rowHover]="true" dataKey="id">
           <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
               <h5 class="m-0">Manage publishers</h5>
@@ -66,6 +66,13 @@
                 <span class="p-column-title">Address</span>
                 {{publisher.address}}
               </td>
+              <td style="min-width:8rem;">
+                <span class="p-column-title">Library</span>
+                {{publisher.libraryName}}
+              </td>
+              <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
+                <img [src]="publisher.imgUrl" [alt]="publisher.name" width="100" class="shadow-4" />
+              </td>
               <td>
                 <div class="flex">
                   <button pButton pRipple icon="pi pi-pencil"
@@ -86,15 +93,15 @@
       <ng-template pTemplate="content">
         <div class="field">
           <label for="name">Name</label>
-          <input type="text" pInputText id="name" [(ngModel)]="publisher.name" required autofocus
-                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !publisher.name}" />
-          <small class="ng-dirty ng-invalid" *ngIf="submitted && !publisher?.name">Name is required.</small>
+          <input type="text" pInputText id="name" [(ngModel)]="store.name" required autofocus
+                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !store.name}" />
+          <small class="ng-dirty ng-invalid" *ngIf="submitted && !store?.name">Name is required.</small>
         </div>
         <div class="field">
           <label for="name">Address</label>
-          <input type="text" pInputText id="lastName" [(ngModel)]="publisher.address" required autofocus
-                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !publisher.address}" />
-          <small class="ng-dirty ng-invalid" *ngIf="submitted && !publisher?.address">Address is required.</small>
+          <input type="text" pInputText id="lastName" [(ngModel)]="store.address" required autofocus
+                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !store.address}" />
+          <small class="ng-dirty ng-invalid" *ngIf="submitted && !store?.address">Address is required.</small>
         </div>
       </ng-template>
 
@@ -109,7 +116,7 @@
     <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
       <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="publisher">Are you sure you want to delete <b>{{publisher.name}}</b>? Deleting the publisher will remove all its books and connected information.</span>
+        <span *ngIf="store">Are you sure you want to delete <b>{{store.name}}</b>? Deleting the publisher will remove all its books and connected information.</span>
       </div>
       <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"

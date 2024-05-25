@@ -93,7 +93,7 @@ export class AuthorsListingComponent implements OnInit {
     this.cols = [
       {field: 'id', header: 'ID'},
       {field: 'name', header: 'Name'},
-      {field: 'lastName', header: 'lastName'},
+      {field: 'lastName', header: 'Last Name'},
     ];
 
     this.authors$.subscribe(x => {
@@ -153,7 +153,7 @@ export class AuthorsListingComponent implements OnInit {
     this.authorService.deleteAuthor(this.author.id).subscribe(
       res => {
         this.refreshEvent.next();
-        this.messageService.add({severity: 'success', detail: `${this.author.name} is successfully deleted!`})
+        this.messageService.add({severity: 'success', detail: `${this.author.name} ${this.author.lastName} is successfully deleted!`})
       },
       err => {
         this.messageService.add({severity: 'error', detail: 'An error occured while commiting the action!'})
@@ -172,7 +172,7 @@ export class AuthorsListingComponent implements OnInit {
     this.authorService.addAuthor(this.author).subscribe(
       res => {
         this.refreshEvent.next();
-        this.messageService.add({severity: 'success', detail: 'The book is successfully saved!'})
+        this.messageService.add({severity: 'success', detail: 'The author is successfully saved!'})
       },
       err => {
         this.messageService.add({severity: 'error', detail: JSON.stringify(err)})

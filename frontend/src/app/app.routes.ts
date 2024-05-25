@@ -22,6 +22,8 @@ import {librarianAuthGuard} from "./guards/librarian-auth.guard";
 import {authGuardGuard} from "./guards/auth-guard.guard";
 import {CustomerBooksComponent} from "./customer-books/customer-books.component";
 import {TradesListingComponent} from "./trades-listing/trades-listing.component";
+import {PublishersListingComponent} from "./publishers-listing/publishers-listing.component";
+import {StoresListingComponent} from "./stores-listing/stores-listing.component";
 
 export const routes: Routes = [
   {
@@ -46,6 +48,10 @@ export const routes: Routes = [
         component: BooksListingComponent
       },
       {
+        path: 'publishers',
+        component: PublishersListingComponent
+      },
+      {
         path: 'authors',
         component: AuthorsListingComponent
       },
@@ -64,6 +70,10 @@ export const routes: Routes = [
       {
         path: 'reservations',
         component: ReservationsListingComponent
+      },
+      {
+        path: 'stores',
+        component: StoresListingComponent
       },
       {
         path: '',
