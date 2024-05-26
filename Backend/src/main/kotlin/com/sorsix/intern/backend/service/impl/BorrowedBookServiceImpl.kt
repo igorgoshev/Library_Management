@@ -4,27 +4,32 @@ import com.sorsix.intern.backend.api.dtos.BookCard
 import com.sorsix.intern.backend.api.dtos.BookInTable
 import com.sorsix.intern.backend.api.dtos.LentBookDetails
 import com.sorsix.intern.backend.api.dtos.UserAvatar
+import com.sorsix.intern.backend.domain.Book
 import com.sorsix.intern.backend.domain.BorrowBook
 import com.sorsix.intern.backend.repository.BorrowBookRepository
 import com.sorsix.intern.backend.repository.LibrarianRepository
+import com.sorsix.intern.backend.repository.WishListRepository
 import com.sorsix.intern.backend.service.BorrowedBookService
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 @Service
 class BorrowedBookServiceImpl(
     val repository: BorrowBookRepository,
     private val librarianRepository: LibrarianRepository,
-    private val mailingServiceImpl: MailingServiceImpl
+    private val mailingServiceImpl: MailingServiceImpl,
+    private val wishListRepository: WishListRepository
 ) : BorrowedBookService {
     override fun findAllByIdContaining(borrowedBooksId: List<Long>): MutableList<BorrowBook> =
         repository.findAllByIdIn(borrowedBooksId);
 
     override fun findAllActiveByStoreId(userId: Long): List<LentBookDetails> {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
         val books = repository.findAllByBookInLibrary_LibraryStore_IdAndDateToIsNull(storeId)
         return books.map {
             LentBookDetails(
@@ -53,7 +58,30 @@ class BorrowedBookServiceImpl(
     override fun finishLending(lendingId: Long) {
         val book = repository.findByIdOrNull(lendingId) ?: throw RuntimeException()
         book.dateTo = LocalDate.now()
+        book.bookInLibrary.isLent = false;
+        book.bookInLibrary.isReserved = false;
         repository.save(book)
+        notifyForBookBackAvailable(book.bookInLibrary.book ?: throw RuntimeException())
+    }
+
+    private fun notifyForBookBackAvailable(book: Book) {
+        val wishlistEntries = wishListRepository.findAllByBooksContaining(book)
+        val emailSender = Executors.newSingleThreadExecutor()
+        emailSender.execute {
+            wishlistEntries.forEach {
+                mailingServiceImpl.sendMail(
+                    to = it.customer.email,
+                    subject = "${book.name} Available Now!",
+                    message = "Hi ${it.customer.name},\n" +
+                            "\n" +
+                            "Great news! The book you've been waiting for, \"${book.name},\" is back in stock and ready for you to grab. \uD83D\uDCDA✨\n" +
+                            "\n Happy reading!\n" +
+                            "\n" +
+                            "Best,"
+                )
+            }
+        }
+        emailSender.shutdown()
     }
 
     override fun findAllActiveByCustomerId(userId: Long): List<BookCard> {
@@ -69,7 +97,7 @@ class BorrowedBookServiceImpl(
             }
     }
 
-//    @Scheduled(cron = "* * 8 * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     private fun notifyOverdue() {
         val overdues = repository.findAllOverdue();
         overdues.forEach {
@@ -85,6 +113,7 @@ class BorrowedBookServiceImpl(
                         "Thank you for your prompt attention to this matter.\n" +
                         "\n" +
                         "Best regards,"
-            ) }
+            )
+        }
     }
 }

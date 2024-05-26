@@ -15,7 +15,6 @@ class HttpCookieOAuth2AuthorizationRequestRepository : AuthorizationRequestRepos
         return CookieUtils
             .getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
             ?.let { CookieUtils.deserialize(it, OAuth2AuthorizationRequest::class.java) }
-            ?: null
     }
 
     override fun saveAuthorizationRequest(

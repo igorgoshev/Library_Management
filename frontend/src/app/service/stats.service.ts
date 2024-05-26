@@ -24,6 +24,10 @@ export class StatsService {
     return this.http.get<number>('http://localhost:8080/api/stats/inventory', this.getAuthToken());
   }
 
+  getRatioForStore() {
+    return this.http.get<number>('http://localhost:8080/api/stats/ratio', this.getAuthToken());
+  }
+
   getLoansPerDays() {
     return this.http.get<LoansInLastDays>(`http://localhost:8080/api/stats/loansPerDays`, this.getAuthToken());
   }

@@ -9,4 +9,5 @@ interface CustomerBookService {
     fun getCollectionOfBookUser(bookId: Long): List<com.sorsix.intern.backend.api.dtos.CustomerBook>;
     fun lendBookToCustomer(customerBookId: Long, customerId: Long)
 
+    fun returnBook(id: Long)
 }

@@ -133,7 +133,7 @@ export class LendingComponent implements OnInit {
         next: _ =>
         {
           this.messageService.add({severity: 'success', summary: 'Success', detail: 'Book successfully lent!'})
-          this.router.navigate(['/admin', 'lendings']);
+          setTimeout(() => this.router.navigate(['/admin', 'lendings']), 2000)
         },
 
         error: _ => this.messageService.add({

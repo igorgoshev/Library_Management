@@ -2,6 +2,7 @@ package com.sorsix.intern.backend.api
 
 import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.config.CurrentUser
+import com.sorsix.intern.backend.domain.BookInLibrary
 import com.sorsix.intern.backend.domain.CustomerBook
 import com.sorsix.intern.backend.security.UserPrincipal
 import com.sorsix.intern.backend.service.*
@@ -9,6 +10,7 @@ import com.sorsix.intern.backend.service.impl.BookInLibraryServiceImpl
 import com.sorsix.intern.backend.service.impl.BorrowedBookServiceImpl
 import com.sorsix.intern.backend.service.impl.CategoryServiceImpl
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @CrossOrigin
@@ -18,9 +20,9 @@ class BooksController(
     private val reviewService: ReviewService,
     private val wishListService: WishListService,
     private val reservedBookService: ReservedBookService,
-    private val borrowedBookService: BorrowedBookServiceImpl,
-    private val categoryService: CategoryServiceImpl,
-    private val bookInLibraryService: BookInLibraryServiceImpl,
+    private val borrowedBookService: BorrowedBookService,
+    private val categoryService: CategoriesService,
+    private val bookInLibraryService: BookInLibraryService,
     private val customerBookService: CustomerBookService
 ) {
     @GetMapping("")
@@ -60,8 +62,8 @@ class BooksController(
     fun getBookById(@PathVariable id: Long) = bookService.getBookDetailsById(id)
 
     @PostMapping("/add")
-    fun addBook(@RequestBody book: AddBook): Unit {
-        bookService.addBook(book);
+    fun addBook(@RequestPart("book") book: AddBook, @RequestPart("imgFile") file: MultipartFile): Unit {
+        bookService.addBook(book, file);
     }
 
     @GetMapping("/availability/{id}")
@@ -187,5 +189,10 @@ class BooksController(
     @GetMapping("/lend/{id}")
     fun lendBookToCustomer(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal){
         return customerBookService.lendBookToCustomer(id, userPrincipal.id)
+    }
+
+    @GetMapping("/customer/{id}/finish")
+    fun returnCustomerBook(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal) {
+        customerBookService.returnBook(id)
     }
 }

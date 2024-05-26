@@ -6,7 +6,7 @@ import {ButtonModule} from 'primeng/button';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {RippleModule} from 'primeng/ripple';
 import {ToastModule} from 'primeng/toast';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {ToolbarModule} from 'primeng/toolbar';
 import {RatingModule} from 'primeng/rating';
 import {InputTextModule} from 'primeng/inputtext';
@@ -186,7 +186,7 @@ export class AuthorsListingComponent implements OnInit {
   }
 
 
-  // onGlobalFilter(table: Table, event: Event) {
-  //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-  // }
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
 }

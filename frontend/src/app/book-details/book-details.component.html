@@ -7,7 +7,7 @@
         <div class="grid">
             <div class="sm:col-12 md:col-3">
                 <div class="flex justify-content-center flex-wrap">
-                    <img class="border-round" style="width: 90%;" src="{{ book?.imgUrl }}" alt="book_cover"/>
+                    <img class="border-round" style="width: 90%;" src="{{ book!.imgUrl | imageBaseUrl }}" alt="book_cover"/>
                 </div>
                 <div class="flex justify-content-center pt-3">
                     <!-- <p-rating stars="5" [ngModel]="book?.averageRating" [readonly]="true" [cancel]="false"> -->

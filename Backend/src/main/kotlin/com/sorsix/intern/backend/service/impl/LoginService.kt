@@ -5,6 +5,7 @@ import com.sorsix.intern.backend.domain.User
 import com.sorsix.intern.backend.domain.dto.LoginRequest
 import com.sorsix.intern.backend.domain.dto.LoginResponse
 import com.sorsix.intern.backend.domain.exceptions.UserNotFoundException
+import com.sorsix.intern.backend.repository.CustomerRepository
 import com.sorsix.intern.backend.repository.UserRepository
 import com.sorsix.intern.backend.security.TokenProvider
 import io.micrometer.common.util.StringUtils
@@ -18,12 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 
-
 @Service
-class LoginService(private val userRepository: UserRepository,
-                   private val passwordEncoder: PasswordEncoder,
-                   private val tokenProvider: TokenProvider? = null,
-                   private val authenticationManager: AuthenticationManager? = null
+class LoginService(
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder,
+    private val tokenProvider: TokenProvider? = null,
+    private val authenticationManager: AuthenticationManager? = null,
+    private val customerRepository: CustomerRepository
 ) {
 
     fun login(loginRequest: LoginRequest): LoginResponse {
@@ -63,12 +65,13 @@ class LoginService(private val userRepository: UserRepository,
             throw RuntimeException("User with email ${registerRequest.email} already exists.")
         }
 
-        userRepository.save(
-            User(
-                name = registerRequest.firstName + " " + registerRequest.lastName,
-                email = registerRequest.email,
-                password = passwordEncoder.encode(registerRequest.password),
-            )
+        val newUser = User(
+            name = registerRequest.firstName + " " + registerRequest.lastName,
+            email = registerRequest.email,
+            password = passwordEncoder.encode(registerRequest.password),
         )
+
+        userRepository.save(newUser)
+        customerRepository.makeCustomer(newUser.id)
     }
 }

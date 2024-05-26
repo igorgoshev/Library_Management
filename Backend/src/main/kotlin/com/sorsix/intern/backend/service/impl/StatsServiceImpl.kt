@@ -24,30 +24,31 @@ class StatsServiceImpl(
     private val authorRepository: AuthorRepository,
     private val libraryStoreRepository: LibraryStoreRepository,
     private val categoryRepository: CategoryRepository,
+    private val bookInLibraryRepository: BookInLibraryRepository,
 ) : StatsService {
     override fun getInventoryForStore(userId: Long): Double {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId)
+        val storeId = librarianRepository.findStoreIdByUserId(userId)
         val stats = storeInventoryRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
         return stats.lentBooks.toDouble() / stats.totalBooks.toDouble() * 100.0
     }
 
     override fun getLoansInLastDays(userId: Long): LoansInLastDays {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId)
+        val storeId = librarianRepository.findStoreIdByUserId(userId)
         return loansInLastDays.findByIdOrNull(storeId) ?: throw NotFoundException()
     }
 
     override fun getReservationsInLastDays(userId: Long): ReservationsInLastDays {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId)
+        val storeId = librarianRepository.findStoreIdByUserId(userId)
         return reservationsInLastDaysRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
     }
 
     override fun getYearlyReservations(userId: Long): YearlyReservations {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId)
+        val storeId = librarianRepository.findStoreIdByUserId(userId)
         return yearlyReservationsRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
     }
 
     override fun getYearlyBorrows(userId: Long): YearlyBorrows {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId)
+        val storeId = librarianRepository.findStoreIdByUserId(userId)
         return yearlyBorrowsRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
     }
 
@@ -62,5 +63,10 @@ class StatsServiceImpl(
         libraryStoreRepository.refreshView()
         categoryRepository.refreshView()
         storeInventoryRepository.refreshView()
+    }
+
+    override fun getRatioForStore(userId: Long): Double {
+        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
+        return bookInLibraryRepository.getBooksRatio(storeId);
     }
 }

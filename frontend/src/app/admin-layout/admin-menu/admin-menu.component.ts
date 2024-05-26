@@ -34,10 +34,10 @@ export class AdminMenuComponent {
             {
                 label: 'Library Management',
                 items: [
-                    { label: 'Locations', icon: 'pi pi-fw pi-map-marker', routerLink: ['/locations'] },
+                    { label: 'Locations', icon: 'pi pi-fw pi-map-marker', routerLink: ['/admin', 'stores'] },
                     { label: 'Available Books', icon: 'pi pi-fw pi-warehouse', routerLink: ['/admin', 'copies'] },
-                    { label: 'Lending', icon: 'pi pi-fw pi-folder-plus', routerLink: ['/admin', 'lendings'] },
-                    { label: 'Customers', icon: 'pi pi-fw pi-id-card', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
+                    { label: 'Loans', icon: 'pi pi-fw pi-folder-plus', routerLink: ['/admin', 'lendings'] },
+                    { label: 'Reservations', icon: 'pi pi-fw pi-users', routerLink: ['/admin', 'reservations'] },
                 ]
             },
         ];

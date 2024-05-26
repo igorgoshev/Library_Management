@@ -68,8 +68,13 @@ export class BookService {
     return this.http.get<Map<String, BookCard[]>>('http://localhost:8080/api/books/getTopByLetters');
   }
 
-  addBook(book: Book): Observable<Book> {
-    return this.http.post<Book>('http://localhost:8080/api/books/add', book)
+  addBook(book: Book, file: File): Observable<Book> {
+    const formData = new FormData();
+    const bookBlob = new Blob([JSON.stringify(book)], { type: 'application/json' });
+
+    formData.append('book', bookBlob);
+    formData.append('imgFile', file);
+    return this.http.post<Book>('http://localhost:8080/api/books/add', formData)
       .pipe(
         catchError(this.handleError)
       );
@@ -225,7 +230,15 @@ export class BookService {
   }
 
   lendBookToCustomer(id: number){
-    return this.http.get(`http://localhost:8080/api/books/lend/${id}`)
+    return this.http.get(`http://localhost:8080/api/books/lend/${id}`, this.getAuthToken())
+  }
+
+  finishCustomerLending(id: number) {
+      return this.http.get(`http://localhost:8080/api/books/customer/${id}/finish`, this.getAuthToken());
+  }
+
+  deleteCopy(id: number) {
+    return this.http.get(`http://localhost:8080/api/copies/${id}/delete`, this.getAuthToken());
   }
 
 }

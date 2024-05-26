@@ -26,7 +26,7 @@
           <span>Settings</span>
         </button>
       } @else {
-        <button [routerLink]="['/login']" class="p-link layout-topbar-button">
+        <button (click)="redirectToLogin()" class="p-link layout-topbar-button">
           <i class="pi pi-sign-in"></i>
           <span>Settings</span>
         </button>

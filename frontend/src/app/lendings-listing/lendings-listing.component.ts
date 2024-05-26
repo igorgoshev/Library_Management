@@ -8,7 +8,7 @@ import {ButtonModule} from 'primeng/button';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {RippleModule} from 'primeng/ripple';
 import {ToastModule} from 'primeng/toast';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import {ToolbarModule} from 'primeng/toolbar';
 import {RatingModule} from 'primeng/rating';
 import {InputTextModule} from 'primeng/inputtext';
@@ -47,7 +47,8 @@ import {Publisher} from '../Publisher';
     MultiSelectModule,
     TableLoaderComponent,
     RouterLink,
-    AvatarModule
+    AvatarModule,
+    ImageBaseUrlPipe
   ],
   templateUrl: './lendings-listing.component.html',
   styleUrl: './lendings-listing.component.css',
@@ -165,12 +166,13 @@ export class LendingsListingComponent implements OnInit {
   }
 
 
-  // onGlobalFilter(table: Table, event: Event) {
-  //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-  // }
+  onGlobalFilter(table: Table, event: Event) {
+      table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
 }
 
 import {TableLoaderComponent} from '../loaders/table-loader/table-loader.component';
 import {LentBookDetails} from "../LentBookDetails";
 import {RouterLink} from "@angular/router";
 import {AvatarModule} from "primeng/avatar";
+import {ImageBaseUrlPipe} from "../pipes/image-base-url.pipe";

@@ -87,7 +87,7 @@ class ReservedBookServiceImpl(
     }
 
     override fun getReservationsForStore(userId: Long): List<LentBookDetails> {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
         val books = repository.findAllByBookInLibrary_LibraryStore_Id(storeId)
 
         return books.map {  LentBookDetails(
@@ -115,7 +115,7 @@ class ReservedBookServiceImpl(
     @Transactional
     override fun finishReservation(userId: Long, reservationId: Long) {
         val reservation = repository.findByIdOrNull(reservationId) ?: throw NotFoundException()
-        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
         reservation.dateTo = LocalDate.now()
         reservation.bookInLibrary.isReserved = false
         reservation.bookInLibrary.isLent = true

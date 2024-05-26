@@ -143,7 +143,7 @@ export class TradesListingComponent implements OnInit {
   confirmDelete() {
     this.deleteProductDialog = false;
     if (this.book) {
-      this.bookService.finishLending(this.book.id).subscribe(
+      this.bookService.finishCustomerLending(this.book.id).subscribe(
         next => {
           this.messageService.add({
             severity: 'success',
@@ -156,7 +156,7 @@ export class TradesListingComponent implements OnInit {
         error => this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'There was a problem while updateing the book state',
+          detail: 'There was a problem while updating the book state',
           life: 3000,
         })
       )

@@ -33,7 +33,13 @@ export class LibraryService {
     return this.http.delete<StoreDetails[]>(`http://localhost:8080/api/libraries/stores/${id}`, this.getAuthToken());
   }
 
-  addStore(store: StoreDetails) {
-    return this.http.post<StoreDetails>('http://localhost:8080/api/libraries/stores', this.getAuthToken());
+  addStore(storeData: StoreDetails, file: File) {
+    const formData = new FormData();
+    const storeBlob = new Blob([JSON.stringify(storeData)], { type: 'application/json' });
+
+    formData.append('store', storeBlob);
+    formData.append('imgFile', file);
+
+    return this.http.post<StoreDetails>('http://localhost:8080/api/libraries/stores', formData, this.getAuthToken());
   }
 }

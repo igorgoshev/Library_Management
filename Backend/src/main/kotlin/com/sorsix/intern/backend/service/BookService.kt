@@ -2,6 +2,7 @@ package com.sorsix.intern.backend.service
 
 import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.domain.*
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
 interface BookService {
@@ -22,7 +23,7 @@ interface BookService {
     fun findBookCardsByLetters(): Map<Char, List<BookCard>>
     fun findBookCardsByLetter(letter: Char): Map<Char, List<BookCard>>
     fun getBookDetailsById(id: Long): BookInTable?
-    fun addBook(book: AddBook): Book
+    fun addBook(book: AddBook, file: MultipartFile): Book
     fun getBookAvailability(id: Long): List<BookAvailability>?
     fun findAvailableBooksByLetter(letter: Char?): Map<Char, List<AvailableBooks>>
     fun findAllAvailableBooksByLetter(letter: Char?): Map<Char, List<BookCard>>

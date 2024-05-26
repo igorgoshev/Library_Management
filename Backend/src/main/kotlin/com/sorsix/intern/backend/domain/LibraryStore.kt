@@ -12,14 +12,14 @@ import jakarta.persistence.OneToMany
 class LibraryStore(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long?,
-    var address: String,
-    var name: String,
-    var imgUrl: String,
+    var id: Long = 0,
+    var address: String = "",
+    var name: String = "",
+    var imgUrl: String = "",
     @ManyToOne
-    var library: Library?,
+    var library: Library? = null,
     @OneToMany(mappedBy = "libraryStore")
-    var bookInLibrary: MutableList<BookInLibrary>
+    var bookInLibrary: MutableList<BookInLibrary> = mutableListOf()
 ) {
 
 }

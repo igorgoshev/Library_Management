@@ -65,7 +65,7 @@ class BookInLibraryServiceImpl(
     }
 
     override fun addCopies(addCopy: AddCopy, userId: Long) {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
         val store = libraryStoreRepository.findByIdOrNull(storeId) ?: throw NotFoundException()
         val book = bookRepository.findByIdOrNull(addCopy.bookId) ?: throw NotFoundException();
         (0..addCopy.quantity).forEach {

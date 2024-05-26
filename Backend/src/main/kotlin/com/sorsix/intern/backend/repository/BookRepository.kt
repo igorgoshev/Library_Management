@@ -18,6 +18,6 @@ interface BookRepository : JpaRepository<Book, Long> {
     @Query("refresh materialized view popular_books", nativeQuery = true)
     fun refreshView()
 
-    fun findAllByNameIgnoreCaseContainingAndCategories_Name(query: String, category: String): List<Book>
+    fun findAllByNameIgnoreCaseContainingAndCategories_NameLike(query: String, category: String): List<Book>
     fun findAllByCategories_Name(name: String): List<Book>
 }

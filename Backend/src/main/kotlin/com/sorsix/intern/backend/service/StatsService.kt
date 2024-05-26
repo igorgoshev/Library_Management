@@ -9,4 +9,5 @@ interface StatsService {
     fun getYearlyBorrows(userId: Long): YearlyBorrows
     fun getYearlyReservations(userId: Long): YearlyReservations
     fun refreshViews()
+    fun getRatioForStore(userId: Long): Double
 }

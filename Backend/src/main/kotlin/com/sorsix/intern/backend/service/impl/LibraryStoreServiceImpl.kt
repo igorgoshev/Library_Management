@@ -3,19 +3,32 @@ package com.sorsix.intern.backend.service.impl
 import com.sorsix.intern.backend.api.dtos.StoreDetails
 import com.sorsix.intern.backend.domain.LibraryStore
 import com.sorsix.intern.backend.domain.dto.LibraryStoreDto
+import com.sorsix.intern.backend.repository.LibrarianRepository
 import com.sorsix.intern.backend.repository.LibraryStoreRepository
 import com.sorsix.intern.backend.service.BookInLibraryService
 import com.sorsix.intern.backend.service.LibraryService
 import com.sorsix.intern.backend.service.LibraryStoreService
-import jakarta.mail.Store
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.crossstore.ChangeSetPersister
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
-
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.*
 @Service
 class LibraryStoreServiceImpl(
-    val repository: LibraryStoreRepository,
-    val libraryService: LibraryService,
-    val bookInLibraryService: BookInLibraryService
+    private val repository: LibraryStoreRepository,
+    private val libraryService: LibraryService,
+    private val bookInLibraryService: BookInLibraryService,
+    private val librarianRepository: LibrarianRepository,
+    private val uploadService: FileUploadService
 ) : LibraryStoreService {
+
+    @Value("\${upload.path}")
+    private lateinit var uploadPath: String
 
     override fun findById(id: Long?): LibraryStore? = id?.let { repository.findById(it).get() }
 
@@ -49,7 +62,7 @@ class LibraryStoreServiceImpl(
             repository.save(it)
         } ?: repository.save(
             LibraryStore(
-                id = null,
+                id = 0,
                 address = libraryStoreDto.address,
                 name = libraryStoreDto.name,
                 imgUrl = libraryStoreDto.imgUrl,
@@ -66,6 +79,19 @@ class LibraryStoreServiceImpl(
                 libraryName = it.library?.name ?: ""
             )
         }
+    }
+
+    override fun addOrUpdate(libraryStore: com.sorsix.intern.backend.api.dtos.LibraryStore,
+                             imgFile: MultipartFile,
+                             userId: Long): LibraryStore {
+        val fileName = uploadService.saveImage(imgFile)
+        val store = repository.findByIdOrNull(libraryStore.id) ?: LibraryStore()
+        val library = librarianRepository.findLibraryByUserId(userId) ?: throw ChangeSetPersister.NotFoundException()
+        store.name = libraryStore.name
+        store.address = libraryStore.address
+        store.imgUrl = "/uploads/$fileName"
+        store.library = library
+        return repository.save(store)
     }
 }
 

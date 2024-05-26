@@ -11,6 +11,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
 @Service
@@ -32,7 +33,8 @@ class BookServiceImpl(
     private val mailingService: MailingService,
     private val customerBookRepository: CustomerBookRepository,
     private val tradeRepository: TradeRepository,
-    private val customerRepository: CustomerRepository
+    private val customerRepository: CustomerRepository,
+    private val uploadService: FileUploadService
 
 
 ) : BookService {
@@ -96,7 +98,7 @@ class BookServiceImpl(
     }
 
     override fun getBooksContaining(query: String, category: String): Map<Char?, List<BookCard>> {
-        val books = bookRepository.findAllByNameIgnoreCaseContainingAndCategories_Name(query, category)
+        val books = bookRepository.findAllByNameIgnoreCaseContainingAndCategories_NameLike(query, category)
         return books.groupBy { it.name?.first() }.mapValues {
             (k, v) ->  v.map {
                 BookCard(
@@ -209,7 +211,7 @@ class BookServiceImpl(
         }
     }
     override fun findAvailableBooksByLetter(letter: Char?): Map<Char, List<AvailableBooks>> {
-        val books = bookInLibraryRepository.findAllByBookNameStartsWith(letter?.toString() ?: "");
+        val books = bookInLibraryRepository.findAllByBookNameStartsWithAndIsLentFalseAndIsReservedFalse(letter?.toString() ?: "");
         return books.groupBy { it.book?.name?.first() ?: ' ' }.mapValues { (k, v) ->
             v.groupBy { book -> book.book!! }.map {
                 AvailableBooks(
@@ -229,7 +231,7 @@ class BookServiceImpl(
     }
 
     override fun findAllAvailableBooksByLetter(letter: Char?): Map<Char, List<BookCard>> {
-        val books = bookInLibraryRepository.findAllByBookNameStartsWith(letter?.toString() ?: "")
+        val books = bookInLibraryRepository.findAllByBookNameStartsWithAndIsLentFalseAndIsReservedFalse(letter?.toString() ?: "")
         return books.groupBy { it?.book?.name?.first() ?: ' ' }.mapValues { (k, v) ->
             v.groupBy { book -> book.book!! }.map {
                 BookCard(
@@ -272,15 +274,16 @@ class BookServiceImpl(
         ) }
     }
 
-    override fun addBook(book: AddBook): Book {
+    override fun addBook(book: AddBook, file: MultipartFile): Book {
         val categories = categoriesService.findAllByIdContaining(book.categories)
         val authors = authorService.findAllByIdContaining(book.authors)
         val publishingHouse = publishingHouseService.findById(book.publisher)
+        val fileName = uploadService.saveImage(file);
         val bookToAdd = Book(
             name = book.name,
             isbn = book.isbn,
             description = book.description,
-            imgUrl = book.imgUrl,
+            imgUrl = "/uploads/$fileName",
             numPages = book.numberOfPages,
             authors = authors,
             categories = categories,
@@ -325,7 +328,7 @@ class BookServiceImpl(
             bookInLibrary = book,
             customer = user,
             dateFrom = LocalDate.now(),
-            dateTo = LocalDate.now(),
+            dateTo = null,
             librarian =  null,
         )
 
@@ -352,7 +355,7 @@ class BookServiceImpl(
     }
 
     override fun getBookCopies(bookId: Long, userId: Long): List<AvailableBook> {
-        val storeId = librarianRepository.findLibraryIdByUserId(userId) ?: throw NotFoundException()
+        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
 
         val bookCopies = bookInLibraryRepository.findAllByLibraryStore_IdAndBook_Id(storeId, bookId)
         return bookCopies.map {

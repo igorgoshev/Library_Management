@@ -4,7 +4,7 @@ import {LayoutService} from '../../admin-layout/layout.service';
 import {NgClass, NgIf} from '@angular/common';
 import {UserService} from "../../service/user.service";
 import {UserResponse} from "../../UserResponse";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'user-top-bar',
@@ -25,7 +25,8 @@ export class UserTopBarComponent implements OnInit {
   user: UserResponse | undefined;
 
   constructor(public layoutService: LayoutService,
-              private userService: UserService,) {
+              private userService: UserService,
+              private router: Router) {
 
   }
 
@@ -38,5 +39,9 @@ export class UserTopBarComponent implements OnInit {
   logout() {
     this.userService.logout()
     window.location.reload()
+  }
+
+  redirectToLogin() {
+    this.router.navigate(['/login'])
   }
 }

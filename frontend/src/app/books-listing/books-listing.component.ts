@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
-import { TableModule } from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { InputTextModule } from 'primeng/inputtext';
@@ -17,13 +17,15 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { FileUploadModule } from 'primeng/fileupload';
+import {FileSelectEvent, FileUploadModule} from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
 import { MessageService } from 'primeng/api';
 import { Category } from '../Category';
 import { Author } from '../Author';
 import { Publisher } from '../Publisher';
 import { TableLoaderComponent } from '../loaders/table-loader/table-loader.component';
+import {ImageBaseUrlPipe} from "../pipes/image-base-url.pipe";
+import {ImageModule} from "primeng/image";
 
 @Component({
   selector: 'app-books-listing',
@@ -46,7 +48,9 @@ import { TableLoaderComponent } from '../loaders/table-loader/table-loader.compo
     DialogModule,
     TagModule,
     MultiSelectModule,
-    TableLoaderComponent
+    TableLoaderComponent,
+    ImageBaseUrlPipe,
+    ImageModule
   ],
   templateUrl: './books-listing.component.html',
   styleUrl: './books-listing.component.css',
@@ -198,6 +202,17 @@ export class BooksListingComponent implements OnInit {
     this.productDialog = true;
   }
 
+  uploadedFiles: File[]= []
+
+  onUpload(event: FileSelectEvent) {
+    console.log(event)
+    for(let file of event.files) {
+      this.uploadedFiles.push(file);
+    }
+    console.log(this.uploadedFiles)
+    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+  }
+
   deleteSelectedProducts() {
     this.deleteProductsDialog = true;
   }
@@ -246,7 +261,7 @@ export class BooksListingComponent implements OnInit {
 
   saveProduct() {
     this.submitted = true;
-    this.bookService.addBook(this.book).subscribe(
+    this.bookService.addBook(this.book, this.uploadedFiles[0]).subscribe(
       res => {
         this.refreshEvent.next();
         this.messageService.add({ severity: 'success', detail: 'The book is successfully saved!' })
@@ -261,7 +276,7 @@ export class BooksListingComponent implements OnInit {
   }
 
 
-  // onGlobalFilter(table: Table, event: Event) {
-  //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-  // }
+  onGlobalFilter(table: Table, event: Event) {
+      table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
 }

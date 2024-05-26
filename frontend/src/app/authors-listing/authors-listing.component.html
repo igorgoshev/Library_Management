@@ -26,7 +26,7 @@
           </ng-template>
         </p-toolbar>
         <p-table #dt [value]="authors != undefined ? authors : []" [columns]="cols" responsiveLayout="scroll"
-                 [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']"
+                 [rows]="10" [globalFilterFields]="['name', 'lastName']"
                  [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                  [(selection)]="selectedAuthors" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -35,7 +35,7 @@
               <h5 class="m-0">Manage Authors</h5>
               <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto" />
+                            <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto" (input)="onGlobalFilter(dt, $event)"/>
                         </span>
             </div>
           </ng-template>

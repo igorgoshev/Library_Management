@@ -1,22 +1,23 @@
 <div class="card my-5 border-none" style="width: 18rem;">
-    <img src={{book?.imgUrl}} [style]="{width: '100%'}" class="card-img-top" alt="book_image">
-    <div class="card-body text-center">
-      <h5 class="card-title" style="padding-top: 1.6em;">{{book?.name}}</h5>
-      @for (author of book?.authors; track $index) {
-        <p class="card-text text-overflow-ellipsis">{{author}}</p>
-      }
-      @if(book?.available == true) {
-        <div class="text-center align-items-center justify-content-center flex flex-row gap-2">
-          <p-badge [value]="" severity="success" />
-          <p>Available</p>
-        </div>
-      } @else if (book?.available == false) {
-        <div class="text-center align-items-center justify-content-center flex flex-row gap-2">
-          <p-badge [value]="" severity="danger" />
-          <p>Taken</p>
-        </div>
-      }
-    </div>
+  <img [src]="book!.imgUrl | imageBaseUrl"
+           [style]="{width: '100%'}" class="card-img-top" alt="book_image"/>
+  <div class="card-body text-center">
+    <h5 class="card-title" style="padding-top: 1.6em;">{{ book?.name }}</h5>
+    @for (author of book?.authors; track $index) {
+      <p class="card-text text-overflow-ellipsis">{{ author }}</p>
+    }
+    @if (book?.available == true) {
+      <div class="text-center align-items-center justify-content-center flex flex-row gap-2">
+        <p-badge [value]="" severity="success"/>
+        <p>Available</p>
+      </div>
+    } @else if (book?.available == false) {
+      <div class="text-center align-items-center justify-content-center flex flex-row gap-2">
+        <p-badge [value]="" severity="danger"/>
+        <p>Taken</p>
+      </div>
+    }
+  </div>
 </div>
 
 

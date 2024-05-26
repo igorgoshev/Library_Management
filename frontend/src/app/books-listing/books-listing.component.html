@@ -2,11 +2,9 @@
   <div class="col-12">
     <div class="card px-6 py-6">
 
-      @if(this.isLoading)
-      {
+      @if (this.isLoading) {
         <app-table-loader [fields]="fields" [numberOfRows]="10"></app-table-loader>
-      }
-      @else {
+      } @else {
         <p-toast></p-toast>
         <p-toolbar styleClass="mb-4">
           <ng-template pTemplate="left">
@@ -26,7 +24,7 @@
           </ng-template>
         </p-toolbar>
         <p-table #dt [value]="books != undefined ? books : []" [columns]="cols" responsiveLayout="scroll"
-                 [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']"
+                 [rows]="10" [globalFilterFields]="['name', 'authors']"
                  [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                  [(selection)]="selectedBooks" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -35,7 +33,7 @@
               <h5 class="m-0">Manage Books</h5>
               <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto" />
+                            <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto" (input)="onGlobalFilter(dt, $event)"/>
                         </span>
             </div>
           </ng-template>
@@ -45,7 +43,9 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               @for (item of cols; track $index) {
-                <th pSortableColumn="{{ item.field }}">{{ item.header }} <p-sortIcon field="{{ item.field }}"></p-sortIcon></th>
+                <th pSortableColumn="{{ item.field }}">{{ item.header }}
+                  <p-sortIcon field="{{ item.field }}"></p-sortIcon>
+                </th>
               }
               <!-- <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
               <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
@@ -64,18 +64,19 @@
                 <p-tableCheckbox [value]="book"></p-tableCheckbox>
               </td>
               <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
-                {{book.code || book.id}}
+                {{ book.code || book.id }}
               </td>
               <td style="width:14%; min-width:10rem;">
                 <span class="p-column-title">Name</span>
-                {{book.name}}
+                {{ book.name }}
               </td>
               <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
-                <img [src]="book.imgUrl" [alt]="book.name" width="100" class="shadow-4" />
+                <p-image [src]="book.imgUrl | imageBaseUrl" [preview]="true" [alt]="book.name" width="100"
+                         class="shadow-4"/>
               </td>
               <td style="width:14%; min-width:8rem;">
                 <span class="p-column-title">Price</span>
-                {{book.isbn}}
+                {{ book.isbn }}
               </td>
               <td style="width:14%; min-width:10rem;">
                 <span class="p-column-title">Category</span>
@@ -114,35 +115,56 @@
         <div class="field">
           <label for="name">Name</label>
           <input type="text" pInputText id="name" [(ngModel)]="book.name" required autofocus
-                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.name}" />
+                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.name}"/>
           <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.name">Name is required.</small>
         </div>
         <div class="field">
           <label for="name">ISBN</label>
           <input type="text" pInputText id="name" [(ngModel)]="book.isbn" required autofocus
-                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.isbn}" />
+                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.isbn}"/>
           <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.isbn">ISBN is required.</small>
         </div>
         <div class="field">
           <label for="name">Number of pages</label>
           <input type="text" pInputText id="name" [(ngModel)]="book.numPages" required autofocus
-                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.numPages}" />
+                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !book.numPages}"/>
           <small class="ng-dirty ng-invalid" *ngIf="submitted && !book?.numPages">Number of pages is required.</small>
         </div>
         <div class="field">
+          <label for="storeImage">Cover Image</label>
+          <p-fileUpload
+            name="storeImg"
+            [multiple]="false"
+            id="storeImage"
+            (onSelect)="onUpload($event)"
+            accept="image/*"
+            maxFileSize="1000000">
+            <ng-template pTemplate="content">
+              <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">
+                  {{ file.name }} - {{ file.size }} bytes
+                </li>
+                {{ uploadedFiles.length }}
+              </ul>
+            </ng-template>
+          </p-fileUpload>
+        </div>
+        <div class="field">
           <label for="publisher">Publisher</label>
-          <p-dropdown id="publisher" [options]="publishers" [(ngModel)]="book.publisher" optionValue="id" placeholder="Select Publishing House"
-                      optionLabel="name" display="chip" />
+          <p-dropdown id="publisher" [options]="publishers" [(ngModel)]="book.publisher" optionValue="id"
+                      placeholder="Select Publishing House"
+                      optionLabel="name" display="chip"/>
         </div>
         <div class="field">
           <label for="categories">Category</label>
-          <p-multiSelect id="categories" [options]="categories" optionValue="id" [(ngModel)]="book.categories" placeholder="Select Categories"
-                         optionLabel="name" display="chip" />
+          <p-multiSelect id="categories" [options]="categories" optionValue="id" [(ngModel)]="book.categories"
+                         placeholder="Select Categories"
+                         optionLabel="name" display="chip"/>
         </div>
         <div class="field">
           <label for="author">Author</label>
           <p-multiSelect [options]="authors" [(ngModel)]="book.authors" optionValue="id" placeholder="Select Authors"
-                         optionLabel="name" display="chip" />
+                         optionLabel="name" display="chip"/>
         </div>
         <div class="field">
           <label for="description">Description</label>
@@ -162,7 +184,7 @@
     <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
       <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="book">Are you sure you want to delete <b>{{book.name}}</b>?</span>
+        <span *ngIf="book">Are you sure you want to delete <b>{{ book.name }}</b>?</span>
       </div>
       <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"

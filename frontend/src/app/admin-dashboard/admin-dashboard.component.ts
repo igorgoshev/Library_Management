@@ -31,7 +31,7 @@ export class AdminDashboardComponent implements OnInit {
   data: any;
   barChartData: any;
   barChartOptions: any;
-
+  ratio: number = 0;
   options: any;
   loans: LoansInLastDays | undefined;
   reservations: LoansInLastDays | undefined;
@@ -51,9 +51,11 @@ export class AdminDashboardComponent implements OnInit {
       reservations: this.statsService.getReservationsPerDays(),
       yearlyLoans: this.statsService.getYearlyBorrows(),
       yearlyReservations: this.statsService.getYearlyReservations(),
+      ratio: this.statsService.getRatioForStore()
     }).subscribe(
       x => {
         this.loans = x.loans;
+        this.ratio = x.ratio;
         this.reservations = x.reservations;
         this.data = {
           labels: ['5 days ago', '4 days ago', '3 days ago', 'Yesterday', 'Today'],

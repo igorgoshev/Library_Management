@@ -26,7 +26,7 @@
           </ng-template>
         </p-toolbar>
         <p-table #dt [value]="stores != undefined ? stores : []" [columns]="cols" responsiveLayout="scroll"
-                 [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']"
+                 [rows]="10" [globalFilterFields]="['name','libraryName', 'address']"
                  [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                  [(selection)]="selectedStores" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -35,7 +35,7 @@
               <h5 class="m-0">Manage publishers</h5>
               <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto" />
+                            <input pInputText type="text" placeholder="Search..." class="w-full sm:w-auto" (input)="onGlobalFilter(dt, $event)"/>
                         </span>
             </div>
           </ng-template>
@@ -71,7 +71,7 @@
                 {{publisher.libraryName}}
               </td>
               <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
-                <img [src]="publisher.imgUrl" [alt]="publisher.name" width="100" class="shadow-4" />
+                <img [src]="publisher.imgUrl | imageBaseUrl" [alt]="publisher.name" width="100" class="shadow-4" />
               </td>
               <td>
                 <div class="flex">
@@ -96,6 +96,25 @@
           <input type="text" pInputText id="name" [(ngModel)]="store.name" required autofocus
                  [ngClass]="{'ng-invalid ng-dirty' : submitted && !store.name}" />
           <small class="ng-dirty ng-invalid" *ngIf="submitted && !store?.name">Name is required.</small>
+        </div>
+        <div class="field">
+          <label for="storeImage">Store Image</label>
+          <p-fileUpload
+            name="storeImg"
+            [multiple]="false"
+            id="storeImage"
+            (onSelect)="onUpload($event)"
+            accept="image/*"
+            maxFileSize="1000000">
+            <ng-template pTemplate="content">
+              <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">
+                  {{ file.name }} - {{ file.size }} bytes
+                </li>
+                {{ uploadedFiles.length }}
+              </ul>
+            </ng-template>
+          </p-fileUpload>
         </div>
         <div class="field">
           <label for="name">Address</label>

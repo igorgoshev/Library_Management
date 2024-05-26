@@ -20,6 +20,11 @@ class StatsController(
         return statsService.getInventoryForStore(userPrincipal.id)
     }
 
+    @GetMapping("/ratio")
+    fun getRatio(@CurrentUser userPrincipal: UserPrincipal): Double {
+        return statsService.getRatioForStore(userPrincipal.id)
+    }
+
     @GetMapping("/loansPerDays")
     fun getLoansPerDays(@CurrentUser userPrincipal: UserPrincipal): LoansInLastDays {
         return statsService.getLoansInLastDays(userPrincipal.id)

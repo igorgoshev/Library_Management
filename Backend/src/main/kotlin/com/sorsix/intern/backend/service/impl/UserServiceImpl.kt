@@ -24,7 +24,7 @@ class UserServiceImpl(
     override fun getUserInfoById(id: Long): UserResponse {
         val user: User = userRepository
             .findByIdOrNull(id) ?: throw RuntimeException("User not found with ID: %s.".formatted(id))
-        val libraryId = librarianRepository.findLibraryIdByUserId(id)
+        val libraryId = librarianRepository.findStoreIdByUserId(id)
         val userResponse = UserMapper.mapToUserResponse(user)
         userResponse.customerId = id
         if (libraryId != null) {

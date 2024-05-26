@@ -24,6 +24,7 @@ import {Publisher} from "../Publisher";
 import {BookService} from "../service/book.service";
 import {Quantity} from "../Quantity";
 import {AvailableBook} from "../AvailableBook";
+import {ImageBaseUrlPipe} from "../pipes/image-base-url.pipe";
 
 @Component({
   selector: 'app-copies-listing',
@@ -46,7 +47,8 @@ import {AvailableBook} from "../AvailableBook";
     TagModule,
     ToastModule,
     ToolbarModule,
-    NgClass
+    NgClass,
+    ImageBaseUrlPipe
   ],
   templateUrl: './copies-listing.component.html',
   styleUrl: './copies-listing.component.css'
@@ -247,7 +249,7 @@ export class CopiesListingComponent implements OnInit{
 
   confirmDelete() {
     this.deleteProductDialog = false;
-    this.bookService.deleteBook(this.book.id).subscribe(
+    this.bookService.deleteCopy(this.book.id).subscribe(
       res => {
         this.refreshEvent.next();
         this.messageService.add({ severity: 'success', detail: `${this.book.name} is successfully deleted!` })
@@ -268,6 +270,7 @@ export class CopiesListingComponent implements OnInit{
       res => {
         this.refreshEvent.next();
         this.messageService.add({ severity: 'success', detail: 'The copy is successfully saved!' })
+        window.location.reload()
       },
       err => {this.messageService.add({ severity: 'error', detail: 'An error occurred while saving the copies!' })}
     )
