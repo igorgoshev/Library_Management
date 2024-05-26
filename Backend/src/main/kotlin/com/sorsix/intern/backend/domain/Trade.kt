@@ -7,7 +7,7 @@ import java.time.LocalDate
 class Trade(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long?,
 
     @ManyToOne
     var customer: Customer,
@@ -16,6 +16,6 @@ class Trade(
     var customerBook: CustomerBook,
 
     var dateFrom: LocalDate,
-    var dateTo: LocalDate,
+    var dateTo: LocalDate?,
 ) {
 }

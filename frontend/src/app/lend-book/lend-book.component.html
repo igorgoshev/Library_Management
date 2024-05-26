@@ -1,0 +1,24 @@
+@if (customerBooks?.length === 0) {
+    <h1>No one is lending this book</h1>
+}
+@else {
+    @for (customerBook of customerBooks; track $index) {
+        <p-card>
+        <ng-template pTemplate="subheader">
+            <div class="flex justify-content-between">
+                <div>
+                    <p class="text-xl p-0 m-o">{{customerBook.customer.name}}</p>
+                    {{customerBook.customer.email}}
+                </div>
+                <p-button 
+                icon="pi pi-arrow-right-arrow-left"
+                [loading]="isLoading"
+                (onClick)="onLend(customerBook)"
+                [disabled]="isDisabled"
+                label="Lend Book" />
+                
+            </div>
+        </ng-template>
+        </p-card>
+    }
+}

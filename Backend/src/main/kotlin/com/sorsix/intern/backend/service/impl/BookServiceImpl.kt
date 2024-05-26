@@ -3,6 +3,7 @@ package com.sorsix.intern.backend.service.impl
 import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.domain.*
 import com.sorsix.intern.backend.domain.Author
+import com.sorsix.intern.backend.domain.CustomerBook
 import com.sorsix.intern.backend.repository.*
 import com.sorsix.intern.backend.service.*
 import jakarta.transaction.Transactional
@@ -373,7 +374,7 @@ class BookServiceImpl(
             LentBookDetails(
                 dateFrom = it.dateFrom,
                 dateTo = it.dateTo,
-                id = it.id,
+                id = it.id!!,
                 customer = UserAvatar(
                     id = it.customer.id,
                     name = it.customer.name,

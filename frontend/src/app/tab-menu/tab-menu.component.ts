@@ -8,11 +8,12 @@ import {NgIf} from "@angular/common";
 import {AddBookToCollectionComponent} from "../add-book-to-collection/add-book-to-collection.component";
 import {UserService} from "../service/user.service";
 import {UserResponse} from "../UserResponse";
+import { LendBookComponent } from '../lend-book/lend-book.component';
 
 @Component({
   selector: 'tab-menu',
   standalone: true,
-  imports: [TabMenuModule, AccordionComponent, ReviewComponent, NgIf, AddBookToCollectionComponent],
+  imports: [TabMenuModule, AccordionComponent, ReviewComponent, NgIf, AddBookToCollectionComponent, LendBookComponent],
   templateUrl: './tab-menu.component.html',
   styleUrl: './tab-menu.component.css'
 })
@@ -46,7 +47,12 @@ export class TabMenuComponent implements OnInit{
       },},
       { label: 'Add Book to Your Collection', icon: 'pi pi-folder-plus', command: (event) => {
           this.activeItem = event.item
-        },}
+      },},
+      {
+        label: 'Lend Book', icon: 'pi pi-arrow-right-arrow-left', command: (event) => {
+          this.activeItem = event.item
+        }
+      }
     ]
   }
 

@@ -9,4 +9,6 @@ interface UserService {
     fun getUserInfoById(id: Long): UserResponse
     fun findById(id: Long): Customer?
     fun findCustomerByIdAvatar(id: Long): UserAvatar
+
+
 }

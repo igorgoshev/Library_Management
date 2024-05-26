@@ -2,11 +2,9 @@ package com.sorsix.intern.backend.api
 
 import com.sorsix.intern.backend.api.dtos.*
 import com.sorsix.intern.backend.config.CurrentUser
+import com.sorsix.intern.backend.domain.CustomerBook
 import com.sorsix.intern.backend.security.UserPrincipal
-import com.sorsix.intern.backend.service.BookService
-import com.sorsix.intern.backend.service.ReservedBookService
-import com.sorsix.intern.backend.service.ReviewService
-import com.sorsix.intern.backend.service.WishListService
+import com.sorsix.intern.backend.service.*
 import com.sorsix.intern.backend.service.impl.BookInLibraryServiceImpl
 import com.sorsix.intern.backend.service.impl.BorrowedBookServiceImpl
 import com.sorsix.intern.backend.service.impl.CategoryServiceImpl
@@ -22,7 +20,8 @@ class BooksController(
     private val reservedBookService: ReservedBookService,
     private val borrowedBookService: BorrowedBookServiceImpl,
     private val categoryService: CategoryServiceImpl,
-    private val bookInLibraryService: BookInLibraryServiceImpl
+    private val bookInLibraryService: BookInLibraryServiceImpl,
+    private val customerBookService: CustomerBookService
 ) {
     @GetMapping("")
     fun getBooks(): List<BookInTable> {
@@ -178,5 +177,15 @@ class BooksController(
     @GetMapping("/customer/add/{id}")
     fun addBookToCustomerCollection(@CurrentUser userPrincipal: UserPrincipal, @PathVariable id: Long) {
         bookService.addBookToCustomer(userPrincipal.id, id)
+    }
+
+    @GetMapping("/customersContaining/{bookId}")
+    fun getCustomerBooks(@PathVariable bookId: Long) : List<com.sorsix.intern.backend.api.dtos.CustomerBook> {
+        return customerBookService.getCollectionOfBookUser(bookId);
+    }
+
+    @GetMapping("/lend/{id}")
+    fun lendBookToCustomer(@PathVariable id: Long, @CurrentUser userPrincipal: UserPrincipal){
+        return customerBookService.lendBookToCustomer(id, userPrincipal.id)
     }
 }

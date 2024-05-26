@@ -30,4 +30,5 @@ class UserController {
     fun getCustomerAvatar(@PathVariable id: Long): UserAvatar {
         return userService!!.findCustomerByIdAvatar(id);
     }
+
 }
