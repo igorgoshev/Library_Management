@@ -53,7 +53,7 @@ import {ImageBaseUrlPipe} from "../pipes/image-base-url.pipe";
   templateUrl: './copies-listing.component.html',
   styleUrl: './copies-listing.component.css'
 })
-export class CopiesListingComponent implements OnInit{
+export class CopiesListingComponent implements OnInit {
   productDialog: boolean = false;
   isLoading: Boolean = true;
   expandedRows = {};
@@ -64,7 +64,7 @@ export class CopiesListingComponent implements OnInit{
     const id = event.data.id;
     this.bookService.getCopiesForBook(id).subscribe(x => {
       this.availableBooks?.set(id, x)
-      this.arr = { ...this.arr, [id]: x };
+      this.arr = {...this.arr, [id]: x};
       this.cdr.detectChanges()
     })
   }
@@ -127,10 +127,10 @@ export class CopiesListingComponent implements OnInit{
   };
 
   statuses = [
-    { id: 'BRAND_NEW', value: 'BRAND NEW' },
-    { id: 'GOOD', value: 'GOOD' },
-    { id: 'ACCEPTABLE', value: 'ACCEPTABLE' },
-    { id: 'POOR', value: 'POOR' },
+    {id: 'BRAND_NEW', value: 'BRAND NEW'},
+    {id: 'GOOD', value: 'GOOD'},
+    {id: 'ACCEPTABLE', value: 'ACCEPTABLE'},
+    {id: 'POOR', value: 'POOR'},
   ]
 
   selectedBooks: Book[] = [];
@@ -146,22 +146,22 @@ export class CopiesListingComponent implements OnInit{
     private bookService: BookService,
     private messageService: MessageService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.isLoading = true;
     this.fetchData();
 
     this.cols = [
-      { field: 'id', header: 'ID' },
-      { field: 'name', header: 'Name' },
-      { field: 'imgUrl', header: 'Image' },
-      { field: 'isbn', header: 'ISBN' },
-      { field: 'categories', header: 'Categories' },
-      { field: 'rating', header: 'Rating' },
-      { field: 'authors', header: 'Authors' },
+      {field: 'id', header: 'ID'},
+      {field: 'name', header: 'Name'},
+      {field: 'imgUrl', header: 'Image'},
+      {field: 'isbn', header: 'ISBN'},
+      {field: 'categories', header: 'Categories'},
+      {field: 'rating', header: 'Rating'},
+      {field: 'authors', header: 'Authors'},
     ];
-
 
 
     this.books$.subscribe((x) => {
@@ -178,7 +178,7 @@ export class CopiesListingComponent implements OnInit{
     })
 
     this.authors$.subscribe(x => {
-      this.authors   = x;
+      this.authors = x;
     })
 
     this.refreshEvent.subscribe(() => this.fetchData())
@@ -202,10 +202,12 @@ export class CopiesListingComponent implements OnInit{
     })
 
     this.authors$.subscribe(x => {
-      this.authors   = x;
+      this.authors = x;
     })
 
   }
+
+  bookCopy: AvailableBook | undefined;
 
   openNew(book: Book) {
     this.copiesToAdd = {
@@ -218,21 +220,9 @@ export class CopiesListingComponent implements OnInit{
     this.productDialog = true;
   }
 
-  deleteSelectedProducts() {
-    this.deleteProductsDialog = true;
-  }
-
-  editProduct(book: Book) {
-    this.book = {
-      ...book,
-      categories: book.categories.map(x => this.categories?.find(cat => cat.name === x)?.id ?? 0),
-      authors: book.authors.map(x => this.authors?.find(cat => cat.name.includes(x.toString()))?.id ?? 0)}
-    this.productDialog = true;
-  }
-
-  deleteProduct(book: Book) {
+  deleteProduct(book: AvailableBook) {
     this.deleteProductDialog = true;
-    this.book = { ...book, categories: book.categories.map(x => this.categories?.find(cat => cat.name === x)?.id.toString() ?? "")};
+    this.bookCopy = {...book};
   }
 
   confirmDeleteSelected() {
@@ -249,14 +239,17 @@ export class CopiesListingComponent implements OnInit{
 
   confirmDelete() {
     this.deleteProductDialog = false;
-    this.bookService.deleteCopy(this.book.id).subscribe(
+    console.log(this.bookCopy)
+    this.bookService.deleteCopy(this.bookCopy?.id ?? 0).subscribe(
       res => {
         this.refreshEvent.next();
-        this.messageService.add({ severity: 'success', detail: `${this.book.name} is successfully deleted!` })
+        this.messageService.add({severity: 'success', detail: `${this.book.name} is successfully deleted!`})
       },
-      err => {this.messageService.add({ severity: 'error', detail: 'An error occured while commiting the action!' })}
+      err => {
+        this.messageService.add({severity: 'error', detail: 'An error occured while commiting the action!'})
+      }
     )
-    this.book = { ...this.emptyBook }
+    this.bookCopy = undefined;
   }
 
   hideDialog() {
@@ -269,10 +262,12 @@ export class CopiesListingComponent implements OnInit{
     this.bookService.addCopiesForBook(this.copiesToAdd.book.id, this.copiesToAdd.status, this.copiesToAdd.quantity).subscribe(
       res => {
         this.refreshEvent.next();
-        this.messageService.add({ severity: 'success', detail: 'The copy is successfully saved!' })
+        this.messageService.add({severity: 'success', detail: 'The copy is successfully saved!'})
         window.location.reload()
       },
-      err => {this.messageService.add({ severity: 'error', detail: 'An error occurred while saving the copies!' })}
+      err => {
+        this.messageService.add({severity: 'error', detail: 'An error occurred while saving the copies!'})
+      }
     )
 
 
@@ -282,6 +277,6 @@ export class CopiesListingComponent implements OnInit{
   }
 
   onGlobalFilter(table: Table, event: Event) {
-      table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

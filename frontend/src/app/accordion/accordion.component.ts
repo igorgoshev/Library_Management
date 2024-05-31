@@ -5,6 +5,8 @@ import { ButtonModule } from 'primeng/button';
 import { Book } from '../Book';
 import { BookService } from '../service/book.service';
 import { FormsModule } from '@angular/forms';
+import {UserService} from "../service/user.service";
+import {UserResponse} from "../UserResponse";
 
 
 @Component({
@@ -17,13 +19,14 @@ import { FormsModule } from '@angular/forms';
 
 export class AccordionComponent implements OnInit {
 
-  constructor(private service: BookService){
+  constructor(private service: BookService,
+              private userService: UserService){
 
   }
 
   @Input() book: Book | undefined
   bookAvailability: BookAvailability[] | undefined
-
+  user: UserResponse | undefined;
   loading = false;
   icon = "pi pi-heart"
   label = "Add to Wish list"
@@ -78,6 +81,10 @@ export class AccordionComponent implements OnInit {
       .subscribe(
         res => this.bookAvailability = res
       )
+
+    this.userService.getPrincipal().subscribe(x => {
+      this.user = x;
+    })
 
       this.service.bookExistsInWishlist(this.book?.id!!)
         .subscribe(

@@ -21,31 +21,36 @@
                     <span class="px-5">
                       In Stock: {{store.quantity}}
                     </span>
-                      <p-button 
-                      (click)="onReserve(store.storeId)" 
-                      [icon]="btn_icon" 
-                      [severity]="btn_sev" 
-                      [label]="reservationLabel" 
+                    @if(user)
+                    {
+                      <p-button
+                      (click)="onReserve(store.storeId)"
+                      [icon]="btn_icon"
+                      [severity]="btn_sev"
+                      [label]="reservationLabel"
                       [loading]="loading_btn"
                       [disabled]="btn_disabled"></p-button>
+                    }
                   </div>
                 </div>
             }
         </p-accordionTab>
     }
-    @if(bookAvailability?.length == 0)
+    @if(bookAvailability?.length == 0 && user)
     {
       <p class="text-xl font-normal text-center">
         {{description}}
       </p>
       <div class="flex justify-content-center">
-        <p-button 
-        [label]="label" 
-        [icon]="icon" 
+        <p-button
+        [label]="label"
+        [icon]="icon"
         [loading]="loadingButton"
         [disabled]="isDisabled"
         (click)="onSubmit()"
         />
-      </div> 
+      </div>
+    } @else if (bookAvailability?.length == 0 && !user){
+      <h4>The book is not available in any of the libraries!</h4>
     }
 </p-accordion>

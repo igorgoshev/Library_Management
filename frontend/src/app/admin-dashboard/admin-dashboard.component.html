@@ -16,10 +16,11 @@
     </p-card>
   </div>
   <div class="col-4">
-    <p-card header="Simple Card">
-      <p class="m-0">
-        Lorem ipsum dolor sit amet...
+    <p-card header="Inventory Status">
+      <p class="m-0 mb-3">
+        Percentage of books that are not lent
       </p>
+      <p-progressBar [value]="inventoryPercentage | number: '3.1-1' " />
     </p-card>
   </div>
   <div class="col-12">

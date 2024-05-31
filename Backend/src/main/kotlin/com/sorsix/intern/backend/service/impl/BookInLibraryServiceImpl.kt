@@ -8,6 +8,7 @@ import com.sorsix.intern.backend.repository.BookRepository
 import com.sorsix.intern.backend.repository.LibrarianRepository
 import com.sorsix.intern.backend.repository.LibraryStoreRepository
 import com.sorsix.intern.backend.service.*
+import jakarta.transaction.Transactional
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -78,11 +79,13 @@ class BookInLibraryServiceImpl(
         }
     }
 
+    @Transactional
     override fun deleteCopy(id: Long) {
         val copy = bookInLibraryRepository.findByIdOrNull(id) ?: throw NotFoundException()
         if(copy.isLent || copy.isReserved) {
             throw RuntimeException("Cannot delete a book which is lent or reserved!")
         }
+        bookInLibraryRepository.delete(copy)
     }
 
 }

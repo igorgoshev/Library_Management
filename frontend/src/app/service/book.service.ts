@@ -95,7 +95,7 @@ export class BookService {
   }
 
   addReview(id: number, review: Review) {
-  return this.http.post<Review>(`http://localhost:8080/api/books/review/${id}`, review)
+  return this.http.post<Review>(`http://localhost:8080/api/books/review/${id}`, review, this.getAuthToken())
     .pipe(
      catchError(this.handleError)
     );
@@ -238,7 +238,7 @@ export class BookService {
   }
 
   deleteCopy(id: number) {
-    return this.http.get(`http://localhost:8080/api/copies/${id}/delete`, this.getAuthToken());
+    return this.http.get(`http://localhost:8080/api/books/copies/${id}/delete`, this.getAuthToken());
   }
 
 }

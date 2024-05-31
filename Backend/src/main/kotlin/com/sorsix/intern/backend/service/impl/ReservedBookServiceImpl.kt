@@ -11,6 +11,7 @@ import com.sorsix.intern.backend.service.UserService
 import jakarta.transaction.Transactional
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -89,6 +90,7 @@ class ReservedBookServiceImpl(
     override fun getReservationsForStore(userId: Long): List<LentBookDetails> {
         val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
         val books = repository.findAllByBookInLibrary_LibraryStore_Id(storeId)
+        SecurityContextHolder.getContext().authentication
 
         return books.map {  LentBookDetails(
             dateFrom = it.dateFrom,
@@ -112,13 +114,14 @@ class ReservedBookServiceImpl(
         ) }
     }
 
-    @Transactional
     override fun finishReservation(userId: Long, reservationId: Long) {
-        val reservation = repository.findByIdOrNull(reservationId) ?: throw NotFoundException()
-        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
+        val reservation = repository.findByIdOrNull(userId) ?: throw NotFoundException()
+//        val storeId = librarianRepository.findStoreIdByUserId(userId) ?: throw NotFoundException()
         reservation.dateTo = LocalDate.now()
         reservation.bookInLibrary.isReserved = false
         reservation.bookInLibrary.isLent = true
+        repository.save(reservation)
+//        repository.finishReservation(reservationId)
         val borrow = BorrowBook(
             id = 0,
             dateFrom = LocalDate.now(),
@@ -128,6 +131,5 @@ class ReservedBookServiceImpl(
             librarian = null
         )
         borrowBookRepository.save(borrow)
-        repository.save(reservation)
     }
 }

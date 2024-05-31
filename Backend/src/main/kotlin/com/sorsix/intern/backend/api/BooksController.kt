@@ -73,7 +73,7 @@ class BooksController(
     fun deleteBook(@PathVariable id: Long) = bookService.delete(id)
 
     @PostMapping("/review/{id}")
-    fun leaveReview(@PathVariable id: Long, @RequestBody review: AddReview) = reviewService.createReview(id, review)
+    fun leaveReview(@PathVariable id: Long, @RequestBody review: AddReview, @CurrentUser userPrincipal: UserPrincipal) = reviewService.createReview(id, review, userPrincipal.id)
     
     @GetMapping("/reviews/{id}")
     fun getReviewsByBook(@PathVariable id: Long) = reviewService.getReviewsByBook(id);
